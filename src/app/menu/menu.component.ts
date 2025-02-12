@@ -19,15 +19,15 @@ export class MenuComponent implements OnInit {
     ngOnInit() {
         this.menuItems = [
             {
-                label: '¿POR QUÉ UNIRTE?',
+                label: '¿Por qué unirte?',
                 root: true, 
             },
             {
-                label: 'PLANES',
+                label: 'Planes',
                 root: true
             },
             {
-                label: 'DESCUBRE MÁS',
+                label: 'Descubre más',
                 root: true
             }
         ];

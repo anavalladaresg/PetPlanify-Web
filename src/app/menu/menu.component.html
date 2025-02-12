@@ -1,15 +1,17 @@
 <div>
     <p-megamenu [model]="menuItems" class="menu-container">
         <ng-template #start>
-            <img src="/public/logo.png" alt="Logo de PetPlanify" width="31" height="33">
+            <img src="logo.png" alt="Logo de PetPlanify" width="80"/>
+            <i class="pi pi-check" style="font-size: 1rem; margin-left: 8px;"></i>
         </ng-template>
         
         <ng-template #menuItem let-item>
             <a *ngIf="item.isRoot" pRipple class="menu-item">
                 <i [ngClass]="item.icon"></i>
                 <span class="menu-item-label ml-2">{{ item.label }}</span>
+                
             </a>
-            
+
             <a *ngIf="!item.isRoot && !item.image" class="menu-item">
                 <span class="icon-container">
                     <i [ngClass]="item.icon"></i>
@@ -18,8 +20,9 @@
                     <span class="menu-item-title">{{ item.label }}</span>
                     <span class="menu-item-subtext">{{ item.subtext }}</span>
                 </span>
+                
             </a>
-            
+
             <div *ngIf="item.image" class="menu-item-image-container">
                 <img [src]="item.image" alt="megamenu-item-image" class="menu-item-image" />
                 <span>{{ item.subtext }}</span>
