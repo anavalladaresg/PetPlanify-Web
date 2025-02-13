@@ -5,11 +5,35 @@ body {
 }
 
 .title1 {
-    /* TODO: Cambiar la fuente a negrita */
     text-align: center;
     margin-top: 100px;
-    font-size: 2rem;
-    color: #2364AA;
+}
+
+.title1 h1 {
+    /* TODO: poner la letra en negrita*/
+    font-size: 4rem;
+    color: #FF7043;
+}
+
+.tarjetas {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.tarjetas img {
+    width: 14%;
+}
+
+.tarjetas span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .cachorro {

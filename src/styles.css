@@ -2,29 +2,29 @@
 @import "../node_modules/primeicons/primeicons.css";
 
 :root {
-    --sage-green-50: #f2f7f2;
-    --sage-green-100: #e0edde;
-    --sage-green-200: #c2dac0;
-    --sage-green-300: #8fbc8f;
-    --sage-green-400: #689f6a;
-    --sage-green-500: #47824b;
-    --sage-green-600: #346738;
-    --sage-green-700: #2a522f;
-    --sage-green-800: #234226;
-    --sage-green-900: #1d3720;
-    --sage-green-950: #101e13;
+    --green-50: #f2f7f2;
+    --green-100: #e0edde;
+    --green-200: #c2dac0;
+    --green-300: #8fbc8f;
+    --green-400: #689f6a;
+    --green-500: #47824b;
+    --green-600: #346738;
+    --green-700: #2a522f;
+    --green-800: #234226;
+    --green-900: #1d3720;
+    --green-950: #101e13;
 
-    --misty-blue-50: #f5f8fa;
-    --misty-blue-100: #ebf0f3;
-    --misty-blue-200: #d3dfe4;
-    --misty-blue-300: #aec6cf;
-    --misty-blue-400: #7ea5b2;
-    --misty-blue-500: #5e8a99;
-    --misty-blue-600: #4a707f;
-    --misty-blue-700: #3d5a67;
-    --misty-blue-800: #354d57;
-    --misty-blue-900: #30414a;
-    --misty-blue-950: #202b31;
+    --blue-50: #f5f8fa;
+    --blue-100: #ebf0f3;
+    --blue-200: #d3dfe4;
+    --blue-300: #aec6cf;
+    --blue-400: #7ea5b2;
+    --blue-500: #5e8a99;
+    --blue-600: #4a707f;
+    --blue-700: #3d5a67;
+    --blue-800: #354d57;
+    --blue-900: #30414a;
+    --blue-950: #202b31;
 
     background-color: white;
 }
