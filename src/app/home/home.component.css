@@ -1,21 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
 body {
-    font-family:Quicksand, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    /*instalar Quicksand de google fonts*/
+    font-family: Quicksand, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 .title1 {
+    /* TODO: Cambiar la fuente a negrita */
     text-align: center;
     margin-top: 100px;
     font-size: 2rem;
+    color: #2364AA;
 }
 
-/* Contenedor relativo */
 .cachorro {
     position: relative;
     width: 100%;
 }
 
-/* Imagen posicionada dentro del contenedor */
 .cachorro img {
     position: absolute;
     top: 200px;
@@ -26,11 +27,4 @@ body {
     .cachorro img {
         width: 350px;
     }
-}
-
-.quicksand-font {
-    font-family: "Quicksand", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500; /* Set specific weight value */
-    font-style: normal;
 }
