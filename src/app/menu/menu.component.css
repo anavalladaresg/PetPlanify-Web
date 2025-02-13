@@ -1,12 +1,12 @@
 :host ::ng-deep .p-button {
-    width: 13rem;
-    height: 5rem;
-    font-size: 2rem;
-    font-weight:bold;   
-    background-color: var(--sage-green-300);
-    color: var(--sage-green-900);
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    margin-right: 20px;
+  width: 13rem;
+  height: 5rem;
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: var(--sage-green-300);
+  color: var(--sage-green-900);
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  margin-right: 20px;
 }
 
 :host ::ng-deep .p-button .pi {
@@ -15,6 +15,6 @@
 }
 
 :host ::ng-deep .p-button:hover {
-    background-color: var(--sage-green-400);
-    color: var(--sage-green-950);
+  background-color: var(--sage-green-400);
+  color: var(--sage-green-950);
 }
