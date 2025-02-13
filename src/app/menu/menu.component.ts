@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { MegaMenuItem } from 'primeng/api';
+import { Component } from '@angular/core';
 import { MegaMenu } from 'primeng/megamenu';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
@@ -13,23 +12,5 @@ import { AvatarModule } from 'primeng/avatar';
     imports: [MegaMenu, ButtonModule, CommonModule, AvatarModule]
 })
 
-export class MenuComponent implements OnInit {
-    menuItems: MegaMenuItem[] | undefined;
-
-    ngOnInit() {
-        this.menuItems = [
-            {
-                label: '¿Por qué unirte?',
-                root: true, 
-            },
-            {
-                label: 'Planes',
-                root: true
-            },
-            {
-                label: 'Descubre más',
-                root: true
-            }
-        ];
-    }
+export class MenuComponent {
 }

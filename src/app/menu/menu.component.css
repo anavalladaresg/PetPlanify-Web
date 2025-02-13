@@ -1,115 +1,13 @@
-/* Estilos generales para el contenedor del menú */
-.menu-container {
-    /* Puedes agregar propiedades de estilo específicas para el contenedor del menú */
-    padding: 0;
-    margin: 0;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-/* Estilo general para los ítems del menú */
-.menu-item {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* Estilo para los ítems de menú con iconos */
-.menu-item i {
-    font-size: 1.5rem;
-    margin-right: 8px;
-}
-
-/* Estilo de la etiqueta de los ítems del menú */
-.menu-item-label {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-color, #333); /* Asegúrate de definir esta variable en tu archivo */
-}
-
-/* Estilo para los contenedores de iconos */
-.icon-container {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 3rem;
+:host ::ng-deep .p-button {
+    width: 8rem;
     height: 3rem;
-    background-color: var(--primary-color, #007bff); /* Asegúrate de definir esta variable en tu archivo */
-    color: var(--primary-contrast, #fff); /* Asegúrate de definir esta variable en tu archivo */
-    border-radius: 50%;
+    font-size: 1.3rem;
+    background-color: var(--sage-green-300);
+    color: var(--sage-green-900);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-/* Estilo para los detalles del ítem del menú */
-.menu-item-details {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-/* Estilo para el título de los ítems */
-.menu-item-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-title-color, #333); /* Puedes definir esta variable también */
-}
-
-/* Estilo para el subtexto de los ítems */
-.menu-item-subtext {
-    font-size: 0.9rem;
-    color: var(--text-subtext-color, #777); /* Puedes definir esta variable también */
-}
-
-/* Estilo para los contenedores de imágenes */
-.menu-item-image-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-/* Estilo para las imágenes */
-.menu-item-image {
-    max-width: 100%;
-    border-radius: 8px;
-    object-fit: cover;
-}
-
-/* Estilo del avatar de la esquina derecha */
-.p-avatar {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    border: 2px solid var(--border-color, #ddd);
-}
-
-/* Efecto hover para los ítems del menú */
-.menu-item:hover {
-    background-color: var(--hover-bg-color, #f1f1f1); /* Cambia el color cuando pasa el mouse */
-    transition: background-color 0.3s ease;
-}
-
-/* Estilo para los botones dentro de los ítems de menú */
-.p-button {
-    padding: 6px 12px;
-    font-size: 0.9rem;
-    background-color: var(--button-bg-color, #007bff);
-    color: var(--button-text-color, #fff);
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-}
-
-/* Estilo para botones contorneados */
-.p-button[outlined] {
-    background-color: transparent;
-    border: 2px solid var(--button-border-color, #007bff);
-    color: var(--button-border-color, #007bff);
-}
-
-.p-button:hover {
-    background-color: var(--button-hover-bg-color, #0056b3);
+:host ::ng-deep .p-button:hover {
+    background-color: var(--sage-green-400);
+    color: var(--sage-green-950);
 }
