@@ -1,54 +1,89 @@
+/* Fuente */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
 body {
     font-family: Quicksand, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
+/* Título */
 .title1 {
     text-align: center;
-    margin-top: 100px;
+    margin-top: 30px; /* Reducido para menor separación */
 }
 
 .title1 h1 {
-    /* TODO: poner la letra en negrita*/
     font-size: 4rem;
-    color: #FF7043;
+    color: #354d57;
 }
 
-.tarjetas {
+/* Contenedor General */
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 20px; 
+    width: 100%;
+    height: auto;
+    padding: 20px 0; 
+}
+
+/* Estilos de la tarjeta */
+.tarjetas { 
     position: relative;
-    display: inline-block;
-    text-align: center;
-    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 280px;
 }
 
-.tarjetas img {
-    width: 14%;
+/* Animación fade-bottom */
+.fade-bottom {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
 }
 
+.fade-bottom.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Imagen de la tarjeta (fondo verde) */
+.tarjetas .fondo {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Imagen de la huella */
+.tarjetas .icono {
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+}
+
+/* Texto "Salud" */
 .tarjetas span {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    bottom: 28%;
     color: white;
-    font-size: 16px;
+    font-size: 1.8rem;
     font-weight: bold;
+    z-index: 3;
 }
 
+/* Cachorro */
 .cachorro {
-    position: relative;
+    display: flex;
+    margin-top: 5%;
     width: 100%;
 }
 
 .cachorro img {
-    position: absolute;
-    top: 200px;
     width: 450px;
-}
-
-@media screen and (max-width: 768px) {
-    .cachorro img {
-        width: 350px;
-    }
+    max-width: 100%;
 }
