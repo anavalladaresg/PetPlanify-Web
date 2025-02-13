@@ -1,5 +1,5 @@
 body {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family:Quicksand, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     /*instalar Quicksand de google fonts*/
 }
 
@@ -26,4 +26,11 @@ body {
     .cachorro img {
         width: 350px;
     }
+}
+
+.quicksand-font {
+    font-family: "Quicksand", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500; /* Set specific weight value */
+    font-style: normal;
 }
