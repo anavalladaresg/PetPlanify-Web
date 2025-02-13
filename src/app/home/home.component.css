@@ -1,4 +1,29 @@
-img {
-    margin-top: 25%;
-    width: 400px;
+body {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    /*instalar Quicksand de google fonts*/
+}
+
+.title1 {
+    text-align: center;
+    margin-top: 100px;
+    font-size: 2rem;
+}
+
+/* Contenedor relativo */
+.cachorro {
+    position: relative;
+    width: 100%;
+}
+
+/* Imagen posicionada dentro del contenedor */
+.cachorro img {
+    position: absolute;
+    top: 200px;
+    width: 450px;
+}
+
+@media screen and (max-width: 768px) {
+    .cachorro img {
+        width: 350px;
+    }
 }
