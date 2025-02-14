@@ -2,9 +2,8 @@ import { Component, ElementRef, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
-  imports: [],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements AfterViewInit {
 
@@ -12,16 +11,20 @@ export class HomeComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
+      entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible'); // Agrega la clase cuando es visible
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 300); // Retraso progresivo para cada tarjeta
+
+          // 🔹 Deja de observar esta tarjeta después de animarla
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.2 });
 
-    const tarjetas = this.el.nativeElement.querySelector('.contenedor');
-    if (tarjetas) {
-      observer.observe(tarjetas);
-    }
+    // Selecciona todas las tarjetas
+    const tarjetas: NodeListOf<Element> = this.el.nativeElement.querySelectorAll('.tarjeta-inner');
+    tarjetas.forEach(tarjeta => observer.observe(tarjeta));
   }
 }
