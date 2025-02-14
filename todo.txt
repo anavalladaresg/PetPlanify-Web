@@ -6,4 +6,4 @@ terjetas volteadas
 
 color de tarjetas diferntes
 
-giro de tarjetas progresivo
+separarlas
