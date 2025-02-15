@@ -3,8 +3,8 @@
   height: 5rem;
   font-size: 2rem;
   font-weight: bold;
-  background-color: var(--sage-green-300);
-  color: var(--sage-green-900);
+  background-color: var(--green-300);
+  color: var(--green-900);
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   margin-right: 20px;
 }
@@ -15,6 +15,11 @@
 }
 
 :host ::ng-deep .p-button:hover {
-  background-color: var(--sage-green-400);
-  color: var(--sage-green-950);
+  background-color: var(--green-400);
+  color: var(--green-950);
+}
+
+:host ::ng-deep .menu-container .p-megamenu {
+  background-color: var(--blue-100);
+  border-color: var(--blue-200);
 }
