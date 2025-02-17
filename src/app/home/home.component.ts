@@ -52,4 +52,15 @@ export class HomeComponent implements AfterViewInit {
     const tarjetas: NodeListOf<Element> = this.el.nativeElement.querySelectorAll('.tarjeta-inner');
     tarjetas.forEach(tarjeta => observer.observe(tarjeta));
   }
+  
+    onSlideEnd(event: any) {
+      if (event.position === 0) {
+        // Redirigir a la página para el lado izquierdo
+        window.location.href = '/pagina-izquierda';
+      } else if (event.position === 100) {
+        // Redirigir a la página para el lado derecho
+        window.location.href = '/pagina-derecha';
+      }
+    }
+  
 }
