@@ -1,22 +1,23 @@
 :host ::ng-deep .p-button {
-  width: 13rem;
-  height: 5rem;
-  font-size: 2rem;
+  width: 9rem;
+  height: 4rem;
+  font-size: 1.5rem;
   font-weight: bold;
   background-color: var(--green-300);
   color: var(--green-900);
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   margin-right: 20px;
+  border-color: var(--green-400);
 }
 
 :host ::ng-deep .p-button .pi {
-  font-size: 2rem;
-  padding-right: 10px;
+  font-size: 1.5rem;
+  padding-right: 7px;
 }
 
 :host ::ng-deep .p-button:hover {
-  background-color: var(--green-400);
-  color: var(--green-950);
+  background-color: var(--green-500);
+  border-color: var(--green-600);
 }
 
 :host ::ng-deep .menu-container .p-megamenu {

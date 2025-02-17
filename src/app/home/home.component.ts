@@ -1,11 +1,36 @@
 import { Component, ElementRef, AfterViewInit } from '@angular/core';
+import { ImageCompareModule} from 'primeng/imagecompare';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  imports: [ImageCompareModule]
 })
 export class HomeComponent implements AfterViewInit {
+
+  hoveredSide: 'left' | 'right' | null = null;
+  selectedSide: 'left' | 'right' | null = null;
+
+  selectImage(side: 'left' | 'right') {
+    this.selectedSide = side;
+
+    setTimeout(() => {
+      if (side === 'left') {
+        window.open('https://ejemplo.com/perro', '_blank');
+      } else {
+        window.open('https://ejemplo.com/gato', '_blank');
+      }
+    }, 1000); // Espera 1s antes de abrir la nueva ventana
+  }
+
+  checkImageCompare(event: any) {
+    if (event.value === 0) {
+      window.open('https://ejemplo.com/perro', '_blank');
+    } else if (event.value === 100) {
+      window.open('https://ejemplo.com/gato', '_blank');
+    }
+  }
 
   constructor(private el: ElementRef) { }
 

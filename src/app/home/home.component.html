@@ -8,38 +8,58 @@
 </head>
 
 <body>
-    <div class="title1">
-        <h1>¡Cuida a tu compañero peludo <br> con PetPlanify!</h1>
+    <div class="contenedor-flex">
+        <div class="textos">
+            
+            <h1>Cuida a tu peludo con PetPlanify</h1>
+            <h2>La plataforma encontrarás todo lo que necesitas para el bienestar, salud y felicidad de tu mascota</h2>
+            
+            <div class="contenedor">
+                <div class="contenedor fade-bottom">
+                    <div class="tarjetas">
+                        <div class="tarjeta-inner color1">
+                            <img class="icono" src="salud.png" alt="Icono de salud" />
+                            <span>Administra su salud</span>
+                        </div>
+                    </div>
 
-        <div class="contenedor fade-bottom">
-            <div class="tarjetas">
-                <div class="tarjeta-inner color1">
-                    <img class="icono" src="salud.png" alt="Icono de salud" />
-                    <span>Cuidado integral</span>
-                </div>
-            </div>
-        
-            <div class="tarjetas">
-                <div class="tarjeta-inner color2">
-                    <img class="icono" src="eventos.png" alt="Icono de eventos" />
-                    <span>Eventos para mascotas</span>
-                </div>
-            </div>
-        
-            <div class="tarjetas">
-                <div class="tarjeta-inner color3">
-                    <img class="icono" src="petfriendly.png" alt="Icono de comida" />
-                    <span>Lugares Pet Friendly</span>
-                </div>
-            </div>
-        </div>        
+                    <div class="tarjetas">
+                        <div class="tarjeta-inner color2">
+                            <img class="icono" src="eventos.png" alt="Icono de eventos" />
+                            <span>Atiende a eventos</span>
+                        </div>
+                    </div>
 
+                    <div class="tarjetas">
+                        <div class="tarjeta-inner color3">
+                            <img class="icono" src="petfriendly.png" alt="Icono de comida" />
+                            <span>Viaja con tus peludos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="image-compare-container">
+            <p-imagecompare class="image-compare shadow-lg rounded-2xl">
+                <ng-template #left>
+                    <img
+                        src="index_cat.png" />
+                </ng-template>
+                <ng-template #right>
+                    <img
+                        src="index_dog.png" />
+                </ng-template>
+            </p-imagecompare>
+        </div>
     </div>
 
+
+<!--
     <div class="cachorro">
         <img src="puppy.png" alt="Golden retriever cachorro animación 3D" />
     </div>
-
+-->
 </body>
 
 </html>
