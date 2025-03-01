@@ -9,6 +9,8 @@ import { ImageCompareModule} from 'primeng/imagecompare';
 })
 export class HomeComponent implements AfterViewInit {
 
+  handlePosition: number = 50;
+
   hoveredSide: 'left' | 'right' | null = null;
   selectedSide: 'left' | 'right' | null = null;
 
@@ -22,14 +24,6 @@ export class HomeComponent implements AfterViewInit {
         window.open('https://ejemplo.com/gato', '_blank');
       }
     }, 1000); // Espera 1s antes de abrir la nueva ventana
-  }
-
-  checkImageCompare(event: any) {
-    if (event.value === 0) {
-      window.open('https://ejemplo.com/perro', '_blank');
-    } else if (event.value === 100) {
-      window.open('https://ejemplo.com/gato', '_blank');
-    }
   }
 
   constructor(private el: ElementRef) { }
@@ -54,12 +48,11 @@ export class HomeComponent implements AfterViewInit {
   }
   
     onSlideEnd(event: any) {
-      if (event.position === 0) {
-        // Redirigir a la página para el lado izquierdo
-        window.location.href = '/pagina-izquierda';
-      } else if (event.position === 100) {
-        // Redirigir a la página para el lado derecho
-        window.location.href = '/pagina-derecha';
+      const position = event.value;
+      if (position === 0) {
+        window.open('https://ejemplo.com/perro', '_blank');
+      } else if (position === 100) {
+        window.open('https://ejemplo.com/gato', '_blank');
       }
     }
   

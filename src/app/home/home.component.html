@@ -40,18 +40,15 @@
             </div>
         </div>
 
-        <div class="image-compare-container">
-            <p class="slide-instruction">Desliza hacia el lado del animal que tienes</p>
-            <p-imagecompare #imageCompare class="image-compare shadow-lg rounded-2xl" (onSlideEnd)="onSlideEnd($event)">
-                <ng-template #left>
-                    <img src="index_cat.png" />
-                </ng-template>
-                <ng-template #right>
-                    <img src="index_dog.png" />
-                </ng-template>
-            </p-imagecompare>
-        </div>
-        
+        <p-imagecompare #imageCompare class="image-compare shadow-lg rounded-2xl" 
+        (onSlideEnd)="onSlideEnd($event)">
+<ng-template #left>
+ <img src="index_cat.png" />
+</ng-template>
+<ng-template #right>
+ <img src="index_dog.png" />
+</ng-template>
+</p-imagecompare>
     </div>
 </body>
 
