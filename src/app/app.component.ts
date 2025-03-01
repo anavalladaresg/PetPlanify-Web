@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { HomeComponent } from './features/home/pages/home.component';
+import { HomeComponent } from './features/home/pages/home/home.component';
 
 @Component({
   selector: 'app-root',

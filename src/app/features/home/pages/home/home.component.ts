@@ -1,7 +1,7 @@
 import { Component, ElementRef, AfterViewInit } from '@angular/core';
-import { ImageCompareComponent } from '../components/image-compare/image-compare.component';
-import { CardComponent } from '../components/card/card.component';
-import { MenuComponent } from '../components/menu/menu.component';
+import { ImageCompareComponent } from '../../components/image-compare/image-compare.component';
+import { CardComponent } from '../../components/card/card.component';
+import { MenuComponent } from '../../components/menu/menu.component';
 
 @Component({
   selector: 'app-home',
