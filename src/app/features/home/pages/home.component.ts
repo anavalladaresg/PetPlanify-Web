@@ -1,11 +1,13 @@
 import { Component, ElementRef, AfterViewInit } from '@angular/core';
-import { ImageCompareModule} from 'primeng/imagecompare';
+import { ImageCompareComponent } from '../components/image-compare/image-compare.component';
+import { CardComponent } from '../components/card/card.component';
+import { MenuComponent } from '../components/menu/menu.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [ImageCompareModule]
+  imports: [ImageCompareComponent, CardComponent, MenuComponent]
 })
 export class HomeComponent implements AfterViewInit {
 
@@ -13,18 +15,6 @@ export class HomeComponent implements AfterViewInit {
 
   hoveredSide: 'left' | 'right' | null = null;
   selectedSide: 'left' | 'right' | null = null;
-
-  selectImage(side: 'left' | 'right') {
-    this.selectedSide = side;
-
-    setTimeout(() => {
-      if (side === 'left') {
-        window.open('https://ejemplo.com/perro', '_blank');
-      } else {
-        window.open('https://ejemplo.com/gato', '_blank');
-      }
-    }, 1000); // Espera 1s antes de abrir la nueva ventana
-  }
 
   constructor(private el: ElementRef) { }
 
@@ -46,14 +36,4 @@ export class HomeComponent implements AfterViewInit {
     const tarjetas: NodeListOf<Element> = this.el.nativeElement.querySelectorAll('.tarjeta-inner');
     tarjetas.forEach(tarjeta => observer.observe(tarjeta));
   }
-  
-    onSlideEnd(event: any) {
-      const position = event.value;
-      if (position === 0) {
-        window.open('https://ejemplo.com/perro', '_blank');
-      } else if (position === 100) {
-        window.open('https://ejemplo.com/gato', '_blank');
-      }
-    }
-  
 }
