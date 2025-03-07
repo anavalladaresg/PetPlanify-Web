@@ -1,16 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/primeicons/primeicons.css";
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
-
-/* Asegurarse de que los iconos tengan el estilo correcto */
-.pi {
-    font-family: 'primeicons';
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    display: inline-block;
-}
 
 :root {
     --green-50: #f2f7f2;

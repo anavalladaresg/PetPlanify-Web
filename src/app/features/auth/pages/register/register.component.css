@@ -171,8 +171,9 @@
 
 .social-auth-divider {
     text-align: center;
-    margin: 2rem 0;
+    margin: 2.5rem 0;
     position: relative;
+    height: 20px;
 }
 
 .social-auth-divider::before,
@@ -180,7 +181,8 @@
     content: '';
     position: absolute;
     top: 50%;
-    width: 45%;
+    margin-top: -25px;
+    width: 42%;
     height: 1px;
     background-color: var(--green-300);
 }
@@ -195,9 +197,10 @@
 
 .social-auth-divider span {
     background-color: white;
-    padding: 0 1rem;
     color: var(--green-600);
     font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    position: relative;
+    background: linear-gradient(135deg, var(--blue-50) 0%, var(--green-50) 100%);
 }
 
 .social-auth-buttons {
