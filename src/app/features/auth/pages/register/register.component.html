@@ -1,0 +1,100 @@
+<div class="register-container">
+    <p-toast></p-toast>
+    <div class="logo-container" [routerLink]="['/']">
+        <img src="/logo.png" alt="PetPlanify Logo" class="logo-image">
+    </div>
+    
+    <div class="auth-content">
+        <h1 class="auth-title">¡Bienvenido a PetPlanify!</h1>
+        <p class="auth-subtitle">Registra tu cuenta y comienza a gestionar el cuidado de tus mascotas de forma fácil y organizada</p>
+        
+        <p-card styleClass="register-card">
+            <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
+                <div class="form-field">
+                    <p-floatLabel variant="on">
+                        <input pInputText id="nombre" [(ngModel)]="formData.nombre" name="nombre" required autocomplete="off" />
+                        <label for="nombre">Nombre del propietario</label>
+                    </p-floatLabel>
+                </div>
+
+                <div class="form-field">
+                    <p-floatLabel variant="on">
+                        <input pInputText id="email" [(ngModel)]="formData.email" name="email" type="email" required autocomplete="off" />
+                        <label for="email">Email</label>
+                    </p-floatLabel>
+                </div>
+
+                <div class="form-field">
+                    <p-floatLabel variant="on">
+                        <p-calendar [(ngModel)]="formData.fechaNacimiento" [showIcon]="true" inputId="fechaNacimiento" name="fechaNacimiento" dateFormat="dd/mm/yy" [readonlyInput]="true"></p-calendar>
+                        <label for="fechaNacimiento">Fecha de nacimiento</label>
+                    </p-floatLabel>
+                </div>
+
+                <div class="form-field">
+                    <p-floatLabel variant="on">
+                        <p-password id="password" [(ngModel)]="formData.password" name="password" 
+                            [toggleMask]="true" [feedback]="true" required>
+                        </p-password>
+                        <label for="password">Contraseña</label>
+                    </p-floatLabel>
+                </div>
+
+                <div class="form-field">
+                    <p-floatLabel variant="on">
+                        <p-password id="confirmPassword" [(ngModel)]="formData.confirmPassword" 
+                            name="confirmPassword" [toggleMask]="true" feedback="false" required>
+                        </p-password>
+                        <label for="confirmPassword">Confirmar Contraseña</label>
+                    </p-floatLabel>
+                </div>
+
+                <div class="form-actions">
+                    <p-button type="submit" 
+                             label="Registrarse" 
+                             styleClass="p-button-success"
+                             [loading]="loading"
+                             [disabled]="loading">
+                    </p-button>
+                </div>
+
+                <div class="social-auth-divider">
+                    <span>O regístrate con</span>
+                </div>
+
+                <div class="social-auth-buttons">
+                    <p-button 
+                        type="button"
+                        icon="pi pi-google" 
+                        (onClick)="signInWithSocialProvider('google')"
+                        [loading]="loading"
+                        [disabled]="loading"
+                        styleClass="p-button-rounded p-button-secondary google-btn">
+                    </p-button>
+
+                    <p-button 
+                        type="button"
+                        icon="pi pi-facebook" 
+                        (onClick)="signInWithSocialProvider('facebook')"
+                        [loading]="loading"
+                        [disabled]="loading"
+                        styleClass="p-button-rounded p-button-info facebook-btn">
+                    </p-button>
+
+                    <p-button 
+                        type="button"
+                        icon="pi pi-github" 
+                        (onClick)="signInWithSocialProvider('github')"
+                        [loading]="loading"
+                        [disabled]="loading"
+                        styleClass="p-button-rounded p-button-help github-btn">
+                    </p-button>
+                </div>
+
+                <div class="auth-footer">
+                    <p>¿Ya tienes una cuenta? <a [routerLink]="['/login']">Inicia sesión</a></p>
+                </div>
+            </form>
+        </p-card>
+    </div>
+</div>

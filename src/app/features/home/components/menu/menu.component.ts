@@ -3,6 +3,7 @@ import { MegaMenu } from 'primeng/megamenu';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-menu',
@@ -13,4 +14,9 @@ import { AvatarModule } from 'primeng/avatar';
 })
 
 export class MenuComponent {
+    constructor(private router: Router) {}
+
+    navigateToRegister() {
+        this.router.navigate(['/registro']);
+    }
 }

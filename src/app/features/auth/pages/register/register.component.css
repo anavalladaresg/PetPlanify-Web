@@ -1,0 +1,243 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--blue-50) 0%, var(--green-50) 100%);
+}
+
+.logo-container {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+    transform: scale(1.05);
+}
+
+.logo-image {
+    width: 150px;
+    height: auto;
+}
+
+.auth-content {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.auth-title {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-size: 2.5rem;
+    color: var(--green-800);
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.auth-subtitle {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-size: 1.2rem;
+    color: var(--green-600);
+    margin-bottom: 2rem;
+}
+
+:host ::ng-deep .register-card {
+    width: 100%;
+    background: linear-gradient(135deg, var(--blue-50) 0%, var(--green-50) 100%);
+    border-radius: 1rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.register-form {
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-field {
+    margin-bottom: 2rem;
+}
+
+:host ::ng-deep .p-float-label {
+    display: block;
+}
+
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-password input {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid var(--green-300);
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    color: var(--green-900) !important;
+}
+
+:host ::ng-deep .p-inputtext:hover,
+:host ::ng-deep .p-inputtext:hover,
+:host ::ng-deep .p-password input:hover {
+    background-color: rgba(255, 255, 255, 1) !important;
+}
+
+:host ::ng-deep .p-password {
+    width: 100%;
+}
+
+:host ::ng-deep .p-button {
+    width: 100%;
+    background-color: var(--green-500);
+    border-color: var(--green-600);
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 1rem;
+}
+
+:host ::ng-deep .p-button:hover {
+    background-color: var(--green-600);
+    border-color: var(--green-700);
+}
+
+.form-actions {
+    margin-top: 2rem;
+}
+
+:host ::ng-deep .p-float-label label,
+:host ::ng-deep label.font-bold {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    color: var(--green-800);
+    font-size: 1rem;
+    background: transparent !important;
+}
+
+:host ::ng-deep .p-float-label input:focus ~ label,
+:host ::ng-deep .p-float-label input.p-filled ~ label,
+:host ::ng-deep .p-float-label .p-inputwrapper-focus ~ label,
+:host ::ng-deep .p-float-label .p-inputwrapper-filled ~ label {
+    color: var(--green-600);
+}
+
+:host ::ng-deep .p-float-label > label {
+    background: transparent !important;
+}
+
+:host ::ng-deep .p-float-label label::after {
+    background: transparent !important;
+}
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 1px var(--green-200);
+}
+
+:host ::ng-deep .p-password-panel {
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--green-200);
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+}
+
+:host ::ng-deep .p-password-panel .p-password-meter {
+    background-color: var(--green-100);
+}
+
+:host ::ng-deep .p-password-panel .p-password-info {
+    color: var(--green-800);
+}
+
+.auth-footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    color: var(--green-800);
+}
+
+.auth-footer a {
+    color: var(--green-600);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.auth-footer a:hover {
+    color: var(--green-800);
+}
+
+.social-auth-divider {
+    text-align: center;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.social-auth-divider::before,
+.social-auth-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background-color: var(--green-300);
+}
+
+.social-auth-divider::before {
+    left: 0;
+}
+
+.social-auth-divider::after {
+    right: 0;
+}
+
+.social-auth-divider span {
+    background-color: white;
+    padding: 0 1rem;
+    color: var(--green-600);
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+}
+
+.social-auth-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+:host ::ng-deep .google-btn {
+    background-color: #DB4437;
+    border-color: #DB4437;
+}
+
+:host ::ng-deep .google-btn:hover {
+    background-color: #C53929;
+    border-color: #C53929;
+}
+
+:host ::ng-deep .facebook-btn {
+    background-color: #4267B2;
+    border-color: #4267B2;
+}
+
+:host ::ng-deep .facebook-btn:hover {
+    background-color: #365899;
+    border-color: #365899;
+}
+
+:host ::ng-deep .github-btn {
+    background-color: #333;
+    border-color: #333;
+}
+
+:host ::ng-deep .github-btn:hover {
+    background-color: #24292E;
+    border-color: #24292E;
+}
+
+:host ::ng-deep .social-auth-buttons .p-button {
+    width: 3rem;
+    height: 3rem;
+}
