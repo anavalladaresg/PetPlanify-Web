@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class MenuComponent {
     constructor(private router: Router) {}
 
-    navigateToRegister() {
-        this.router.navigate(['/registro']);
+    navigateToLogin() {
+        this.router.navigate(['/login']);
     }
 }

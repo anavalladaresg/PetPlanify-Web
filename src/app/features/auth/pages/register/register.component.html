@@ -26,7 +26,17 @@
 
                 <div class="form-field">
                     <p-floatLabel variant="on">
-                        <p-calendar [(ngModel)]="formData.fechaNacimiento" [showIcon]="true" inputId="fechaNacimiento" name="fechaNacimiento" dateFormat="dd/mm/yy" [readonlyInput]="true"></p-calendar>
+                        <p-datepicker [(ngModel)]="formData.fechaNacimiento" 
+                                    [showIcon]="true" 
+                                    inputId="fechaNacimiento" 
+                                    name="fechaNacimiento" 
+                                    dateFormat="dd/mm/yy" 
+                                    [readonlyInput]="true"
+                                    [appendTo]="'body'"
+                                    [baseZIndex]="1000"
+                                    [showTransitionOptions]="'0ms'"
+                                    [hideTransitionOptions]="'0ms'">
+                        </p-datepicker>
                         <label for="fechaNacimiento">Fecha de nacimiento</label>
                     </p-floatLabel>
                 </div>

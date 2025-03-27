@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     firebase: {
-      apiKey: "AIzaSyAy_bcLJ1ckPjVVqzOMJ2BXktPjFS7Ltk",
+      apiKey: "AIzaSyAy_bcLJ1ckPjVVqzOMJ2BXktNMkFS7Ltk",
       authDomain: "petplanify.firebaseapp.com",
       projectId: "petplanify",
       storageBucket: "petplanify.firebasestorage.app",

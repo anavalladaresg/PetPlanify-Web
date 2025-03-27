@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -20,7 +20,7 @@ import { AuthService } from '../../services/auth.service';
     CommonModule,
     FormsModule,
     InputTextModule,
-    CalendarModule,
+    DatePickerModule,
     PasswordModule,
     ButtonModule,
     CardModule,
@@ -101,6 +101,8 @@ export class RegisterComponent {
       setTimeout(() => {
         this.router.navigate(['/']);
       }, 2000);
+
+      this.router.navigate(['/welcome']);
 
     } catch (error: any) {
       console.error('Error en el registro:', error);

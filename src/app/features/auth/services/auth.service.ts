@@ -10,6 +10,7 @@ import {
   signInWithPopup
 } from '@angular/fire/auth';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 export class AuthService {
   constructor(
     private auth: Auth,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private router: Router
   ) {}
 
   private async saveUserData(user: any, providerData?: any) {
@@ -80,9 +82,10 @@ export class AuthService {
         throw new Error('Error al guardar los datos del usuario. Por favor, intenta nuevamente.');
       }
 
+      await this.router.navigate(['/welcome']);
       return userCredential;
     } catch (error: any) {
-      console.error('Error en registerUser:', error);
+      await this.router.navigate(['/welcome']);
       
       if (error.code === 'auth/email-already-in-use') {
         throw new Error('Este correo electrónico ya está registrado');
@@ -105,8 +108,10 @@ export class AuthService {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
       await this.saveUserData(result.user);
+      await this.router.navigate(['/welcome']);
       return result;
     } catch (error: any) {
+      await this.router.navigate(['/welcome']);
       console.error('Error al iniciar sesión con Google:', error);
       throw new Error('Error al iniciar sesión con Google');
     }
@@ -117,8 +122,10 @@ export class AuthService {
       const provider = new FacebookAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
       await this.saveUserData(result.user);
+      await this.router.navigate(['/welcome']);
       return result;
     } catch (error: any) {
+      await this.router.navigate(['/welcome']);
       console.error('Error al iniciar sesión con Facebook:', error);
       throw new Error('Error al iniciar sesión con Facebook');
     }
@@ -129,8 +136,10 @@ export class AuthService {
       const provider = new GithubAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
       await this.saveUserData(result.user);
+      await this.router.navigate(['/welcome']);
       return result;
     } catch (error: any) {
+      await this.router.navigate(['/welcome']);
       console.error('Error al iniciar sesión con Github:', error);
       throw new Error('Error al iniciar sesión con Github');
     }

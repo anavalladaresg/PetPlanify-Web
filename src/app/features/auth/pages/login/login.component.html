@@ -25,6 +25,10 @@
                     </p-floatLabel>
                 </div>
 
+                <div *ngIf="errorMessage" class="error-message">
+                    {{ errorMessage }}
+                </div>
+
                 <div class="form-actions">
                     <p-button type="submit" label="Iniciar Sesión" styleClass="p-button-success"></p-button>
                 </div>

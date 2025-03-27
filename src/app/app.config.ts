@@ -16,12 +16,22 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     providePrimeNG({
       theme: {
-        preset:Aura
-      }
+        preset: Aura
+      },
+      ripple: true
     }),
     provideAnimations(),
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
+    provideFirebaseApp(() => {
+      const app = initializeApp(environment.firebase);
+      const auth = getAuth(app);
+      auth.settings.appVerificationDisabledForTesting = true;
+      return app;
+    }),
+    provideAuth(() => {
+      const auth = getAuth();
+      auth.settings.appVerificationDisabledForTesting = true;
+      return auth;
+    }),
     provideFirestore(() => getFirestore())
   ]
 };

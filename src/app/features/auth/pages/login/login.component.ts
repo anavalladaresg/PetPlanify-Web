@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ import { RouterModule } from '@angular/router';
     CardModule,
     FloatLabelModule,
     RouterModule
-  ],
+    ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -30,8 +31,21 @@ export class LoginComponent {
     password: ''
   };
 
+  errorMessage: string = '';
+
+  constructor(private router: Router) {}
+
   onSubmit() {
-    console.log('Datos del login:', this.formData);
-    // Aquí irá la lógica de login
-  }
+    if (this.formData.email === 'test@example.com') {
+      this.errorMessage = 'Este email ya está registrado.';
+      return;
+    }
+    
+    console.log('Navegando a /welcome');
+    this.router.navigate(['/welcome']).then(success => {
+      if (!success) {
+        console.error('Error en la navegación');
+      }
+    });
+  }  
 }

@@ -149,3 +149,9 @@
 .auth-footer a:hover {
     color: var(--green-800);
 }
+
+.error-message {
+    color: red;
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-size: 1rem;
+}
