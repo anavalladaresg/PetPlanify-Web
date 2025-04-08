@@ -133,15 +133,39 @@ p {
     margin: 0 auto;
 }
 
-.content h1 {
-    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-    font-size: 2.5rem;
-    color: var(--green-800);
-    margin-bottom: 1rem;
+.welcome-content,
+.pets-content,
+.events-content,
+.health-content,
+.pet-friendly-content,
+.settings-content {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
 }
 
-.content p {
+.welcome-content h1,
+.pets-content h2,
+.events-content h2,
+.health-content h2,
+.pet-friendly-content h2,
+.settings-content h2 {
+    color: var(--green-800);
+    margin-bottom: 1rem;
     font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-    font-size: 1.2rem;
+}
+
+.welcome-content p {
     color: var(--green-600);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Estilo para el ítem activo del menú */
+.menu-item.active {
+    background-color: var(--green-50);
+    color: var(--green-800);
+    font-weight: 600;
 }

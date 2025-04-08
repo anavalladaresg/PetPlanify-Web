@@ -10,7 +10,13 @@ import { PrimeIcons } from 'primeng/api';
   imports: [CommonModule]
 })
 export class WelcomeComponent {
+  currentView: string = 'welcome';
+
   constructor() {
     console.log('WelcomeComponent cargado');
+  }
+
+  navigateTo(view: string) {
+    this.currentView = view;
   }
 }
