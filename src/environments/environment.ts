@@ -1,5 +1,6 @@
 export const environment = {
     production: false,
+    apiUrl: 'http://localhost:3000/api',
     firebase: {
       apiKey: "AIzaSyAy_bcLJ1ckPjVVqzOMJ2BXktNMkFS7Ltk",
       authDomain: "petplanify.firebaseapp.com",

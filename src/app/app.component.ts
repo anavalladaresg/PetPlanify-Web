@@ -8,12 +8,14 @@ import { CommonModule } from '@angular/common';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, CommonModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  template: `
+    <router-outlet></router-outlet>
+  `,
+  styles: [],
   providers: [MessageService]
 })
 export class AppComponent {
-  title = 'petplanify_web';
+  title = 'PetPlanify';
 
   constructor(private auth: Auth) {}
 }
