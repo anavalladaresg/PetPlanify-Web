@@ -1,39 +1,40 @@
-import { Component, ElementRef, AfterViewInit } from '@angular/core';
-import { ImageCompareComponent } from '../../components/image-compare/image-compare.component';
-import { CardComponent } from '../../components/card/card.component';
-import { MenuComponent } from '../../components/menu/menu.component';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  imports: [ImageCompareComponent, CardComponent, MenuComponent]
+  standalone: false,
+  template: `
+    <div class="home-container">
+      <h1>Bienvenido a PetPlanify</h1>
+      <p>Tu plataforma para gestionar la vida de tus mascotas</p>
+      <div class="buttons">
+        <button routerLink="/auth/login">Iniciar Sesión</button>
+        <button routerLink="/auth/register">Registrarse</button>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .home-container {
+      text-align: center;
+      padding: 2rem;
+    }
+    .buttons {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  `]
 })
-export class HomeComponent implements AfterViewInit {
-
-  handlePosition: number = 50;
-
-  hoveredSide: 'left' | 'right' | null = null;
-  selectedSide: 'left' | 'right' | null = null;
-
-  constructor(private el: ElementRef) { }
-
-  ngAfterViewInit() {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, index * 300); // Retraso progresivo para cada tarjeta
-
-          // 🔹 Deja de observar esta tarjeta después de animarla
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-
-    // Selecciona todas las tarjetas
-    const tarjetas: NodeListOf<Element> = this.el.nativeElement.querySelectorAll('.tarjeta-inner');
-    tarjetas.forEach(tarjeta => observer.observe(tarjeta));
-  }
-}
+export class HomeComponent { }
