@@ -1,0 +1,41 @@
+:host ::ng-deep .p-button {
+  width: 9rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: var(--green-300);
+  color: var(--green-900);
+  font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+  margin-right: 20px;
+  border-color: var(--green-400);
+}
+
+:host ::ng-deep .p-button .pi {
+  font-size: 1.5rem;
+  padding-right: 7px;
+}
+
+:host ::ng-deep .p-button:hover {
+  background-color: var(--green-500);
+  border-color: var(--green-600);
+}
+
+:host ::ng-deep .menu-container .p-megamenu {
+  background-color: var(--blue-100);
+  border-color: var(--blue-200);
+  border-radius: 8px; /* antes 18px, menos redondeado */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+:host ::ng-deep .menu-container .p-megamenu-root-list {
+  border-radius: 8px;
+}
+
+:host ::ng-deep .menu-container .p-megamenu-start {
+  border-radius: 8px 0 0 8px;
+}
+
+:host ::ng-deep .menu-container .p-megamenu-end {
+  border-radius: 0 8px 8px 0;
+}
