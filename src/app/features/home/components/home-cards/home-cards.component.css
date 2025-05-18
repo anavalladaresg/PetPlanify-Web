@@ -1,0 +1,94 @@
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 40px;
+    width: 100%;
+    height: auto;
+    padding: 20px 0;
+}
+
+.tarjetas {
+    position: relative;
+    width: 170px;
+    height: 210px;
+    perspective: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.tarjeta-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    background: var(--surface-card, var(--blue-50));
+    box-shadow: 0 10px 20px var(--shadow-1, rgba(0, 0, 0, 0.2));
+    transform-style: preserve-3d;
+    opacity: 0;
+    transform: rotateX(90deg);
+    backface-visibility: hidden;
+    will-change: transform, opacity, box-shadow;
+    transition: 
+        transform 0.8s ease, 
+        opacity 0.8s ease, 
+        box-shadow 0.4s ease;
+}
+
+.tarjeta-inner:hover {
+    transform: rotateX(0deg) translateY(-18px) scale(1.06) rotateZ(1deg);
+    box-shadow: 0 25px 55px var(--shadow-2, rgba(0, 0, 0, 0.3)), 
+                0 10px 20px var(--shadow-1, rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.color1 {
+    background: var(--blue-600);
+}
+
+.color2 {
+    background: var(--blue-700);
+}
+
+.color3 {
+    background: var(--blue-800);
+}
+
+.tarjeta-inner.visible {
+    opacity: 1;
+    transform: rotateX(0deg);
+}
+
+.tarjeta-inner .icono {
+    width: 100%;
+    height: auto;
+}
+
+.tarjeta-inner span {
+    color: var(--text-on-primary, #fff);
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: -80px;
+}
+
+/* Transición suave solo para las cards de este componente */
+:host ::ng-deep .p-card {
+    transition: box-shadow 1.5s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 1.5s cubic-bezier(0.25, 1, 0.5, 1),
+                background 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: box-shadow, transform, background;
+}
+
+:host ::ng-deep .p-card:hover {
+    box-shadow: 0 16px 40px var(--shadow-2, rgba(52, 103, 56, 0.20)), 0 2px 8px var(--shadow-3, rgba(52, 103, 56, 0.12));
+    transform: translateY(-6px) scale(1.04);
+    background: linear-gradient(135deg, var(--blue-100) 0%, var(--green-100) 100%);
+}

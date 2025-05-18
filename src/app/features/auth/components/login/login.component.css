@@ -1,0 +1,279 @@
+/* Fondo difuminado con la imagen */
+body {
+    min-height: 100vh;
+    width: 100vw;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.login-bg {
+    min-height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: -2;
+    background: url('/assets/background_auth.png') center center/cover no-repeat;
+    filter: blur(6px) brightness(0.7);
+    transition: filter 0.5s;
+}
+
+.login-bg::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        linear-gradient(to left, #fff 0, #fff 0.3cm, rgba(255,255,255,0) 0.6cm, transparent 100%);
+}
+
+.login-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 0 0 10vw;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-content {
+    width: 820px;
+    max-width: 99vw;
+    background: rgba(255,255,255,0.55);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 2.5rem 2.5rem 2rem 8rem;
+    margin: 2rem 2rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.logo-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-bottom: 0.05rem;
+    width: 100%;
+}
+
+.logo-content img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    /* Verde aún más oscuro, inspirado en --green-800/900 */
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18)) brightness(0.5) contrast(1.05) sepia(0.7) hue-rotate(60deg) saturate(2.8);
+    opacity: 0.98;
+}
+
+.logo-content .brand {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-size: 2rem;
+    color: #6b8e5e;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.1;
+}
+
+.auth-title, .auth-subtitle, .login-form {
+    align-items: flex-start !important;
+    text-align: left !important;
+    width: 100%;
+}
+
+.auth-title {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-size: 3.1rem;
+    color: #1a2b1a;
+    font-weight: bold;
+    margin-bottom: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    justify-content: flex-start;
+    letter-spacing: -1px;
+}
+
+.auth-title .pi {
+    color: #1a2b1a;
+    font-size: 2.7rem;
+    margin-right: 0.2rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
+}
+
+.auth-subtitle {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-size: 1.35rem;
+    color: #222;
+    margin-bottom: 1.1rem;
+    text-align: left;
+    line-height: 1.4;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.form-field {
+    margin-bottom: 0;
+}
+
+:host ::ng-deep .p-float-label {
+    display: block;
+}
+
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-password input {
+    width: 100%;
+    background-color: var(--green-50) !important;
+    border: 1.5px solid var(--green-200);
+    border-radius: 12px;
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-size: 1.1rem;
+    color: #6b8e5e;
+    padding: 0.9rem 1.2rem 0.9rem 2.7rem;
+    box-shadow: none;
+    transition: border 0.2s;
+}
+
+:host ::ng-deep .p-inputtext:focus,
+:host ::ng-deep .p-password input:focus {
+    border: 1.5px solid var(--green-400);
+    outline: none;
+}
+
+:host ::ng-deep .p-input-icon-left > .pi {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--green-400);
+    font-size: 1.3rem;
+}
+
+:host ::ng-deep .p-password {
+    width: 100%;
+}
+
+:host ::ng-deep .p-button {
+    width: 100%;
+    background-color: var(--green-600);
+    border-color: var(--green-600);
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    font-size: 1.15rem;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(107,142,94,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+    color: #fff;
+}
+
+:host ::ng-deep .p-button:hover {
+    background-color: var(--green-700);
+    border-color: var(--green-700);
+    box-shadow: 0 4px 16px rgba(107,142,94,0.13);
+    color: lightgray;
+}
+
+:host ::ng-deep .p-button.register-btn {
+    background-color: var(--orange-500);
+    border-color: var(--orange-600);
+    color: white;
+    font-weight: bold;
+    transition: background 0.2s, border 0.2s;
+}
+
+:host ::ng-deep .p-button.register-btn:hover {
+    background-color: var(--orange-600);
+    border-color: var(--orange-700);
+}
+
+.auth-footer {
+    margin-top: 1.2rem;
+    text-align: left;
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+    color: var(--green-800);
+    font-size: 1rem;
+}
+
+.auth-footer a {
+    color: var(--orange-700);
+    background: none;
+    text-decoration: underline;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.auth-footer a:hover {
+    color: var(--orange-900);
+}
+
+.paw-svg {
+    display: flex;
+    align-items: center;
+    margin-left: 0.7rem;
+}
+
+.paw-svg svg {
+    display: inline-block;
+    vertical-align: middle;
+    stroke: #1a2b1a;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
+}
+
+.wide-input {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+:host ::ng-deep .wide-input .p-inputtext,
+:host ::ng-deep .wide-input .p-password input {
+    width: 100%;
+    min-width: 320px;
+    max-width: 600px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .auth-content {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        width: 98vw;
+    }
+    .login-container {
+        padding: 0;
+        justify-content: center;
+    }
+    .wide-input {
+        max-width: 98vw;
+    }
+    :host ::ng-deep .wide-input .p-inputtext,
+    :host ::ng-deep .wide-input .p-password input {
+        min-width: 0;
+        max-width: 98vw;
+    }
+}
+
+@media (max-width: 900px) {
+    .auth-content {
+        width: 98vw;
+        align-items: center;
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    }
+    .logo-content {
+        justify-content: center;
+        margin-bottom: 1.2rem;
+    }
+}

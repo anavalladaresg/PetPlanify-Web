@@ -1,1 +1,96 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+:root {
+    --green-50: #f2f7f2;
+    --green-100: #e0edde;
+    --green-200: #c2dac0;
+    --green-300: #8fbc8f;
+    --green-400: #689f6a;
+    --green-500: #47824b;
+    --green-600: #346738;
+    --green-700: #2a522f;
+    --green-800: #234226;
+    --green-900: #1d3720;
+    --green-950: #101e13;
+
+    --blue-50: #f5f8fa;
+    --blue-100: #ebf0f3;
+    --blue-200: #d3dfe4;
+    --blue-300: #aec6cf;
+    --blue-400: #80a6b3;
+    --blue-500: #5e8a99;
+    --blue-600: #4a707f;
+    --blue-700: #3d5a67;
+    --blue-800: #354d57;
+    --blue-900: #30414a;
+    --blue-950: #202b31;
+
+    --orange-50: #fff8f2;
+    --orange-100: #ffe3c2;
+    --orange-200: #ffd1a3;
+    --orange-300: #ffb870;
+    --orange-400: #ffa040;
+    --orange-500: #ff8800;
+    --orange-600: #e67600;
+    --orange-700: #b35a00;
+    --orange-800: #8a4400;
+    --orange-900: #6b3500;
+    --orange-950: #3d1c00;
+
+    --orange-accent: #ffb347; /* Naranja pastel aesthetic */
+
+    --green-accent: #4caf50; /* Un verde más armonioso */
+
+    background-color: white;
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+}
+
+/* Aplicar Quicksand a todos los componentes de PrimeNG */
+:root .p-component {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif !important;
+}
+
+:root .p-component * {
+    font-family: inherit;
+}
+
+/* Estilos específicos para inputs y botones */
+.p-inputtext,
+.p-password input,
+.p-calendar input,
+.p-button,
+.p-float-label label {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif !important;
+}
+
+/* Estilos para los paneles y diálogos */
+.p-dialog,
+.p-panel,
+.p-card,
+.p-datepicker,
+.p-password-panel {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif !important;
+}
+
+/* Asegurar que los textos dentro de los componentes también usen Quicksand */
+.p-component-overlay,
+.p-datepicker-header,
+.p-calendar-w-btn,
+.p-password-meter,
+.p-password-info {
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif !important;
+}
+
+/* Personaliza el color del borde y label en focus/fill para PrimeNG float label */
+.p-float-label input:focus ~ label,
+.p-float-label input.p-filled ~ label,
+.p-float-label .p-inputwrapper-focus ~ label,
+.p-float-label .p-inputwrapper-filled ~ label {
+    color: var(--green-600) !important;
+}
+.p-inputtext:enabled:focus,
+.p-float-label input:focus {
+    border-color: var(--green-600) !important;
+    box-shadow: 0 0 0 1px var(--green-100);
+}
