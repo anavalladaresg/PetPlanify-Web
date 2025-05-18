@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "petplanify_web": {
+    "petplanify": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/petplanify_web",
+            "outputPath": "dist/petplanify",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -21,16 +21,18 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/assets",
+              "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/primeicons/primeicons.css"
+              "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "src/server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -60,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "petplanify_web:build:production"
+              "buildTarget": "petplanify:build:production"
             },
             "development": {
-              "buildTarget": "petplanify_web:build:development"
+              "buildTarget": "petplanify:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,14 +82,11 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/assets",
+              "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/primeicons/primeicons.css"
+              "src/styles.css"
             ],
             "scripts": []
           }
