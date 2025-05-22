@@ -1,65 +1,132 @@
-.register-container {
+.login-bg {
+    min-height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: -2;
+    background: url('/assets/background_auth.png') center center/cover no-repeat;
+    filter: blur(6px) brightness(0.7);
+    transition: filter 0.5s;
+}
+
+.login-bg::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        linear-gradient(to left, #fff 0, #fff 0.3cm, rgba(255,255,255,0) 0.6cm, transparent 100%);
+}
+
+.login-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
-    padding: 2rem;
-    background: linear-gradient(135deg, var(--blue-50) 0%, var(--green-50) 100%);
-}
-
-.logo-container {
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.logo-container:hover {
-    transform: scale(1.05);
-}
-
-.logo-image {
-    width: 150px;
-    height: auto;
+    padding: 0 0 0 10vw;
+    position: relative;
+    z-index: 1;
 }
 
 .auth-content {
+    width: 820px;
+    max-width: 99vw;
+    background: rgba(255,255,255,0.55);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 2.5rem 2.5rem 2rem 8rem;
+    margin: 2rem 2rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.logo-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-bottom: 0.05rem;
     width: 100%;
-    max-width: 800px;
-    text-align: center;
+}
+
+.logo-content img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18)) brightness(0.5) contrast(1.05) sepia(0.7) hue-rotate(60deg) saturate(2.8);
+    opacity: 0.98;
+}
+
+.auth-title, .auth-subtitle, .login-form {
+    align-items: flex-start !important;
+    text-align: left !important;
+    width: 100%;
 }
 
 .auth-title {
     font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-    font-size: 2.5rem;
-    color: var(--green-800);
-    margin-bottom: 1rem;
+    font-size: 3.1rem;
+    color: #1a2b1a;
     font-weight: bold;
+    margin-bottom: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    justify-content: flex-start;
+    letter-spacing: -1px;
+}
+
+.auth-title .pi {
+    color: #1a2b1a;
+    font-size: 2.7rem;
+    margin-right: 0.2rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
 }
 
 .auth-subtitle {
     font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-    font-size: 1.2rem;
-    color: var(--green-600);
-    margin-bottom: 2rem;
+    font-size: 1.35rem;
+    color: #222;
+    margin-bottom: 1.1rem;
+    text-align: left;
+    line-height: 1.4;
 }
 
-:host ::ng-deep .register-card {
-    width: 100%;
-    background: linear-gradient(135deg, var(--blue-50) 0%, var(--green-50) 100%);
-    border-radius: 1rem;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-.register-form {
-    padding: 2rem;
-    max-width: 600px;
-    margin: 0 auto;
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
 }
 
 .form-field {
-    margin-bottom: 2rem;
+    margin-bottom: 0;
+}
+
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.half-width {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+@media (max-width: 900px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+    .half-width {
+        width: 100%;
+    }
 }
 
 :host ::ng-deep .p-float-label {
@@ -67,21 +134,32 @@
 }
 
 :host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-inputtext,
 :host ::ng-deep .p-password input {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.9) !important;
-    border: 1px solid var(--green-300);
+    background-color: var(--green-50) !important;
+    border: 1.5px solid var(--green-200);
+    border-radius: 12px;
     font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    color: var(--green-900) !important;
+    font-size: 1.1rem;
+    color: #6b8e5e;
+    padding: 0.9rem 1.2rem 0.9rem 2.7rem;
+    box-shadow: none;
+    transition: border 0.2s;
 }
 
-:host ::ng-deep .p-inputtext:hover,
-:host ::ng-deep .p-inputtext:hover,
-:host ::ng-deep .p-password input:hover {
-    background-color: rgba(255, 255, 255, 1) !important;
+:host ::ng-deep .p-inputtext:focus,
+:host ::ng-deep .p-password input:focus {
+    border: 1.5px solid var(--green-400);
+    outline: none;
+}
+
+:host ::ng-deep .p-input-icon-left > .pi {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--green-400);
+    font-size: 1.3rem;
 }
 
 :host ::ng-deep .p-password {
@@ -90,195 +168,167 @@
 
 :host ::ng-deep .p-button {
     width: 100%;
-    background-color: var(--green-500);
+    background-color: var(--green-600);
     border-color: var(--green-600);
     font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(107,142,94,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+    color: #fff;
 }
 
 :host ::ng-deep .p-button:hover {
-    background-color: var(--green-600);
+    background-color: var(--green-700);
     border-color: var(--green-700);
-}
-
-.form-actions {
-    margin-top: 2rem;
-}
-
-:host ::ng-deep .p-float-label label,
-:host ::ng-deep label.font-bold {
-    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-    color: var(--green-800);
-    font-size: 1rem;
-    background: transparent !important;
-}
-
-:host ::ng-deep .p-float-label input:focus ~ label,
-:host ::ng-deep .p-float-label input.p-filled ~ label,
-:host ::ng-deep .p-float-label .p-inputwrapper-focus ~ label,
-:host ::ng-deep .p-float-label .p-inputwrapper-filled ~ label {
-    color: var(--green-600);
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-:host ::ng-deep .p-float-label > label {
-    background: transparent !important;
-}
-
-:host ::ng-deep .p-float-label label::after {
-    background: transparent !important;
-}
-
-:host ::ng-deep .p-inputtext:enabled:focus {
-    border-color: var(--green-500);
-    box-shadow: 0 0 0 1px var(--green-200);
-}
-
-:host ::ng-deep .p-password-panel {
-    background-color: rgba(255, 255, 255, 0.95);
-    border: 1px solid var(--green-200);
-    border-radius: 6px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-}
-
-:host ::ng-deep .p-password-panel .p-password-meter {
-    background-color: var(--green-100);
-}
-
-:host ::ng-deep .p-password-panel .p-password-info {
-    color: var(--green-800);
+    box-shadow: 0 4px 16px rgba(107,142,94,0.13);
+    color: lightgray;
 }
 
 .auth-footer {
-    margin-top: 2rem;
-    text-align: center;
+    margin-top: 1.2rem;
+    text-align: left;
     font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
     color: var(--green-800);
+    font-size: 1rem;
 }
 
 .auth-footer a {
-    color: var(--green-600);
-    text-decoration: none;
+    color: var(--orange-700);
+    background: none;
+    text-decoration: underline;
     font-weight: bold;
-    transition: color 0.3s ease;
+    transition: color 0.3s;
 }
 
 .auth-footer a:hover {
-    color: var(--green-800);
+    color: var(--orange-900);
 }
 
-.social-auth-divider {
-    text-align: center;
-    margin: 2.5rem 0;
-    position: relative;
-    height: 20px;
-}
-
-.social-auth-divider::before,
-.social-auth-divider::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    margin-top: -25px;
-    width: 42%;
-    height: 1px;
-    background-color: var(--green-300);
-}
-
-.social-auth-divider::before {
-    left: 0;
-}
-
-.social-auth-divider::after {
-    right: 0;
-}
-
-.social-auth-divider span {
-    background-color: white;
-    color: var(--green-600);
-    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-    position: relative;
-    background: linear-gradient(135deg, var(--blue-50) 0%, var(--green-50) 100%);
-}
-
-.social-auth-buttons {
+.paw-svg {
     display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    align-items: center;
+    margin-left: 0.7rem;
 }
 
-:host ::ng-deep .google-btn {
-    background-color: #DB4437;
-    border-color: #DB4437;
-}
-
-:host ::ng-deep .google-btn:hover {
-    background-color: #C53929;
-    border-color: #C53929;
-}
-
-:host ::ng-deep .facebook-btn {
-    background-color: #4267B2;
-    border-color: #4267B2;
-}
-
-:host ::ng-deep .facebook-btn:hover {
-    background-color: #365899;
-    border-color: #365899;
-}
-
-:host ::ng-deep .github-btn {
-    background-color: #333;
-    border-color: #333;
-}
-
-:host ::ng-deep .github-btn:hover {
-    background-color: #24292E;
-    border-color: #24292E;
-}
-
-:host ::ng-deep .social-auth-buttons .p-button {
-    width: 3rem;
-    height: 3rem;
-}
-
-/* 1. Alinear el campo de fecha de nacimiento con los demás campos */
-:host ::ng-deep .p-calendar {
-    width: 100%;
-}
-:host ::ng-deep .p-calendar input {
-    width: 100%;
-    box-sizing: border-box;
-    background-color: rgba(255,255,255,0.9) !important;
-    border: 1px solid var(--green-300);
-    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-    font-size: 1rem;
-    color: var(--green-900) !important;
-}
-
-/* 2. Corregir el fondo oscuro del label al enfocar */
-:host ::ng-deep .p-float-label label,
-:host ::ng-deep .p-float-label input:focus ~ label,
-:host ::ng-deep .p-float-label input.p-filled ~ label,
-:host ::ng-deep .p-float-label .p-inputwrapper-focus ~ label,
-:host ::ng-deep .p-float-label .p-inputwrapper-filled ~ label {
-    background: transparent !important;
-    color: var(--green-600) !important;
-    box-shadow: none !important;
-}
-
-/* 3. Asegurar visibilidad y tamaño de los iconos PrimeIcons */
-:host ::ng-deep .pi {
-    font-size: 1.5rem;
+.paw-svg svg {
+    display: inline-block;
     vertical-align: middle;
-    color: inherit;
+    stroke: #1a2b1a;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
 }
 
-:host ::ng-deep .p-button .pi {
-    margin-right: 0.5rem;
+.wide-input {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+:host ::ng-deep .wide-input .p-inputtext,
+:host ::ng-deep .wide-input .p-password input {
+    width: 100%;
+    min-width: 320px;
+    max-width: 600px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .auth-content {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        width: 98vw;
+    }
+    .login-container {
+        padding: 0;
+        justify-content: center;
+    }
+    .wide-input {
+        max-width: 98vw;
+    }
+    :host ::ng-deep .wide-input .p-inputtext,
+    :host ::ng-deep .wide-input .p-password input {
+        min-width: 0;
+        max-width: 98vw;
+    }
+}
+
+@media (max-width: 900px) {
+    .auth-content {
+        width: 98vw;
+        align-items: center;
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    }
+    .logo-content {
+        justify-content: center;
+        margin-bottom: 1.2rem;
+    }
+}
+
+/* Align Right */
+.align-right {
+    align-items: flex-end !important;
+    text-align: right !important;
+    justify-content: flex-end !important;
+}
+
+.login-container.align-right {
+    justify-content: flex-end !important;
+    align-items: center !important;
+    padding: 0 10vw 0 0 !important;
+    min-height: 100vh;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.auth-content.align-right {
+    align-items: flex-end !important;
+    text-align: right !important;
+    padding: 2.5rem 8rem 2rem 2.5rem !important;
+}
+
+.logo-content.align-right {
+    justify-content: flex-end !important;
+}
+
+.auth-title.align-right, .auth-subtitle.align-right, .login-form.align-right {
+    align-items: flex-end !important;
+    text-align: right !important;
+}
+
+@media (max-width: 900px) {
+    .auth-content.align-right {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem !important;
+    }
+    .login-container.align-right {
+        padding: 0 !important;
+        min-height: 100vh;
+        height: 100vh;
+    }
+}
+
+/* Custom Lock Icon */
+.custom-lock-icon {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1.7rem;
+    width: 1.7rem;
+    z-index: 2;
+}
+
+.size-6 {
+    width: 1.7rem;
+    height: 1.7rem;
+    color: var(--green-400);
+}
+
+.p-input-icon-left .p-password input {
+    padding-left: 2.7rem !important;
 }

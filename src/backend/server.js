@@ -4,6 +4,8 @@ const { db, initDB } = require('./database');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
 
 const app = express();
 const PORT = 3001;
@@ -12,6 +14,18 @@ initDB();
 
 app.use(cors());
 app.use(express.json());
+
+// Configuración de almacenamiento para fotos de mascotas
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../../assets'));
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'pet_' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage: storage });
 
 // Registro de usuario
 app.post('/api/register', async (req, res) => {
@@ -54,6 +68,26 @@ app.post('/api/login', (req, res) => {
     }
     res.json({ id: user.id, nombre: user.nombre, email: user.email, photo_url: user.photo_url });
   });
+});
+
+// Guardar mascota para usuario (con foto)
+app.post('/api/pets', upload.single('foto'), async (req, res) => {
+  const { userId, nombre, tipo, raza, fechaNacimiento, peso } = req.body;
+  const foto = req.file ? req.file.filename : null;
+  if (!userId || !nombre || !tipo || !raza || !fechaNacimiento || !peso) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    'INSERT INTO mascotas (id, usuario_id, nombre, tipo, raza, fecha_nacimiento, peso, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    [id, userId, nombre, tipo, raza, fechaNacimiento, peso, foto],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la mascota.' });
+      }
+      res.status(201).json({ id, nombre, tipo, raza, fechaNacimiento, peso, foto });
+    }
+  );
 });
 
 app.listen(PORT, () => {

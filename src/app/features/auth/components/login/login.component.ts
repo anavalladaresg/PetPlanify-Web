@@ -46,7 +46,8 @@ export class LoginComponent {
       password: this.formData.password
     }).subscribe({
       next: (user) => {
-        // Aquí podrías guardar el usuario en localStorage o un servicio global
+        // Guardar usuario en localStorage para futuras peticiones
+        localStorage.setItem('user', JSON.stringify(user));
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
