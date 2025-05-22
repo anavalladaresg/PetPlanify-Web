@@ -9,5 +9,5 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent },
-  // Aquí puedes añadir más rutas para login, registro, dashboard, etc.
+  { path: 'register-pet', loadChildren: () => import('../features/pets/pets.module').then(m => m.PetsModule) }
 ];

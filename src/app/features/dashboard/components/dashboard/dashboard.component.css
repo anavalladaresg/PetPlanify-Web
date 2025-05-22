@@ -169,3 +169,30 @@ p {
     color: var(--green-800);
     font-weight: 600;
 }
+
+/* Botón para registrar nueva mascota */
+.add-pet-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.add-pet-button:hover {
+    background-color: #45a049;
+}
+
+.add-pet-button i {
+    margin-right: 8px;
+}

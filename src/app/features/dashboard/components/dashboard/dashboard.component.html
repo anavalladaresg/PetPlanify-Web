@@ -53,8 +53,23 @@
                 <p>Tu plataforma integral para el cuidado de tus mascotas</p>
             </div>
             <div *ngIf="currentView === 'pets'" class="pets-content">
-                <h2>Mis Mascotas</h2>
-                <!-- Aquí irá el contenido de mascotas -->
+                <div class="pets-header">
+                    <h2>Mis Mascotas</h2>
+                    <button class="add-pet-button" (click)="navigateTo('register-pet')">
+                        <i class="pi pi-plus-circle"></i> Registrar Nueva Mascota
+                    </button>
+                </div>
+                <div class="pets-list">
+                    <div *ngFor="let pet of pets" class="pet-card">
+                        <img [src]="pet.photo" alt="Foto de {{ pet.name }}" class="pet-photo" />
+                        <div class="pet-info">
+                            <h3>{{ pet.name }}</h3>
+                            <p>Tipo: {{ pet.type }}</p>
+                            <p>Raza: {{ pet.breed }}</p>
+                            <p>Fecha de Nacimiento: {{ pet.birthDate }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div *ngIf="currentView === 'events'" class="events-content">
                 <h2>Eventos</h2>
