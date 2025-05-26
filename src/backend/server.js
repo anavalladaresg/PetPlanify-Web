@@ -18,7 +18,8 @@ app.use(express.json());
 // Configuración de almacenamiento para fotos de mascotas
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../../assets'));
+    // Guardar en src/assets para que Angular pueda servir las imágenes
+    cb(null, path.join(__dirname, '../assets'));
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -88,6 +89,17 @@ app.post('/api/pets', upload.single('foto'), async (req, res) => {
       res.status(201).json({ id, nombre, tipo, raza, fechaNacimiento, peso, foto });
     }
   );
+});
+
+// Obtener mascotas de un usuario
+app.get('/api/pets/:userId', (req, res) => {
+  const { userId } = req.params;
+  db.all('SELECT * FROM mascotas WHERE usuario_id = ?', [userId], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener las mascotas.' });
+    }
+    res.json(rows);
+  });
 });
 
 app.listen(PORT, () => {

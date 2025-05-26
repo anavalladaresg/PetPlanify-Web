@@ -3,11 +3,12 @@ import { HomeComponent } from '../features/home/home.component';
 import { LoginComponent } from '../features/auth/components/login/login.component';
 import { RegisterComponent } from '../features/auth/components/register/register.component';
 import { DashboardComponent } from '../features/dashboard/components/dashboard/dashboard.component';
+import { AuthGuard } from '../features/auth/services/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegisterComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   // Puedes agregar más rutas aquí
 ];

@@ -102,7 +102,26 @@
                         </form>
                     </div>
                 </div>
-                <!-- Aquí irá el contenido de mascotas -->
+                <div class="pets-list">
+                  <div *ngIf="pets.length === 0" class="no-pets-msg">
+                    <p>No tienes mascotas registradas aún.</p>
+                  </div>
+                  <div class="pet-card" *ngFor="let pet of pets">
+                    <div class="pet-photo">
+                      <img *ngIf="pet.foto" [src]="'assets/' + pet.foto" alt="Foto de {{pet.nombre}}" />
+                      <img *ngIf="!pet.foto" src="assets/puppy.png" alt="Sin foto" />
+                    </div>
+                    <div class="pet-info">
+                      <h3 class="pet-name">{{ pet.nombre }}</h3>
+                      <div class="pet-details">
+                        <span class="pet-age">Edad: {{ calcularEdad(pet.fecha_nacimiento) }}</span>
+                        <span class="pet-type">Tipo: {{ pet.tipo | titlecase }}</span>
+                        <span class="pet-breed">Raza: {{ pet.raza }}</span>
+                        <span class="pet-weight">Peso: {{ pet.peso }} kg</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
             <div *ngIf="currentView === 'events'" class="events-content">
                 <h2>Eventos</h2>

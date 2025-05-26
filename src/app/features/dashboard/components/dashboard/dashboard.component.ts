@@ -11,8 +11,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DashboardComponent {
   currentView: string = 'welcome';
+  pets: any[] = [];
 
   constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.loadPets();
+  }
 
   navigateTo(view: string) {
     this.currentView = view;
@@ -58,9 +63,25 @@ export class DashboardComponent {
     this.newPet.foto = file;
   }
 
+  // Utilidad para obtener el usuario solo en navegador
+  getUserFromStorage(): any {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return JSON.parse(localStorage.getItem('user') || '{}');
+    }
+    return {};
+  }
+
+  loadPets() {
+    const user = this.getUserFromStorage();
+    if (!user.id) return;
+    this.http.get<any[]>(`/api/pets/${user.id}`).subscribe({
+      next: (pets) => this.pets = pets,
+      error: () => this.pets = []
+    });
+  }
+
   addPet() {
-    // Obtener el usuario logueado (ejemplo: desde localStorage)
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const user = this.getUserFromStorage();
     if (!user.id) {
       alert('No hay usuario logueado.');
       return;
@@ -87,11 +108,23 @@ export class DashboardComponent {
           foto: null
         };
         this.razasDisponibles = [];
-        // Aquí puedes recargar la lista de mascotas si lo deseas
+        this.loadPets(); // Recargar mascotas
       },
       error: (err) => {
         alert('Error al guardar la mascota: ' + (err.error?.error || 'Error desconocido'));
       }
     });
+  }
+
+  calcularEdad(fechaNacimiento: string): string {
+    if (!fechaNacimiento) return '';
+    const nacimiento = new Date(fechaNacimiento);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const m = hoy.getMonth() - nacimiento.getMonth();
+    if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+    return edad === 1 ? '1 año' : `${edad} años`;
   }
 }
