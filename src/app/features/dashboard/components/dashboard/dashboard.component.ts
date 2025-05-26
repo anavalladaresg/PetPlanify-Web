@@ -29,6 +29,8 @@ export class DashboardComponent {
   }
 
   showAddPetForm = false;
+  isEditingPet = false;
+  editingPetId: string | null = null;
   newPet: any = {
     nombre: '',
     tipo: '',
@@ -97,24 +99,70 @@ export class DashboardComponent {
     if (this.newPet.foto) {
       formData.append('foto', this.newPet.foto);
     }
-    this.http.post('/api/pets', formData).subscribe({
-      next: (res) => {
-        this.showAddPetForm = false;
-        this.newPet = {
-          nombre: '',
-          tipo: '',
-          raza: '',
-          fechaNacimiento: '',
-          peso: '',
-          foto: null
-        };
-        this.razasDisponibles = [];
-        this.loadPets(); // Recargar mascotas
-      },
-      error: (err) => {
-        alert('Error al guardar la mascota: ' + (err.error?.error || 'Error desconocido'));
-      }
-    });
+    if (this.isEditingPet && this.editingPetId) {
+      // Editar mascota existente
+      this.http.put(`/api/pets/${this.editingPetId}`, formData).subscribe({
+        next: (res) => {
+          this.showAddPetForm = false;
+          this.isEditingPet = false;
+          this.editingPetId = null;
+          this.newPet = {
+            nombre: '',
+            tipo: '',
+            raza: '',
+            fechaNacimiento: '',
+            peso: '',
+            foto: null
+          };
+          this.razasDisponibles = [];
+          this.loadPets();
+        },
+        error: (err) => {
+          alert('Error al actualizar la mascota: ' + (err.error?.error || 'Error desconocido'));
+        }
+      });
+    } else {
+      // Nueva mascota
+      this.http.post('/api/pets', formData).subscribe({
+        next: (res) => {
+          this.showAddPetForm = false;
+          this.newPet = {
+            nombre: '',
+            tipo: '',
+            raza: '',
+            fechaNacimiento: '',
+            peso: '',
+            foto: null
+          };
+          this.razasDisponibles = [];
+          this.loadPets(); // Recargar mascotas
+        },
+        error: (err) => {
+          alert('Error al guardar la mascota: ' + (err.error?.error || 'Error desconocido'));
+        }
+      });
+    }
+  }
+
+  editPet(pet: any) {
+    this.showAddPetForm = true;
+    this.isEditingPet = true;
+    this.editingPetId = pet.id;
+    this.newPet = {
+      ...pet,
+      fechaNacimiento: pet.fecha_nacimiento, // Ajuste para el campo del formulario
+      foto: null // No cargamos la foto original
+    };
+    this.onTipoChange();
+  }
+
+  deletePet(pet: any) {
+    if (confirm(`¿Seguro que quieres eliminar a ${pet.nombre}?`)) {
+      this.http.delete(`/api/pets/${pet.id}`).subscribe({
+        next: () => this.loadPets(),
+        error: () => alert('Error al eliminar la mascota')
+      });
+    }
   }
 
   calcularEdad(fechaNacimiento: string): string {

@@ -367,51 +367,243 @@ p {
     transform: translateY(-4px) scale(1.02);
 }
 
-.pet-photo {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 1.2rem;
-    border: 4px solid var(--green-200);
-    background: var(--green-50);
+/* Botones de editar y eliminar en las cards de mascotas */
+.pet-card-btn {
+  position: absolute;
+  top: 14px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: #f4fdf4;
+  box-shadow: 0 2px 8px rgba(71, 130, 75, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+  padding: 0;
+}
+
+.pet-card-btn svg {
+  pointer-events: none;
+}
+
+.pet-edit-btn {
+  left: 14px;
+  border: 1.5px solid #b7d6b8;
+}
+
+.pet-edit-btn:hover {
+  background: #eafaea;
+  border-color: #47824b;
+  box-shadow: 0 4px 16px rgba(71, 130, 75, 0.13);
+  transform: scale(1.08);
+}
+
+.pet-delete-btn {
+  right: 14px;
+  border: 1.5px solid #f7bdbd;
+}
+
+.pet-delete-btn:hover {
+  background: #fff0f0;
+  border-color: #e57373;
+  box-shadow: 0 4px 16px rgba(231, 115, 115, 0.13);
+  transform: scale(1.08);
+}
+
+@media (max-width: 600px) {
+    .add-pet-modal {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        min-width: 0;
+    }
+    .add-pet-btn-icon {
+        right: 0.5rem;
+    }
+    .pet-card-btn {
+        width: 32px;
+        height: 32px;
+        top: 8px;
+    }
+    .pet-edit-btn { left: 8px; }
+    .pet-delete-btn { right: 8px; }
+}
+
+.welcome-content h1,
+.pets-content h2,
+.events-content h2,
+.health-content h2,
+.pet-friendly-content h2,
+.settings-content h2 {
+    color: var(--green-800);
+    margin-bottom: 1rem;
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+}
+
+.welcome-content p {
+    color: var(--green-600);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Estilo para el ítem activo del menú */
+.menu-item.active {
+    background-color: var(--green-50);
+    color: var(--green-800);
+    font-weight: 600;
+}
+
+.pets-list {
     display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2.5rem;
+    justify-content: flex-start;
+}
+
+.pet-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(107,142,94,0.10);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    min-width: 320px;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+}
+
+.pet-card:hover {
+    box-shadow: 0 8px 32px rgba(107,142,94,0.18);
+    transform: translateY(-4px) scale(1.02);
+}
+
+/* Botones de editar y eliminar en las cards de mascotas */
+.pet-card-btn {
+  position: absolute;
+  top: 14px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: #f4fdf4;
+  box-shadow: 0 2px 8px rgba(71, 130, 75, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+  padding: 0;
+}
+
+.pet-card-btn svg {
+  pointer-events: none;
+}
+
+.pet-edit-btn {
+  left: 14px;
+  border: 1.5px solid #b7d6b8;
+}
+
+.pet-edit-btn:hover {
+  background: #eafaea;
+  border-color: #47824b;
+  box-shadow: 0 4px 16px rgba(71, 130, 75, 0.13);
+  transform: scale(1.08);
+}
+
+.pet-delete-btn {
+  right: 14px;
+  border: 1.5px solid #f7bdbd;
+}
+
+.pet-delete-btn:hover {
+  background: #fff0f0;
+  border-color: #e57373;
+  box-shadow: 0 4px 16px rgba(231, 115, 115, 0.13);
+  transform: scale(1.08);
+}
+
+@media (max-width: 600px) {
+    .add-pet-modal {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        min-width: 0;
+    }
+    .add-pet-btn-icon {
+        right: 0.5rem;
+    }
+    .pet-card-btn {
+        width: 32px;
+        height: 32px;
+        top: 8px;
+    }
+    .pet-edit-btn { left: 8px; }
+    .pet-delete-btn { right: 8px; }
+}
+
+.welcome-content h1,
+.pets-content h2,
+.events-content h2,
+.health-content h2,
+.pet-friendly-content h2,
+.settings-content h2 {
+    color: var(--green-800);
+    margin-bottom: 1rem;
+    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+}
+
+.welcome-content p {
+    color: var(--green-600);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Estilo para el ítem activo del menú */
+.menu-item.active {
+    background-color: var(--green-50);
+    color: var(--green-800);
+    font-weight: 600;
+}
+
+.pet-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--green-200);
+  background: var(--green-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem; /* Reducido para menos espacio */
 }
 
 .pet-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.pet-info {
-    text-align: center;
-}
-
-.pet-name {
-    font-size: 1.6rem;
-    color: var(--green-800);
-    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-    font-weight: bold;
-    margin-bottom: 0.7rem;
-    letter-spacing: 0.5px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 
 .pet-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    color: var(--green-700);
-    font-size: 1.1rem;
-    font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--green-700);
+  font-size: 1.1rem;
+  font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
 }
 
-.no-pets-msg {
-    color: var(--green-600);
-    font-size: 1.2rem;
-    margin-top: 2rem;
-    width: 100%;
-    text-align: center;
+.pet-details span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0.1rem;
 }
