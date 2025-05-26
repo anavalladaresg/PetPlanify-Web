@@ -1,0 +1,9 @@
+<div class="pet-friendly-map-container">
+  <form (ngSubmit)="buscarDireccion()">
+    <input type="text" [(ngModel)]="address" name="address" placeholder="Escribe una dirección" required />
+    <button type="submit">Buscar</button>
+  </form>
+  <google-map height="400px" width="100%" [center]="center" [zoom]="zoom">
+    <map-marker *ngFor="let marker of markers" [position]="marker.position" [label]="marker.label"></map-marker>
+  </google-map>
+</div>

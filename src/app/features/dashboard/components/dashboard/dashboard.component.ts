@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { PetFriendlyMapComponent } from '../../../pet-friendly/pet-friendly-map.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PetFriendlyMapComponent],
 })
 export class DashboardComponent {
   currentView: string = 'welcome';
