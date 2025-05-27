@@ -102,6 +102,145 @@ app.get('/api/pets/:userId', (req, res) => {
   });
 });
 
+// --- ENDPOINTS DE HISTORIAL SANITARIO ---
+// Guardar vacuna
+app.post('/api/pets/:petId/vacunas', (req, res) => {
+  const { petId } = req.params;
+  const { nombre, fecha, proxima_fecha, notas } = req.body;
+  if (!nombre || !fecha) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    `INSERT INTO vacunas (id, mascota_id, nombre, fecha, proxima_fecha, notas) VALUES (?, ?, ?, ?, ?, ?)`,
+    [id, petId, nombre, fecha, proxima_fecha || null, notas || null],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la vacuna.' });
+      }
+      res.status(201).json({ id, mascota_id: petId, nombre, fecha, proxima_fecha, notas });
+    }
+  );
+});
+// Obtener vacunas de una mascota
+app.get('/api/pets/:petId/vacunas', (req, res) => {
+  const { petId } = req.params;
+  db.all('SELECT * FROM vacunas WHERE mascota_id = ?', [petId], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener las vacunas.' });
+    }
+    res.json(rows);
+  });
+});
+// Guardar desparasitación
+app.post('/api/pets/:petId/desparasitaciones', (req, res) => {
+  const { petId } = req.params;
+  const { nombre, fecha, notas } = req.body;
+  if (!nombre || !fecha) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    `INSERT INTO desparasitaciones (id, mascota_id, nombre, fecha, notas) VALUES (?, ?, ?, ?, ?)`,
+    [id, petId, nombre, fecha, notas || null],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la desparasitación.' });
+      }
+      res.status(201).json({ id, mascota_id: petId, nombre, fecha, notas });
+    }
+  );
+});
+// Obtener desparasitaciones de una mascota
+app.get('/api/pets/:petId/desparasitaciones', (req, res) => {
+  const { petId } = req.params;
+  db.all('SELECT * FROM desparasitaciones WHERE mascota_id = ?', [petId], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener las desparasitaciones.' });
+    }
+    res.json(rows);
+  });
+});
+// Guardar medicación
+app.post('/api/pets/:petId/medicaciones', (req, res) => {
+  const { petId } = req.params;
+  const { nombre, dosis, frecuencia, fecha_inicio, fecha_fin, notas } = req.body;
+  if (!nombre || !dosis || !frecuencia || !fecha_inicio) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    `INSERT INTO medicaciones (id, mascota_id, nombre, dosis, frecuencia, fecha_inicio, fecha_fin, notas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [id, petId, nombre, dosis, frecuencia, fecha_inicio, fecha_fin || null, notas || null],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la medicación.' });
+      }
+      res.status(201).json({ id, mascota_id: petId, nombre, dosis, frecuencia, fecha_inicio, fecha_fin, notas });
+    }
+  );
+});
+// Obtener medicaciones de una mascota
+app.get('/api/pets/:petId/medicaciones', (req, res) => {
+  const { petId } = req.params;
+  db.all('SELECT * FROM medicaciones WHERE mascota_id = ?', [petId], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener las medicaciones.' });
+    }
+    res.json(rows);
+  });
+});
+// Guardar observación
+app.post('/api/pets/:petId/observaciones', (req, res) => {
+  const { petId } = req.params;
+  const { contenido, fecha } = req.body;
+  if (!contenido || !fecha) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    `INSERT INTO observaciones (id, mascota_id, contenido, fecha) VALUES (?, ?, ?, ?)`,
+    [id, petId, contenido, fecha],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la observación.' });
+      }
+      res.status(201).json({ id, mascota_id: petId, contenido, fecha });
+    }
+  );
+});
+// Obtener observaciones de una mascota
+app.get('/api/pets/:petId/observaciones', (req, res) => {
+  const { petId } = req.params;
+  db.all('SELECT * FROM observaciones WHERE mascota_id = ?', [petId], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener las observaciones.' });
+    }
+    res.json(rows);
+  });
+});
+
+// Eliminar mascota y sus historiales sanitarios
+app.delete('/api/pets/:petId', (req, res) => {
+  const { petId } = req.params;
+  // Eliminar registros relacionados primero
+  db.serialize(() => {
+    db.run('DELETE FROM vacunas WHERE mascota_id = ?', [petId]);
+    db.run('DELETE FROM desparasitaciones WHERE mascota_id = ?', [petId]);
+    db.run('DELETE FROM medicaciones WHERE mascota_id = ?', [petId]);
+    db.run('DELETE FROM observaciones WHERE mascota_id = ?', [petId]);
+    db.run('DELETE FROM mascotas WHERE id = ?', [petId], function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al eliminar la mascota.' });
+      }
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Mascota no encontrada.' });
+      }
+      res.json({ success: true });
+    });
+  });
+});
+
 app.listen(PORT, () => {
-  console.log(`Servidor backend escuchando en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

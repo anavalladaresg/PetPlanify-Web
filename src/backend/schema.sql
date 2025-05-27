@@ -169,3 +169,14 @@ CREATE TABLE IF NOT EXISTS pagos (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
 );
+
+CREATE TABLE IF NOT EXISTS desparasitaciones (
+    id TEXT PRIMARY KEY,
+    mascota_id TEXT,
+    nombre TEXT NOT NULL,
+    fecha DATE NOT NULL,
+    notas TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(mascota_id) REFERENCES mascotas(id)
+);

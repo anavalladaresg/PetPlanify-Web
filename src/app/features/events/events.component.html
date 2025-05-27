@@ -1,0 +1,72 @@
+<div class="events-header">
+  <h2>Eventos</h2>
+  <button *ngIf="isLoggedIn()" class="add-event-btn" (click)="openDialog()" pButton pRipple icon="pi pi-plus"
+    label="Crear evento"></button>
+</div>
+
+<p-table [value]="events" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'"
+  [globalFilterFields]="['title','description','location']" [showCurrentPageReport]="true"
+  currentPageReportTemplate="{first} - {last} de {totalRecords}">
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="title">Título <p-sortIcon field="title"></p-sortIcon></th>
+      <th pSortableColumn="date">Fecha <p-sortIcon field="date"></p-sortIcon></th>
+      <th pSortableColumn="location">Ubicación <p-sortIcon field="location"></p-sortIcon></th>
+      <th>Acciones</th>
+    </tr>
+    <tr>
+      <th><input pInputText type="text" (input)="dt.filter($event.target.value, 'title', 'contains')"
+          placeholder="Buscar título" /></th>
+      <th></th>
+      <th><input pInputText type="text" (input)="dt.filter($event.target.value, 'location', 'contains')"
+          placeholder="Buscar ubicación" /></th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-event>
+    <tr>
+      <td>{{ event.title }}</td>
+      <td>{{ event.date | date:'mediumDate' }}</td>
+      <td>{{ event.location }}</td>
+      <td>
+        <button *ngIf="isLoggedIn()" pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm"
+          (click)="deleteEvent(event)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog header="Crear evento" [(visible)]="showDialog" [modal]="true" [style]="{width: '400px'}"
+  [breakpoints]="{'600px': '95vw'}">
+  <form [formGroup]="eventForm" (ngSubmit)="saveEvent()">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="title">Título</label>
+        <input id="title" pInputText formControlName="title" required />
+      </div>
+      <div class="p-field">
+        <label for="description">Descripción</label>
+        <textarea id="description" pInputTextarea formControlName="description" rows="3" required></textarea>
+      </div>
+      <div class="p-field">
+        <label for="date">Fecha</label>
+        <input id="date" type="date" pInputText formControlName="date" required />
+      </div>
+      <div class="p-field">
+        <label for="location">Ubicación</label>
+        <input id="location" pInputText formControlName="location" required />
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button pButton type="submit" label="Guardar" [disabled]="!eventForm.valid" class="p-button-success"></button>
+      <button pButton type="button" label="Cancelar" (click)="showDialog = false" class="p-button-secondary"></button>
+    </div>
+  </form>
+</p-dialog>
+
+<!-- Geolocalización: Mapa (Google Maps API debe estar cargada en index.html) -->
+<div class="map-section">
+  <google-map height="300px" width="100%" [center]="mapCenter" [zoom]="mapZoom">
+    <map-marker *ngFor="let marker of eventMarkers" [position]="marker.position" [label]="marker.label"></map-marker>
+  </google-map>
+</div>
