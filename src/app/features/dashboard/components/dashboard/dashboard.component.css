@@ -477,8 +477,8 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.5rem;
   position: relative;
+  margin-bottom: 0.1rem; /* Reduce aún más el espacio inferior */
 }
 
 .pet-photo img {
@@ -927,9 +927,23 @@ p {
   margin-left: 0 !important;
 }
 
-@media (max-width: 700px) {
-  .pet-history-form {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
+.pet-details-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.pet-details-block > div {
+  margin-bottom: 2px;
+}
+.pet-details-block span {
+  font-size: 1rem;
+  color: #333;
+}
+.pet-details-block b {
+  color: #47824b;
+}
+
+.pet-info {
+  margin-top: 0 !important; /* Elimina cualquier margen superior extra */
+  padding-top: 0 !important;
 }
