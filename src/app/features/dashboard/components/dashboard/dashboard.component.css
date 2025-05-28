@@ -927,10 +927,19 @@ p {
   margin-left: 0 !important;
 }
 
+.pet-name {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--green-800);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
 .pet-details-block {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  text-align: center;
 }
 .pet-details-block > div {
   margin-bottom: 2px;
@@ -941,9 +950,4 @@ p {
 }
 .pet-details-block b {
   color: #47824b;
-}
-
-.pet-info {
-  margin-top: 0 !important; /* Elimina cualquier margen superior extra */
-  padding-top: 0 !important;
 }

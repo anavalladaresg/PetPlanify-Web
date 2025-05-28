@@ -136,8 +136,6 @@
                       <h3 class="pet-name">{{ pet.nombre }}</h3>
                       <div class="pet-details pet-details-block">
                         <div><span class="pet-age"><b>Edad:</b> {{ calcularEdad(pet.fecha_nacimiento) }}</span></div>
-                        <div><span class="pet-type"><b>Tipo:</b> {{ pet.tipo | titlecase }}</span></div>
-                        <div><span class="pet-breed"><b>Raza:</b> {{ pet.raza }}</span></div>
                         <div><span class="pet-weight"><b>Peso:</b> {{ pet.peso }} kg</span></div>
                         <div *ngIf="pet.descripcion"><span class="pet-description"><b>Descripción:</b> {{ pet.descripcion }}</span></div>
                       </div>
