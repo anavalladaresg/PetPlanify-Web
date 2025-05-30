@@ -1,294 +1,294 @@
 <div class="layout-container">
-    <!-- Dashboard lateral -->
-    <div class="dashboard">
-        <div class="logo-container">
-            <img src="assets/logo.png" alt="PetPlanify Logo" class="logo-image">
-        </div>
-        
-        <nav class="menu">
-            <ul>
-                <li class="menu-item" [class.active]="currentView === 'welcome'" (click)="navigateTo('welcome')">
-                    <i class="pi pi-home"></i>
-                    <span>Inicio</span>
-                </li>
-                <li class="menu-item" [class.active]="currentView === 'pets'" (click)="navigateTo('pets')">
-                    <i class="pi pi-user"></i>
-                    <span>Mis Mascotas</span>
-                </li>
-                <li class="menu-item" [class.active]="currentView === 'events'" (click)="navigateTo('events')">
-                    <i class="pi pi-calendar"></i>
-                    <span>Eventos</span>
-                </li>
-                <li class="menu-item" [class.active]="currentView === 'health'" (click)="navigateTo('health')">
-                    <i class="pi pi-heart"></i>
-                    <span>Salud</span>
-                </li>
-                <li class="menu-item" [class.active]="currentView === 'pet-friendly'" (click)="navigateTo('pet-friendly')">
-                    <i class="pi pi-map-marker"></i>
-                    <span>Lugares Pet-Friendly</span>
-                </li>
-                <li class="menu-item" [class.active]="currentView === 'settings'" (click)="navigateTo('settings')">
-                    <i class="pi pi-cog"></i>
-                    <span>Configuración</span>
-                </li>
-            </ul>
-        </nav>
-
-        <div class="logout-container">
-            <button class="logout-button" (click)="openLogoutDialog()">
-                <i class="pi pi-sign-out"></i>
-                <span>Cerrar Sesión</span>
-            </button>
-            <p-dialog header="¿Cerrar sesión?" [modal]="true" [(visible)]="showLogoutDialog" [position]="logoutDialogPosition" [style]="{ width: '20rem' }" contentClass="custom-logout-dialog-content" footerClass="custom-logout-dialog-footer">
-                <span class="text-surface-500 block mb-8">¿Seguro que quieres cerrar sesión?</span>
-                <ng-template pTemplate="footer">
-                    <div class="flex justify-end">
-                        <button pButton type="button" label="Cancelar" severity="secondary" (click)="cancelLogout()" style="margin-right: 1.2rem;"></button>
-                        <button pButton type="button" label="Cerrar sesión" severity="danger" (click)="confirmLogout()"></button>
-                    </div>
-                </ng-template>
-            </p-dialog>
-        </div>
+  <!-- Dashboard lateral -->
+  <div class="dashboard">
+    <div class="logo-container">
+      <img src="assets/logo.png" alt="PetPlanify Logo" class="logo-image">
     </div>
 
-    <!-- Contenido principal -->
-    <div class="main-content">
-        <div class="background">
-            <div class="radial-gradient"></div>
+    <nav class="menu">
+      <ul>
+        <li class="menu-item" [class.active]="currentView === 'welcome'" (click)="navigateTo('welcome')">
+          <i class="pi pi-home"></i>
+          <span>Inicio</span>
+        </li>
+        <li class="menu-item" [class.active]="currentView === 'pets'" (click)="navigateTo('pets')">
+          <i class="pi pi-user"></i>
+          <span>Mis Mascotas</span>
+        </li>
+        <li class="menu-item" [class.active]="currentView === 'events'" (click)="navigateTo('events')">
+          <i class="pi pi-calendar"></i>
+          <span>Eventos</span>
+        </li>
+        <li class="menu-item" [class.active]="currentView === 'health'" (click)="navigateTo('health')">
+          <i class="pi pi-heart"></i>
+          <span>Salud</span>
+        </li>
+        <li class="menu-item" [class.active]="currentView === 'pet-friendly'" (click)="navigateTo('pet-friendly')">
+          <i class="pi pi-map-marker"></i>
+          <span>Lugares Pet-Friendly</span>
+        </li>
+        <li class="menu-item" [class.active]="currentView === 'settings'" (click)="navigateTo('settings')">
+          <i class="pi pi-cog"></i>
+          <span>Configuración</span>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="logout-container">
+      <button class="logout-button" (click)="openLogoutDialog()">
+        <i class="pi pi-sign-out"></i>
+        <span>Cerrar Sesión</span>
+      </button>
+      <p-dialog header="¿Cerrar sesión?" [modal]="true" [(visible)]="showLogoutDialog" [position]="logoutDialogPosition"
+        [style]="{ width: '20rem' }" contentClass="custom-logout-dialog-content"
+        footerClass="custom-logout-dialog-footer">
+        <span class="text-surface-500 block mb-8">¿Seguro que quieres cerrar sesión?</span>
+        <ng-template pTemplate="footer">
+          <div class="flex justify-end">
+            <button pButton type="button" label="Cancelar" severity="secondary" (click)="cancelLogout()"
+              style="margin-right: 1.2rem;"></button>
+            <button pButton type="button" label="Cerrar sesión" severity="danger" (click)="confirmLogout()"></button>
+          </div>
+        </ng-template>
+      </p-dialog>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <div class="background">
+      <div class="radial-gradient"></div>
+    </div>
+    <div *ngIf="currentView === 'welcome'" class="content dashboard-landing">
+      <div class="dashboard-header">
+        <h1>¡Bienvenida de nuevo, Ana!</h1>
+        <p>Aquí tienes un resumen de tus mascotas registradas y tus próximas citas.</p>
+      </div>
+      <div class="quick-access-tiles">
+        <div class="quick-access-tile" (click)="abrirNuevaCita()">
+          <i class="pi pi-calendar-plus"></i>
+          <span>Nueva cita veterinaria</span>
         </div>
-        <div *ngIf="currentView === 'welcome'" class="content dashboard-landing">
-            <div class="dashboard-header">
-                <h1>¡Bienvenida de nuevo, Ana!</h1>
-                <p>Aquí tienes un resumen de tus mascotas registradas y tus próximas citas.</p>
+        <div class="quick-access-tile" (click)="abrirRegistrarVacuna()">
+          <i class="pi pi-shield"></i>
+          <span>Registrar nueva vacuna</span>
+        </div>
+        <div class="quick-access-tile" (click)="abrirRegistrarMascota()">
+          <i class="pi pi-plus-circle"></i>
+          <span>Añadir mascota</span>
+        </div>
+      </div>
+      <div class="dashboard-section pets-section">
+        <h2>Mis Mascotas</h2>
+        <div class="pets-cards-row">
+          <div *ngFor="let pet of pets" class="pet-card-landing pet-card-xlarge" (click)="openPetDetailModal(pet.id)">
+            <img [src]="pet.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" [alt]="pet.nombre"
+              class="pet-img pet-img-xlarge" />
+            <div class="pet-card-info">
+              <div class="pet-card-name">{{ pet.nombre }}</div>
+              <div class="pet-card-breed">{{ pet.raza }}</div>
             </div>
-            <div class="quick-access-tiles">
-                <div class="quick-access-tile" (click)="abrirNuevaCita()">
-                    <i class="pi pi-calendar-plus"></i>
-                    <span>Nueva cita veterinaria</span>
-                </div>
-                <div class="quick-access-tile" (click)="abrirRegistrarVacuna()">
-                    <i class="pi pi-shield"></i>
-                    <span>Registrar nueva vacuna</span>
-                </div>
-                <div class="quick-access-tile" (click)="abrirRegistrarMascota()">
-                    <i class="pi pi-plus-circle"></i>
-                    <span>Añadir mascota</span>
-                </div>
-            </div>
-            <div class="dashboard-section pets-section">
-                <h2>Mis Mascotas</h2>
-                <div class="pets-cards-row">
-                    <div *ngFor="let pet of pets" class="pet-card-landing pet-card-xlarge" (click)="openPetDetailModal(pet.id)">
-                        <img [src]="pet.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" [alt]="pet.nombre" class="pet-img pet-img-xlarge" />
-                        <div class="pet-card-info">
-                            <div class="pet-card-name">{{ pet.nombre }}</div>
-                            <div class="pet-card-breed">{{ pet.raza }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="dashboard-section appointments-section">
-                <h2>Próximas Citas</h2>
-                <table class="appointments-table">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Mascota</th>
-                            <th>Servicio</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let cita of citas">
-                            <td>{{ cita.fecha | date:'dd/MM/yyyy' }}</td>
-                            <td>{{ cita.hora }}</td>
-                            <td>{{ cita.mascota }}</td>
-                            <td>{{ cita.servicio }}</td>
-                            <td><span class="status" [ngClass]="{
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-section appointments-section">
+        <h2>Próximas Citas</h2>
+        <table class="appointments-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Mascota</th>
+              <th>Servicio</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cita of citas">
+              <td>{{ cita.fecha | date:'dd/MM/yyyy' }}</td>
+              <td>{{ cita.hora }}</td>
+              <td>{{ cita.mascota }}</td>
+              <td>{{ cita.servicio }}</td>
+              <td><span class="status" [ngClass]="{
                                 'scheduled': cita.estado === 'Programada',
                                 'confirmed': cita.estado === 'Confirmada',
                                 'completed': cita.estado === 'Completada'
                             }">{{ cita.estado }}</span></td>
-                        </tr>
-                        <tr *ngIf="!citas || citas.length === 0">
-                            <td colspan="5" style="text-align:center; color:#888;">No tienes próximas citas.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div *ngIf="currentView === 'pets'" class="content pets-content">
-            <div class="pets-header-row">
-                <h1>Mis Mascotas</h1>
-                <button class="add-pet-btn-simple" (click)="showAddPetForm = true">
-                    Añadir Mascota
-                </button>
-            </div>
-            <ul class="pets-list-simple">
-                <li *ngFor="let pet of pets" class="pet-list-item clickable" (click)="openPetDetailModal(pet.id)">
-                    <div class="pet-list-photo">
-                        <img [src]="pet.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" [alt]="pet.nombre" />
-                    </div>
-                    <div class="pet-list-info">
-                        <div class="pet-list-name">{{ pet.nombre }}</div>
-                        <div class="pet-list-meta">{{ pet.tipo }}{{ pet.raza ? ', ' + pet.raza : '' }}<span *ngIf="pet.fecha_nacimiento"> · {{ calcularEdad(pet.fecha_nacimiento) }}</span></div>
-                    </div>
-                </li>
-            </ul>
-            <div *ngIf="pets.length === 0" class="no-pets-msg">No tienes mascotas registradas aún.</div>
-        </div>
-        <div *ngIf="currentView === 'health'" class="content health-content">
-          <div class="dashboard-header">
-            <h1>Citas</h1>
-          </div>
-          <div class="health-calendar-section">
-            <button class="add-health-btn" (click)="openAddRecordDialog('vacunas')">Nueva Cita</button>
-            <div class="calendar-row calendar-row-large calendar-row-headers">
-              <div class="calendar-col">
-                <div class="calendar-header-flex">
-                  <button class="calendar-arrow calendar-arrow-left" (click)="prevMonth()">&#60;</button>
-                  <div class="calendar-title">{{ calendarMonthNames[calendarMonth] }} {{ calendarYear }}</div>
-                </div>
-                <table class="custom-calendar-table custom-calendar-table-large">
-                  <thead>
-                    <tr>
-                      <th *ngFor="let d of weekDays">{{ d }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let week of calendarWeeks">
-                      <td *ngFor="let day of week"
-                          [class.selected]="isSelectedDate(day, calendarMonth, calendarYear)"
-                          [class.today]="isToday(day, calendarMonth, calendarYear)"
-                          [class.empty]="!day"
-                          (click)="selectDate(day, calendarMonth, calendarYear)"
-                          >
-                        <span *ngIf="day">{{ day }}</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="calendar-col">
-                <div class="calendar-header-flex">
-                  <div class="calendar-title">{{ calendarMonthNames[nextCalendarMonth] }} {{ nextCalendarYear }}</div>
-                  <button class="calendar-arrow calendar-arrow-right" (click)="nextMonth()">&#62;</button>
-                </div>
-                <table class="custom-calendar-table custom-calendar-table-large">
-                  <thead>
-                    <tr>
-                      <th *ngFor="let d of weekDays">{{ d }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let week of nextCalendarWeeks">
-                      <td *ngFor="let day of week"
-                          [class.selected]="isSelectedDate(day, nextCalendarMonth, nextCalendarYear)"
-                          [class.today]="isToday(day, nextCalendarMonth, nextCalendarYear)"
-                          [class.empty]="!day"
-                          (click)="selectDate(day, nextCalendarMonth, nextCalendarYear)"
-                          >
-                        <span *ngIf="day">{{ day }}</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="health-events-list">
-            <h2>{{ selectedHealthDate | date:'MMMM d, yyyy' }}</h2>
-            <ng-container *ngIf="filteredHealthEvents.length > 0; else noEvents">
-              <div *ngFor="let event of filteredHealthEvents" class="health-event-card">
-                <div class="health-event-icon">
-                  <i class="pi pi-shield" *ngIf="event.tipo === 'vacuna'"></i>
-                  <i class="pi pi-heart" *ngIf="event.tipo === 'desparasitacion'"></i>
-                  <i class="pi pi-medkit" *ngIf="event.tipo === 'medicacion'"></i>
-                </div>
-                <div class="health-event-info">
-                  <div class="health-event-title">{{ event.nombre }}</div>
-                  <div class="health-event-time">{{ event.hora || 'Todo el día' }}</div>
-                  <div class="health-event-pet">{{ event.petName }}</div>
-                </div>
-              </div>
-            </ng-container>
-            <ng-template #noEvents>
-              <div class="no-health-events">No hay citas para este día.</div>
-            </ng-template>
-          </div>
-        </div>
-        <div *ngIf="currentView === 'settings'" class="content settings-content">
-          <h1 class="settings-title">Configuración</h1>
-          <div class="settings-section">
-            <h2 class="settings-section-title">Cuenta</h2>
-            <ul class="settings-list">
-              <li>
-                <span>Idioma</span>
-                <select [(ngModel)]="userLanguage" (change)="onLanguageChange($event)">
-                  <option value="es">Español</option>
-                  <option value="en">English</option>
-                </select>
-              </li>
-              <li>
-                <span>Cambiar contraseña</span>
-                <button class="settings-btn" (click)="openChangePasswordDialog()">Cambiar</button>
-              </li>
-              <li>
-                <span>Eliminar cuenta</span>
-                <button class="settings-btn danger" (click)="openDeleteAccountDialog()">Eliminar</button>
-              </li>
-            </ul>
-          </div>
-          <div class="settings-section">
-            <h2 class="settings-section-title">Privacidad</h2>
-            <ul class="settings-list">
-              <li>
-                <span>Exportar mis datos</span>
-                <button class="settings-btn" (click)="exportUserData()">Exportar</button>
-              </li>
-              <li>
-                <span>Borrar historial de actividad</span>
-                <button class="settings-btn" (click)="clearActivityHistory()">Borrar</button>
-              </li>
-            </ul>
-          </div>
-          <div class="settings-section">
-            <h2 class="settings-section-title">Notificaciones</h2>
-            <ul class="settings-list">
-              <li>
-                <span>Recibir notificaciones por email</span>
-                <input type="checkbox" [(ngModel)]="emailNotifications" (change)="onEmailNotificationsChange()" />
-              </li>
-              <li>
-                <span>Recibir notificaciones en la app</span>
-                <input type="checkbox" [(ngModel)]="appNotifications" (change)="onAppNotificationsChange()" />
-              </li>
-            </ul>
-          </div>
-          <div class="settings-section">
-            <h2 class="settings-section-title">Sobre la app</h2>
-            <ul class="settings-list">
-              <li>
-                <span>Versión</span>
-                <span class="settings-version">1.0.0</span>
-              </li>
-              <li>
-                <span>Desarrolladora</span>
-                <span class="settings-dev">Ana Valladares González</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Pet Detail Modal Overlay -->
-        <div *ngIf="showPetDetailModal" class="pet-modal-overlay">
-          <div class="pet-modal-content">
-            <button class="pet-modal-close-btn" (click)="closePetDetailModal()" aria-label="Cerrar ventana">×</button>
-            <app-pet-detail [selectedPetId]="selectedPetId" (close)="closePetDetailModal()"></app-pet-detail>
-          </div>
-        </div>
+            </tr>
+            <tr *ngIf="!citas || citas.length === 0">
+              <td colspan="5" style="text-align:center; color:#888;">No tienes próximas citas.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <p-toast></p-toast>
-    <p-confirmpopup></p-confirmpopup>
+    <div *ngIf="currentView === 'pets'" class="content pets-content">
+      <div class="pets-header-row">
+        <h1>Mis Mascotas</h1>
+        <button class="add-pet-btn-simple" (click)="showAddPetForm = true">
+          Añadir Mascota
+        </button>
+      </div>
+      <ul class="pets-list-simple">
+        <li *ngFor="let pet of pets" class="pet-list-item clickable" (click)="openPetDetailModal(pet.id)">
+          <div class="pet-list-photo">
+            <img [src]="pet.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" [alt]="pet.nombre" />
+          </div>
+          <div class="pet-list-info">
+            <div class="pet-list-name">{{ pet.nombre }}</div>
+            <div class="pet-list-meta">{{ pet.tipo }}{{ pet.raza ? ', ' + pet.raza : '' }}<span
+                *ngIf="pet.fecha_nacimiento"> · {{ calcularEdad(pet.fecha_nacimiento) }}</span></div>
+          </div>
+        </li>
+      </ul>
+      <div *ngIf="pets.length === 0" class="no-pets-msg">No tienes mascotas registradas aún.</div>
+    </div>
+    <div *ngIf="currentView === 'health'" class="content health-content">
+      <div class="dashboard-header">
+        <h1>Citas</h1>
+      </div>
+      <div class="health-calendar-section">
+        <button class="add-health-btn" (click)="openAddRecordDialog('vacunas')">Nueva Cita</button>
+        <div class="calendar-row calendar-row-large calendar-row-headers">
+          <div class="calendar-col">
+            <div class="calendar-header-flex">
+              <button class="calendar-arrow calendar-arrow-left" (click)="prevMonth()">&#60;</button>
+              <div class="calendar-title">{{ calendarMonthNames[calendarMonth] }} {{ calendarYear }}</div>
+            </div>
+            <table class="custom-calendar-table custom-calendar-table-large">
+              <thead>
+                <tr>
+                  <th *ngFor="let d of weekDays">{{ d }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let week of calendarWeeks">
+                  <td *ngFor="let day of week" [class.selected]="isSelectedDate(day, calendarMonth, calendarYear)"
+                    [class.today]="isToday(day, calendarMonth, calendarYear)" [class.empty]="!day"
+                    (click)="selectDate(day, calendarMonth, calendarYear)">
+                    <span *ngIf="day">{{ day }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="calendar-col">
+            <div class="calendar-header-flex">
+              <div class="calendar-title">{{ calendarMonthNames[nextCalendarMonth] }} {{ nextCalendarYear }}</div>
+              <button class="calendar-arrow calendar-arrow-right" (click)="nextMonth()">&#62;</button>
+            </div>
+            <table class="custom-calendar-table custom-calendar-table-large">
+              <thead>
+                <tr>
+                  <th *ngFor="let d of weekDays">{{ d }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let week of nextCalendarWeeks">
+                  <td *ngFor="let day of week"
+                    [class.selected]="isSelectedDate(day, nextCalendarMonth, nextCalendarYear)"
+                    [class.today]="isToday(day, nextCalendarMonth, nextCalendarYear)" [class.empty]="!day"
+                    (click)="selectDate(day, nextCalendarMonth, nextCalendarYear)">
+                    <span *ngIf="day">{{ day }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="health-events-list">
+        <h2>{{ selectedHealthDate | date:'MMMM d, yyyy' }}</h2>
+        <ng-container *ngIf="filteredHealthEvents.length > 0; else noEvents">
+          <div *ngFor="let event of filteredHealthEvents" class="health-event-card">
+            <div class="health-event-icon">
+              <i class="pi pi-shield" *ngIf="event.tipo === 'vacuna'"></i>
+              <i class="pi pi-heart" *ngIf="event.tipo === 'desparasitacion'"></i>
+              <i class="pi pi-medkit" *ngIf="event.tipo === 'medicacion'"></i>
+            </div>
+            <div class="health-event-info">
+              <div class="health-event-title">{{ event.nombre }}</div>
+              <div class="health-event-time">{{ event.hora || 'Todo el día' }}</div>
+              <div class="health-event-pet">{{ event.petName }}</div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #noEvents>
+          <div class="no-health-events">No hay citas para este día.</div>
+        </ng-template>
+      </div>
+    </div>
+    <div *ngIf="currentView === 'settings'" class="content settings-content">
+      <h1 class="settings-title">Configuración</h1>
+      <div class="settings-section">
+        <h2 class="settings-section-title">Cuenta</h2>
+        <ul class="settings-list">
+          <li>
+            <span>Idioma</span>
+            <select [(ngModel)]="userLanguage" (change)="onLanguageChange($event)">
+              <option value="es">Español</option>
+              <option value="en">English</option>
+            </select>
+          </li>
+          <li>
+            <span>Cambiar contraseña</span>
+            <button class="settings-btn" (click)="openChangePasswordDialog()">Cambiar</button>
+          </li>
+          <li>
+            <span>Eliminar cuenta</span>
+            <button class="settings-btn danger" (click)="openDeleteAccountDialog()">Eliminar</button>
+          </li>
+        </ul>
+      </div>
+      <div class="settings-section">
+        <h2 class="settings-section-title">Privacidad</h2>
+        <ul class="settings-list">
+          <li>
+            <span>Exportar mis datos</span>
+            <button class="settings-btn" (click)="exportUserData()">Exportar</button>
+          </li>
+          <li>
+            <span>Borrar historial de actividad</span>
+            <button class="settings-btn" (click)="clearActivityHistory()">Borrar</button>
+          </li>
+        </ul>
+      </div>
+      <div class="settings-section">
+        <h2 class="settings-section-title">Notificaciones</h2>
+        <ul class="settings-list">
+          <li>
+            <span>Recibir notificaciones por email</span>
+            <input type="checkbox" [(ngModel)]="emailNotifications" (change)="onEmailNotificationsChange()" />
+          </li>
+          <li>
+            <span>Recibir notificaciones en la app</span>
+            <input type="checkbox" [(ngModel)]="appNotifications" (change)="onAppNotificationsChange()" />
+          </li>
+        </ul>
+      </div>
+      <div class="settings-section">
+        <h2 class="settings-section-title">Sobre la app</h2>
+        <ul class="settings-list">
+          <li>
+            <span>Versión</span>
+            <span class="settings-version">1.0.0</span>
+          </li>
+          <li>
+            <span>Desarrolladora</span>
+            <span class="settings-dev">Ana Valladares González</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Pet Detail Modal Overlay -->
+    <div *ngIf="showPetDetailModal" class="pet-modal-overlay">
+      <div class="pet-modal-content">
+        <button class="pet-modal-close-btn" (click)="closePetDetailModal()" aria-label="Cerrar ventana">×</button>
+        <app-pet-detail [selectedPetId]="selectedPetId" (close)="closePetDetailModal()"></app-pet-detail>
+      </div>
+    </div>
+  </div>
+  <p-toast></p-toast>
+  <p-confirmpopup></p-confirmpopup>
 </div>

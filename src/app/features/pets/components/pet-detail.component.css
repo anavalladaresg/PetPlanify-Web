@@ -46,6 +46,7 @@
   gap: 0.5rem;
   margin-bottom: 1.5em;
 }
+
 .pet-tabs button {
   background: #eaf5ea;
   border: 1px solid #b7d8b7;
@@ -56,7 +57,9 @@
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
-.pet-tabs button.active, .pet-tabs button:hover {
+
+.pet-tabs button.active,
+.pet-tabs button:hover {
   background: #497a4a;
   color: #fff;
 }
@@ -73,19 +76,39 @@
 }
 
 .pet-tab-content.slide-left-enter {
-  animation: slideLeftIn 0.35s cubic-bezier(0.4,0,0.2,1);
+  animation: slideLeftIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .pet-tab-content.slide-right-enter {
-  animation: slideRightIn 0.35s cubic-bezier(0.4,0,0.2,1);
+  animation: slideRightIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideLeftIn {
-  from { opacity: 0; transform: translateX(60px); clip-path: inset(0 0 0 60px); }
-  to { opacity: 1; transform: none; clip-path: inset(0); }
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+    clip-path: inset(0 0 0 60px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0);
+  }
 }
+
 @keyframes slideRightIn {
-  from { opacity: 0; transform: translateX(-60px); clip-path: inset(0 60px 0 0); }
-  to { opacity: 1; transform: none; clip-path: inset(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+    clip-path: inset(0 60px 0 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0);
+  }
 }
 
 .pet-info-table {
@@ -96,18 +119,25 @@
   border-radius: 8px;
   overflow: hidden;
 }
-.pet-info-table th, .pet-info-table td {
+
+.pet-info-table th,
+.pet-info-table td {
   padding: 0.7em 1em;
   border-bottom: 1px solid #e0eae0;
   text-align: left;
-  color: #2d4d2e; /* Color más oscuro para mejor contraste */
-  font-size: 1.08rem; /* Tamaño de fuente ligeramente mayor */
+  color: #2d4d2e;
+  /* Color más oscuro para mejor contraste */
+  font-size: 1.08rem;
+  /* Tamaño de fuente ligeramente mayor */
 }
+
 .pet-info-table th {
   background: #eaf5ea;
-  color: #2d4d2e; /* Color más oscuro para encabezados */
+  color: #2d4d2e;
+  /* Color más oscuro para encabezados */
   font-weight: 700;
 }
+
 .pet-info-table tr:last-child td {
   border-bottom: none;
 }
@@ -116,7 +146,8 @@
   background: #f6fbf6;
   border-radius: 6px;
   padding: 1em;
-  color: #2d4d2e; /* Color más oscuro para mejor legibilidad */
+  color: #2d4d2e;
+  /* Color más oscuro para mejor legibilidad */
   font-style: italic;
   margin-bottom: 1em;
   font-size: 1.08rem;
@@ -135,6 +166,7 @@
   max-width: 320px;
   margin-top: 1.5em;
 }
+
 .pet-profile-img {
   width: 140px;
   height: 140px;
@@ -144,17 +176,20 @@
   margin-bottom: 1.2em;
   background: #f6fbf6;
 }
+
 .pet-profile-name {
   font-size: 1.5rem;
   font-weight: 600;
   color: #497a4a;
   margin-bottom: 0.2em;
 }
+
 .pet-profile-breed {
   font-size: 1.1rem;
   color: #6b8e6b;
   margin-bottom: 1.5em;
 }
+
 .pet-profile-btn {
   width: 100%;
   background: #eaf5ea;
@@ -168,11 +203,13 @@
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
+
 .pet-profile-btn.primary {
   background: #497a4a;
   color: #fff;
   border: 1px solid #497a4a;
 }
+
 .pet-profile-btn:hover {
   background: #497a4a;
   color: #fff;
@@ -189,6 +226,7 @@
   transition: color 0.2s;
   padding: 0;
 }
+
 .pet-back-btn:hover {
   color: #2d4d2e;
   text-decoration: underline;
@@ -218,6 +256,7 @@
     align-items: stretch;
     padding: 1.2rem 0.5rem;
   }
+
   .pet-detail-profile {
     max-width: 100%;
     margin: 2em auto 0 auto;

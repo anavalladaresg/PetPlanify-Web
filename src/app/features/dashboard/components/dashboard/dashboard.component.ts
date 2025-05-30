@@ -40,7 +40,7 @@ export class DashboardComponent {
   pets: any[] = [];
   citas: any[] = [];
 
-  constructor(private http: HttpClient, private confirmationService: ConfirmationService, private messageService: MessageService, private router: Router) {}
+  constructor(private http: HttpClient, private confirmationService: ConfirmationService, private messageService: MessageService, private router: Router) { }
 
   // --- CALENDARIO CUSTOM ---
   // Iniciales de los días en español, semana inicia en lunes
@@ -53,8 +53,8 @@ export class DashboardComponent {
   calendarYear: number = new Date().getFullYear();
   nextCalendarMonth: number = (new Date().getMonth() + 1) % 12;
   nextCalendarYear: number = new Date().getMonth() === 11 ? new Date().getFullYear() + 1 : new Date().getFullYear();
-  calendarWeeks: (number|null)[][] = [];
-  nextCalendarWeeks: (number|null)[][] = [];
+  calendarWeeks: (number | null)[][] = [];
+  nextCalendarWeeks: (number | null)[][] = [];
 
   ngOnInit() {
     this.loadPets();
@@ -80,11 +80,11 @@ export class DashboardComponent {
     this.nextCalendarWeeks = this.generateCalendarWeeks(this.nextCalendarMonth, this.nextCalendarYear);
   }
 
-  generateCalendarWeeks(month: number, year: number): (number|null)[][] {
+  generateCalendarWeeks(month: number, year: number): (number | null)[][] {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
-    const weeks: (number|null)[][] = [];
-    let week: (number|null)[] = [];
+    const weeks: (number | null)[][] = [];
+    let week: (number | null)[] = [];
     let dayOfWeek = firstDay.getDay();
     // Ajustar para que la semana inicie en lunes
     dayOfWeek = (dayOfWeek + 6) % 7;
@@ -105,12 +105,12 @@ export class DashboardComponent {
     return weeks;
   }
 
-  selectDate(day: number|null, month: number, year: number) {
+  selectDate(day: number | null, month: number, year: number) {
     if (!day) return;
     this.selectedHealthDate = new Date(year, month, day);
   }
 
-  isSelectedDate(day: number|null, month: number, year: number): boolean {
+  isSelectedDate(day: number | null, month: number, year: number): boolean {
     if (!day) return false;
     return this.selectedHealthDate &&
       this.selectedHealthDate.getDate() === day &&
@@ -118,7 +118,7 @@ export class DashboardComponent {
       this.selectedHealthDate.getFullYear() === year;
   }
 
-  isToday(day: number|null, month: number, year: number): boolean {
+  isToday(day: number | null, month: number, year: number): boolean {
     if (!day) return false;
     const today = new Date();
     return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
