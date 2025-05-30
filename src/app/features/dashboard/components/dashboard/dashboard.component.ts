@@ -13,6 +13,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { Router } from '@angular/router';
 import { PetDetailComponent } from '../../../pets/components/pet-detail.component';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +30,8 @@ import { PetDetailComponent } from '../../../pets/components/pet-detail.componen
     InputTextModule,
     ToastModule,
     ConfirmPopupModule,
-    PetDetailComponent
+    PetDetailComponent,
+    CalendarModule
   ],
   providers: [ConfirmationService, MessageService]
 })
@@ -40,13 +42,106 @@ export class DashboardComponent {
 
   constructor(private http: HttpClient, private confirmationService: ConfirmationService, private messageService: MessageService, private router: Router) {}
 
+  // --- CALENDARIO CUSTOM ---
+  // Iniciales de los días en español, semana inicia en lunes
+  weekDays: string[] = ['L', 'M', 'X', 'J', 'V', 'S', 'D']; // Lunes a Domingo en español
+  calendarMonthNames: string[] = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+  calendarMonth: number = new Date().getMonth();
+  calendarYear: number = new Date().getFullYear();
+  nextCalendarMonth: number = (new Date().getMonth() + 1) % 12;
+  nextCalendarYear: number = new Date().getMonth() === 11 ? new Date().getFullYear() + 1 : new Date().getFullYear();
+  calendarWeeks: (number|null)[][] = [];
+  nextCalendarWeeks: (number|null)[][] = [];
+
   ngOnInit() {
     this.loadPets();
     this.loadCitas();
+    // Inicializar calendario custom
+    const d = this.selectedHealthDate || new Date();
+    this.calendarMonth = d.getMonth();
+    this.calendarYear = d.getFullYear();
+    this.updateCalendars();
   }
 
-  navigateTo(view: string) {
-    this.currentView = view;
+  updateCalendars() {
+    // Mes actual
+    this.calendarWeeks = this.generateCalendarWeeks(this.calendarMonth, this.calendarYear);
+    // Mes siguiente
+    if (this.calendarMonth === 11) {
+      this.nextCalendarMonth = 0;
+      this.nextCalendarYear = this.calendarYear + 1;
+    } else {
+      this.nextCalendarMonth = this.calendarMonth + 1;
+      this.nextCalendarYear = this.calendarYear;
+    }
+    this.nextCalendarWeeks = this.generateCalendarWeeks(this.nextCalendarMonth, this.nextCalendarYear);
+  }
+
+  generateCalendarWeeks(month: number, year: number): (number|null)[][] {
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const weeks: (number|null)[][] = [];
+    let week: (number|null)[] = [];
+    let dayOfWeek = firstDay.getDay();
+    // Ajustar para que la semana inicie en lunes
+    dayOfWeek = (dayOfWeek + 6) % 7;
+    // Primeros días vacíos
+    for (let i = 0; i < dayOfWeek; i++) week.push(null);
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      week.push(day);
+      if (week.length === 7) {
+        weeks.push(week);
+        week = [];
+      }
+    }
+    // Rellenar la última semana
+    if (week.length > 0) {
+      while (week.length < 7) week.push(null);
+      weeks.push(week);
+    }
+    return weeks;
+  }
+
+  selectDate(day: number|null, month: number, year: number) {
+    if (!day) return;
+    this.selectedHealthDate = new Date(year, month, day);
+  }
+
+  isSelectedDate(day: number|null, month: number, year: number): boolean {
+    if (!day) return false;
+    return this.selectedHealthDate &&
+      this.selectedHealthDate.getDate() === day &&
+      this.selectedHealthDate.getMonth() === month &&
+      this.selectedHealthDate.getFullYear() === year;
+  }
+
+  isToday(day: number|null, month: number, year: number): boolean {
+    if (!day) return false;
+    const today = new Date();
+    return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
+  }
+
+  prevMonth() {
+    if (this.calendarMonth === 0) {
+      this.calendarMonth = 11;
+      this.calendarYear--;
+    } else {
+      this.calendarMonth--;
+    }
+    this.updateCalendars();
+  }
+
+  nextMonth() {
+    if (this.calendarMonth === 11) {
+      this.calendarMonth = 0;
+      this.calendarYear++;
+    } else {
+      this.calendarMonth++;
+    }
+    this.updateCalendars();
   }
 
   logout() {
@@ -446,5 +541,90 @@ export class DashboardComponent {
   closePetDetailModal() {
     this.showPetDetailModal = false;
     this.selectedPetId = '';
+  }
+
+  today: string = new Date().toISOString().slice(0, 10); // yyyy-MM-dd
+
+  selectedHealthDate: Date = new Date();
+  // Estructura para eventos de salud combinados
+  get filteredHealthEvents() {
+    const selected = this.selectedHealthDate;
+    if (!selected) return [];
+    const selectedStr = selected.toISOString().slice(0, 10);
+    const events: any[] = [];
+    for (const pet of this.pets) {
+      // Vacunas
+      (this.vacunasPorMascota[pet.id] || []).forEach(v => {
+        const fecha = v.proxima_fecha || v.fecha;
+        if (fecha && fecha.slice(0, 10) === selectedStr) {
+          events.push({
+            tipo: 'vacuna',
+            nombre: v.nombre,
+            hora: '',
+            petName: pet.nombre
+          });
+        }
+      });
+      // Desparasitaciones
+      (this.desparasitacionesPorMascota[pet.id] || []).forEach(d => {
+        if (d.fecha && d.fecha.slice(0, 10) === selectedStr) {
+          events.push({
+            tipo: 'desparasitacion',
+            nombre: d.nombre,
+            hora: '',
+            petName: pet.nombre
+          });
+        }
+      });
+      // Medicaciones (puede tener fecha_inicio o fecha)
+      (this.medicacionesPorMascota[pet.id] || []).forEach(m => {
+        const fecha = m.fecha_inicio || m.fecha;
+        if (fecha && fecha.slice(0, 10) === selectedStr) {
+          events.push({
+            tipo: 'medicacion',
+            nombre: m.nombre,
+            hora: '',
+            petName: pet.nombre
+          });
+        }
+      });
+    }
+    return events;
+  }
+
+  navigateTo(view: string) {
+    this.currentView = view;
+  }
+
+  // CONFIGURACIÓN - Estado y métodos mínimos para la UI
+  userLanguage: string = 'es';
+  emailNotifications: boolean = true;
+  appNotifications: boolean = true;
+
+  onLanguageChange(event: any) {
+    // Aquí puedes guardar la preferencia en localStorage o llamar a la API
+    // localStorage.setItem('language', this.userLanguage);
+  }
+  openChangePasswordDialog() {
+    // Aquí abrirías un modal para cambiar la contraseña
+    alert('Funcionalidad próximamente disponible');
+  }
+  openDeleteAccountDialog() {
+    // Aquí abrirías un modal de confirmación para eliminar la cuenta
+    alert('Funcionalidad próximamente disponible');
+  }
+  exportUserData() {
+    // Aquí llamarías a la API para exportar los datos del usuario
+    alert('Funcionalidad próximamente disponible');
+  }
+  clearActivityHistory() {
+    // Aquí llamarías a la API para borrar el historial
+    alert('Funcionalidad próximamente disponible');
+  }
+  onEmailNotificationsChange() {
+    // Aquí puedes guardar la preferencia en localStorage o llamar a la API
+  }
+  onAppNotificationsChange() {
+    // Aquí puedes guardar la preferencia en localStorage o llamar a la API
   }
 }

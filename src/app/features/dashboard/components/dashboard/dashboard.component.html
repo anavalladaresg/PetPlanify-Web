@@ -138,6 +138,148 @@
             </ul>
             <div *ngIf="pets.length === 0" class="no-pets-msg">No tienes mascotas registradas aún.</div>
         </div>
+        <div *ngIf="currentView === 'health'" class="content health-content">
+          <div class="dashboard-header">
+            <h1>Citas</h1>
+          </div>
+          <div class="health-calendar-section">
+            <button class="add-health-btn" (click)="openAddRecordDialog('vacunas')">Nueva Cita</button>
+            <div class="calendar-row calendar-row-large calendar-row-headers">
+              <div class="calendar-col">
+                <div class="calendar-header-flex">
+                  <button class="calendar-arrow calendar-arrow-left" (click)="prevMonth()">&#60;</button>
+                  <div class="calendar-title">{{ calendarMonthNames[calendarMonth] }} {{ calendarYear }}</div>
+                </div>
+                <table class="custom-calendar-table custom-calendar-table-large">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let d of weekDays">{{ d }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let week of calendarWeeks">
+                      <td *ngFor="let day of week"
+                          [class.selected]="isSelectedDate(day, calendarMonth, calendarYear)"
+                          [class.today]="isToday(day, calendarMonth, calendarYear)"
+                          [class.empty]="!day"
+                          (click)="selectDate(day, calendarMonth, calendarYear)"
+                          >
+                        <span *ngIf="day">{{ day }}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="calendar-col">
+                <div class="calendar-header-flex">
+                  <div class="calendar-title">{{ calendarMonthNames[nextCalendarMonth] }} {{ nextCalendarYear }}</div>
+                  <button class="calendar-arrow calendar-arrow-right" (click)="nextMonth()">&#62;</button>
+                </div>
+                <table class="custom-calendar-table custom-calendar-table-large">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let d of weekDays">{{ d }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let week of nextCalendarWeeks">
+                      <td *ngFor="let day of week"
+                          [class.selected]="isSelectedDate(day, nextCalendarMonth, nextCalendarYear)"
+                          [class.today]="isToday(day, nextCalendarMonth, nextCalendarYear)"
+                          [class.empty]="!day"
+                          (click)="selectDate(day, nextCalendarMonth, nextCalendarYear)"
+                          >
+                        <span *ngIf="day">{{ day }}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="health-events-list">
+            <h2>{{ selectedHealthDate | date:'MMMM d, yyyy' }}</h2>
+            <ng-container *ngIf="filteredHealthEvents.length > 0; else noEvents">
+              <div *ngFor="let event of filteredHealthEvents" class="health-event-card">
+                <div class="health-event-icon">
+                  <i class="pi pi-shield" *ngIf="event.tipo === 'vacuna'"></i>
+                  <i class="pi pi-heart" *ngIf="event.tipo === 'desparasitacion'"></i>
+                  <i class="pi pi-medkit" *ngIf="event.tipo === 'medicacion'"></i>
+                </div>
+                <div class="health-event-info">
+                  <div class="health-event-title">{{ event.nombre }}</div>
+                  <div class="health-event-time">{{ event.hora || 'Todo el día' }}</div>
+                  <div class="health-event-pet">{{ event.petName }}</div>
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #noEvents>
+              <div class="no-health-events">No hay citas para este día.</div>
+            </ng-template>
+          </div>
+        </div>
+        <div *ngIf="currentView === 'settings'" class="content settings-content">
+          <h1 class="settings-title">Configuración</h1>
+          <div class="settings-section">
+            <h2 class="settings-section-title">Cuenta</h2>
+            <ul class="settings-list">
+              <li>
+                <span>Idioma</span>
+                <select [(ngModel)]="userLanguage" (change)="onLanguageChange($event)">
+                  <option value="es">Español</option>
+                  <option value="en">English</option>
+                </select>
+              </li>
+              <li>
+                <span>Cambiar contraseña</span>
+                <button class="settings-btn" (click)="openChangePasswordDialog()">Cambiar</button>
+              </li>
+              <li>
+                <span>Eliminar cuenta</span>
+                <button class="settings-btn danger" (click)="openDeleteAccountDialog()">Eliminar</button>
+              </li>
+            </ul>
+          </div>
+          <div class="settings-section">
+            <h2 class="settings-section-title">Privacidad</h2>
+            <ul class="settings-list">
+              <li>
+                <span>Exportar mis datos</span>
+                <button class="settings-btn" (click)="exportUserData()">Exportar</button>
+              </li>
+              <li>
+                <span>Borrar historial de actividad</span>
+                <button class="settings-btn" (click)="clearActivityHistory()">Borrar</button>
+              </li>
+            </ul>
+          </div>
+          <div class="settings-section">
+            <h2 class="settings-section-title">Notificaciones</h2>
+            <ul class="settings-list">
+              <li>
+                <span>Recibir notificaciones por email</span>
+                <input type="checkbox" [(ngModel)]="emailNotifications" (change)="onEmailNotificationsChange()" />
+              </li>
+              <li>
+                <span>Recibir notificaciones en la app</span>
+                <input type="checkbox" [(ngModel)]="appNotifications" (change)="onAppNotificationsChange()" />
+              </li>
+            </ul>
+          </div>
+          <div class="settings-section">
+            <h2 class="settings-section-title">Sobre la app</h2>
+            <ul class="settings-list">
+              <li>
+                <span>Versión</span>
+                <span class="settings-version">1.0.0</span>
+              </li>
+              <li>
+                <span>Desarrolladora</span>
+                <span class="settings-dev">Ana Valladares González</span>
+              </li>
+            </ul>
+          </div>
+        </div>
 
         <!-- Pet Detail Modal Overlay -->
         <div *ngIf="showPetDetailModal" class="pet-modal-overlay">
