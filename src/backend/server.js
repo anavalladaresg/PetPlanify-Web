@@ -102,6 +102,20 @@ app.get('/api/pets/:userId', (req, res) => {
   });
 });
 
+// Obtener detalle de una mascota por id
+app.get('/api/pets/detalle/:petId', (req, res) => {
+  const { petId } = req.params;
+  db.get('SELECT * FROM mascotas WHERE id = ?', [petId], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener la mascota.' });
+    }
+    if (!row) {
+      return res.status(404).json({ error: 'Mascota no encontrada.' });
+    }
+    res.json(row);
+  });
+});
+
 // --- ENDPOINTS DE HISTORIAL SANITARIO ---
 // Guardar vacuna
 app.post('/api/pets/:petId/vacunas', (req, res) => {
@@ -132,6 +146,16 @@ app.get('/api/pets/:petId/vacunas', (req, res) => {
     res.json(rows);
   });
 });
+// Obtener vacuna por ID
+app.get('/api/vacunas/:id', (req, res) => {
+  const { id } = req.params;
+  db.get('SELECT * FROM vacunas WHERE id = ?', [id], (err, row) => {
+    if (err) return res.status(500).json({ error: 'Error al obtener la vacuna.' });
+    if (!row) return res.status(404).json({ error: 'Vacuna no encontrada.' });
+    res.json(row);
+  });
+});
+
 // Guardar desparasitación
 app.post('/api/pets/:petId/desparasitaciones', (req, res) => {
   const { petId } = req.params;
@@ -161,6 +185,16 @@ app.get('/api/pets/:petId/desparasitaciones', (req, res) => {
     res.json(rows);
   });
 });
+// Obtener desparasitación por ID
+app.get('/api/desparasitaciones/:id', (req, res) => {
+  const { id } = req.params;
+  db.get('SELECT * FROM desparasitaciones WHERE id = ?', [id], (err, row) => {
+    if (err) return res.status(500).json({ error: 'Error al obtener la desparasitación.' });
+    if (!row) return res.status(404).json({ error: 'Desparasitación no encontrada.' });
+    res.json(row);
+  });
+});
+
 // Guardar medicación
 app.post('/api/pets/:petId/medicaciones', (req, res) => {
   const { petId } = req.params;
@@ -190,6 +224,16 @@ app.get('/api/pets/:petId/medicaciones', (req, res) => {
     res.json(rows);
   });
 });
+// Obtener medicación por ID
+app.get('/api/medicaciones/:id', (req, res) => {
+  const { id } = req.params;
+  db.get('SELECT * FROM medicaciones WHERE id = ?', [id], (err, row) => {
+    if (err) return res.status(500).json({ error: 'Error al obtener la medicación.' });
+    if (!row) return res.status(404).json({ error: 'Medicación no encontrada.' });
+    res.json(row);
+  });
+});
+
 // Guardar observación
 app.post('/api/pets/:petId/observaciones', (req, res) => {
   const { petId } = req.params;
@@ -239,6 +283,22 @@ app.delete('/api/pets/:petId', (req, res) => {
       res.json({ success: true });
     });
   });
+});
+
+// Obtener visitas veterinario de una mascota
+app.get('/api/pets/:petId/visitas_veterinario', (req, res) => {
+  const { petId } = req.params;
+  db.all('SELECT * FROM visitas_veterinario WHERE mascota_id = ?', [petId], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener las visitas veterinario.' });
+    }
+    res.json(rows);
+  });
+});
+
+// Endpoint temporal para evitar error 404 en citas
+app.get('/api/citas/:userId', (req, res) => {
+  res.json([]); // Devuelve un array vacío por ahora
 });
 
 app.listen(PORT, () => {

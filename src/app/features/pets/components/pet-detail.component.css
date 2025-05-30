@@ -8,24 +8,218 @@
   max-width: 900px;
 }
 
-:host ::ng-deep .p-tabview .p-tabview-nav {
-  background: #eafaea;
-  border-radius: 12px 12px 0 0;
+/* Modern, responsive, and visually appealing styles for pet detail view */
+.pet-detail-modern-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2.5rem;
+  background: none;
   border: none;
+  box-shadow: none;
+  padding: 2.5rem 2rem;
+  margin: 2rem auto;
+  max-width: 1100px;
 }
-:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-  color: #47824b;
-  font-weight: 600;
-  font-family: Quicksand, 'Arial Narrow Bold', sans-serif;
-  border-radius: 12px 12px 0 0;
+
+.pet-detail-main {
+  flex: 2;
+  min-width: 350px;
+}
+
+.pet-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.2em;
+  color: #497a4a;
+}
+
+.pet-subtitle {
+  font-size: 1.1rem;
+  color: #6b8e6b;
+  margin-bottom: 1.5em;
+}
+
+.pet-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5em;
+}
+.pet-tabs button {
+  background: #eaf5ea;
+  border: 1px solid #b7d8b7;
+  border-radius: 8px 8px 0 0;
+  padding: 0.5em 1.2em;
+  font-size: 1rem;
+  color: #497a4a;
+  cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
-:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-  background: #47824b;
+.pet-tabs button.active, .pet-tabs button:hover {
+  background: #497a4a;
   color: #fff;
 }
-:host ::ng-deep .p-tabview .p-tabview-panels {
+
+.pet-tab-content {
   background: #fff;
   border-radius: 0 0 12px 12px;
-  padding: 2rem 1rem;
+  box-shadow: 0 1px 8px 0 rgba(71, 130, 75, 0.06);
+  padding: 1.5em 1em 2em 1em;
+  margin-bottom: 2em;
+  position: relative;
+  overflow: hidden;
+  transition: none;
+}
+
+.pet-tab-content.slide-left-enter {
+  animation: slideLeftIn 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.pet-tab-content.slide-right-enter {
+  animation: slideRightIn 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes slideLeftIn {
+  from { opacity: 0; transform: translateX(60px); clip-path: inset(0 0 0 60px); }
+  to { opacity: 1; transform: none; clip-path: inset(0); }
+}
+@keyframes slideRightIn {
+  from { opacity: 0; transform: translateX(-60px); clip-path: inset(0 60px 0 0); }
+  to { opacity: 1; transform: none; clip-path: inset(0); }
+}
+
+.pet-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5em;
+  background: #f6fbf6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.pet-info-table th, .pet-info-table td {
+  padding: 0.7em 1em;
+  border-bottom: 1px solid #e0eae0;
+  text-align: left;
+  color: #2d4d2e; /* Color más oscuro para mejor contraste */
+  font-size: 1.08rem; /* Tamaño de fuente ligeramente mayor */
+}
+.pet-info-table th {
+  background: #eaf5ea;
+  color: #2d4d2e; /* Color más oscuro para encabezados */
+  font-weight: 700;
+}
+.pet-info-table tr:last-child td {
+  border-bottom: none;
+}
+
+.pet-notes {
+  background: #f6fbf6;
+  border-radius: 6px;
+  padding: 1em;
+  color: #2d4d2e; /* Color más oscuro para mejor legibilidad */
+  font-style: italic;
+  margin-bottom: 1em;
+  font-size: 1.08rem;
+}
+
+.pet-detail-profile {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px 0 rgba(71, 130, 75, 0.07);
+  padding: 2em 1.5em 2em 1.5em;
+  min-width: 260px;
+  max-width: 320px;
+  margin-top: 1.5em;
+}
+.pet-profile-img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #eaf5ea;
+  margin-bottom: 1.2em;
+  background: #f6fbf6;
+}
+.pet-profile-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #497a4a;
+  margin-bottom: 0.2em;
+}
+.pet-profile-breed {
+  font-size: 1.1rem;
+  color: #6b8e6b;
+  margin-bottom: 1.5em;
+}
+.pet-profile-btn {
+  width: 100%;
+  background: #eaf5ea;
+  color: #497a4a;
+  border: 1px solid #b7d8b7;
+  border-radius: 8px;
+  padding: 0.7em 0;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.7em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.pet-profile-btn.primary {
+  background: #497a4a;
+  color: #fff;
+  border: 1px solid #497a4a;
+}
+.pet-profile-btn:hover {
+  background: #497a4a;
+  color: #fff;
+}
+
+.pet-back-btn {
+  background: none;
+  border: none;
+  color: #497a4a;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.2em;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+.pet-back-btn:hover {
+  color: #2d4d2e;
+  text-decoration: underline;
+}
+
+/* Mejorar visibilidad de los títulos de sección/tablas */
+.pet-detail-main h2 {
+  color: #2d4d2e;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-top: 1.2em;
+  margin-bottom: 0.7em;
+  letter-spacing: -0.5px;
+}
+
+.pet-tab-content h2 {
+  color: #497a4a;
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin-top: 0.5em;
+  margin-bottom: 0.7em;
+}
+
+@media (max-width: 900px) {
+  .pet-detail-modern-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.2rem 0.5rem;
+  }
+  .pet-detail-profile {
+    max-width: 100%;
+    margin: 2em auto 0 auto;
+  }
 }

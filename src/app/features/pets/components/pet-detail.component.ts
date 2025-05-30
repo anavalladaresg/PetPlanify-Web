@@ -1,46 +1,34 @@
-import { Component } from '@angular/core';
-import { TabViewModule } from 'primeng/tabview';
-import { TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
-import { ButtonModule } from 'primeng/button';
+import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { DialogService } from 'primeng/dynamicdialog';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextarea } from 'primeng/inputtextarea';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pet-detail',
   standalone: true,
   imports: [
     CommonModule,
-    TabViewModule,
-    TableModule,
-    TagModule,
-    ButtonModule,
-    DialogModule,
-    InputTextModule,
     FormsModule,
-    ReactiveFormsModule,
-    DynamicDialogModule
+    ReactiveFormsModule
   ],
-  providers: [DatePipe, DialogService],
+  providers: [DatePipe],
   templateUrl: './pet-detail.component.html',
   styleUrls: ['./pet-detail.component.css']
 })
-export class PetDetailComponent {
+export class PetDetailComponent implements OnChanges {
   vacunas: any[] = [];
   desparasitaciones: any[] = [];
   medicaciones: any[] = [];
   historial: any[] = [];
   notas: any[] = [];
 
-  selectedPetId: string = '';
+  pet: any = null; // Holds current pet data
+  activeTab: string = 'overview'; // For tab navigation
+
+  @Input() selectedPetId: string = '';
 
   addDialogVisible = false;
   addForm!: FormGroup;
@@ -50,25 +38,67 @@ export class PetDetailComponent {
   editingId: number | null = null;
 
   activeTabIndex: number = 0;
+  tabAnimationClass: string = '';
+  private lastTabIndex: number = 0;
+  tabOrder: string[] = ['overview', 'vet', 'vacunas', 'notas'];
+
+  @Output() close = new EventEmitter<void>();
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
     private fb: FormBuilder,
-    public dialogService: DialogService
+    private router: Router
   ) {
+    this.addForm = this.fb.group({}); // Ensure addForm is always a valid FormGroup
     this.route.params.subscribe(params => {
       this.selectedPetId = params['id'];
       this.loadAllData();
     });
   }
 
+  ngOnChanges() {
+    if (this.selectedPetId) {
+      this.loadAllData();
+    }
+  }
+
   loadAllData() {
-    this.http.get(`/api/vacunas/${this.selectedPetId}`).subscribe((data: any) => this.vacunas = data);
-    this.http.get(`/api/desparasitaciones/${this.selectedPetId}`).subscribe((data: any) => this.desparasitaciones = data);
-    this.http.get(`/api/medicaciones/${this.selectedPetId}`).subscribe((data: any) => this.medicaciones = data);
-    this.http.get(`/api/historial/${this.selectedPetId}`).subscribe((data: any) => this.historial = data);
-    this.http.get(`/api/notas/${this.selectedPetId}`).subscribe((data: any) => this.notas = data);
+    // Fetch pet data from the new endpoint
+    this.http.get(`/api/pets/detalle/${this.selectedPetId}`).subscribe({
+      next: (data: any) => {
+        this.pet = data;
+        console.log('Pet detail loaded', data);
+      },
+      error: (err) => {
+        this.pet = null;
+        console.error('Error loading pet detail', err);
+      }
+    });
+    this.http.get(`/api/pets/${this.selectedPetId}/vacunas`).subscribe((data: any) => this.vacunas = data);
+    this.http.get(`/api/pets/${this.selectedPetId}/desparasitaciones`).subscribe((data: any) => this.desparasitaciones = data);
+    this.http.get(`/api/pets/${this.selectedPetId}/medicaciones`).subscribe((data: any) => this.medicaciones = data);
+    this.http.get(`/api/pets/${this.selectedPetId}/visitas_veterinario`).subscribe((data: any) => this.historial = data);
+    this.http.get(`/api/pets/${this.selectedPetId}/observaciones`).subscribe((data: any) => this.notas = data);
+  }
+
+  calcularEdad(fechaNacimiento: string | undefined): string {
+    if (!fechaNacimiento) return '';
+    const nacimiento = new Date(fechaNacimiento);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const m = hoy.getMonth() - nacimiento.getMonth();
+    if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+    if (edad <= 0) return 'Menos de 1 año';
+    return edad === 1 ? '1 año' : `${edad} años`;
+  }
+
+  editPet() {
+    // Implement navigation or modal for editing pet info
+    // Example: open a dialog or navigate to edit page
+    alert('Edit pet info (feature to implement)');
   }
 
   openEditDialog(tipo: string, row: any) {
@@ -202,6 +232,22 @@ export class PetDetailComponent {
     // Animación o lógica al cambiar de pestaña
   }
 
+  setTab(tab: string) {
+    const newIndex = this.tabOrder.indexOf(tab);
+    const oldIndex = this.tabOrder.indexOf(this.activeTab);
+    if (newIndex > oldIndex) {
+      this.tabAnimationClass = 'slide-left-enter';
+    } else if (newIndex < oldIndex) {
+      this.tabAnimationClass = 'slide-right-enter';
+    } else {
+      this.tabAnimationClass = '';
+    }
+    this.activeTab = tab;
+    this.lastTabIndex = newIndex;
+    // For repeated transitions, remove class after animation
+    setTimeout(() => { this.tabAnimationClass = ''; }, 400);
+  }
+
   addRegistro() {
     if (!this.addForm.valid) return;
     const data = { ...this.addForm.value, mascota_id: this.selectedPetId };
@@ -215,5 +261,9 @@ export class PetDetailComponent {
       this.addDialogVisible = false;
       this.loadAllData();
     });
+  }
+
+  goBack() {
+    this.close.emit();
   }
 }

@@ -1,267 +1,103 @@
-<div class="pet-detail-container">
-  <p-tabView [(activeIndex)]="activeTabIndex" [controlClose]="true" (onChange)="onTabChange($event)">
-    <p-tabPanel header="Vacunas">
-      <div [@tabFade] *ngIf="activeTabIndex === 0">
-        <div class="section-header">
-          <button pButton type="button" icon="pi pi-plus" label="Añadir vacuna" class="p-button-success" (click)="openAddDialog('vacunas')"></button>
-        </div>
-        <p-table [value]="vacunas" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'" [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} de {totalRecords}">
-          <ng-template pTemplate="caption">
-            <div class="table-caption">
-              <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" placeholder="Buscar..." />
-              </span>
-            </div>
-          </ng-template>
-          <ng-template pTemplate="header">
+<div class="pet-detail-modern-container">
+  <div class="pet-detail-main">
+    <h1 class="pet-title">Perfil de {{ pet?.nombre }}</h1>
+    <div class="pet-subtitle">{{ pet?.raza }}, {{ calcularEdad(pet?.fecha_nacimiento) }}</div>
+    <div class="pet-tabs">
+      <button [class.active]="activeTab === 'overview'" (click)="setTab('overview')">General</button>
+      <button [class.active]="activeTab === 'vet'" (click)="setTab('vet')">Visitas Vet</button>
+      <button [class.active]="activeTab === 'vacunas'" (click)="setTab('vacunas')">Vacunas</button>
+      <button [class.active]="activeTab === 'notas'" (click)="setTab('notas')">Notas</button>
+    </div>
+    <div class="pet-tab-content" *ngIf="activeTab === 'overview'" [ngClass]="tabAnimationClass" data-scroll="false">
+      <h2>Información General</h2>
+      <table class="pet-info-table">
+        <tbody>
+          <tr><td>Raza</td><td>{{ pet?.raza }}</td></tr>
+          <tr><td>Edad</td><td>{{ calcularEdad(pet?.fecha_nacimiento) }}</td></tr>
+          <tr><td>Género</td><td>{{ pet?.genero || '-' }}</td></tr>
+          <tr><td>Peso</td><td>{{ pet?.peso ? pet.peso + ' kg' : '-' }}</td></tr>
+        </tbody>
+      </table>
+      <h2>Historial Médico</h2>
+      <table class="pet-info-table">
+        <tbody>
+          <tr><td>Última visita vet</td><td>{{ historial[0]?.fecha ? (historial[0]?.fecha | date:'d MMMM, yyyy') : '-' }}</td></tr>
+          <tr><td>Próxima revisión</td><td>{{ historial[0]?.proxima_visita ? (historial[0]?.proxima_visita | date:'d MMMM, yyyy') : '-' }}</td></tr>
+          <tr><td>Alergias</td><td>{{ pet?.alergias || 'Ninguna' }}</td></tr>
+        </tbody>
+      </table>
+      <h2>Notas adicionales</h2>
+      <div class="pet-notes">{{ pet?.notas || 'Sin notas adicionales.' }}</div>
+    </div>
+    <div class="pet-tab-content" *ngIf="activeTab === 'vet'" [ngClass]="tabAnimationClass" data-scroll="true">
+      <h2>Visitas Veterinario</h2>
+      <table class="pet-info-table">
+        <tr><th>Fecha</th><th>Motivo</th><th>Diagnóstico</th><th>Tratamiento</th><th>Próxima visita</th></tr>
+        <tbody>
+          <ng-container *ngFor="let v of historial">
             <tr>
-              <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-              <th pSortableColumn="fecha">Fecha <p-sortIcon field="fecha"></p-sortIcon></th>
-              <th pSortableColumn="proxima_fecha">Próxima <p-sortIcon field="proxima_fecha"></p-sortIcon></th>
-              <th>Notas</th>
-              <th style="width: 90px;">Acciones</th>
+              <td>{{ v.fecha | date:'dd/MM/yyyy' }}</td>
+              <td>{{ v.motivo }}</td>
+              <td>{{ v.diagnostico }}</td>
+              <td>{{ v.tratamiento }}</td>
+              <td>{{ v.proxima_visita | date:'dd/MM/yyyy' }}</td>
             </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-row>
+          </ng-container>
+          <ng-container *ngIf="!historial || historial.length === 0">
             <tr>
-              <td>{{ row.nombre }}</td>
-              <td>{{ row.fecha | date:'dd/MM/yyyy' }}</td>
-              <td>{{ row.proxima_fecha | date:'dd/MM/yyyy' }}</td>
-              <td>{{ row.notas }}</td>
-              <td>
-                <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info" (click)="openEditDialog('vacunas', row)"></button>
-                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="deleteRegistro('vacunas', row)"></button>
-              </td>
+              <td colspan="5" style="text-align:center; color:#888;">Sin visitas registradas.</td>
             </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel header="Desparasitaciones">
-      <div [@tabFade] *ngIf="activeTabIndex === 1">
-        <div class="section-header">
-          <button pButton type="button" icon="pi pi-plus" label="Añadir desparasitación" class="p-button-success" (click)="openAddDialog('desparasitaciones')"></button>
-        </div>
-        <p-table [value]="desparasitaciones" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
-          <ng-template pTemplate="header">
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    <div class="pet-tab-content" *ngIf="activeTab === 'vacunas'" [ngClass]="tabAnimationClass" data-scroll="true">
+      <h2>Vacunas</h2>
+      <table class="pet-info-table">
+        <tr><th>Nombre</th><th>Fecha</th><th>Próxima</th><th>Notas</th></tr>
+        <tbody>
+          <ng-container *ngFor="let v of vacunas">
             <tr>
-              <th>Nombre</th>
-              <th>Fecha</th>
-              <th>Próxima</th>
-              <th>Notas</th>
-              <th style="width: 90px;">Acciones</th>
+              <td>{{ v.nombre }}</td>
+              <td>{{ v.fecha | date:'dd/MM/yyyy' }}</td>
+              <td>{{ v.proxima_fecha | date:'dd/MM/yyyy' }}</td>
+              <td>{{ v.notas }}</td>
             </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-row>
+          </ng-container>
+          <ng-container *ngIf="!vacunas || vacunas.length === 0">
             <tr>
-              <td>{{ row.nombre }}</td>
-              <td>{{ row.fecha | date:'dd/MM/yyyy' }}</td>
-              <td>{{ row.proxima_fecha | date:'dd/MM/yyyy' }}</td>
-              <td>{{ row.notas }}</td>
-              <td>
-                <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info" (click)="openEditDialog('desparasitaciones', row)"></button>
-                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="deleteRegistro('desparasitaciones', row)"></button>
-              </td>
+              <td colspan="4" style="text-align:center; color:#888;">Sin vacunas registradas.</td>
             </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel header="Medicaciones">
-      <div [@tabFade] *ngIf="activeTabIndex === 2">
-        <div class="section-header">
-          <button pButton type="button" icon="pi pi-plus" label="Añadir medicación" class="p-button-success" (click)="openAddDialog('medicaciones')"></button>
-        </div>
-        <p-table [value]="medicaciones" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
-          <ng-template pTemplate="header">
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    <div class="pet-tab-content" *ngIf="activeTab === 'notas'" [ngClass]="tabAnimationClass" data-scroll="true">
+      <h2>Notas</h2>
+      <table class="pet-info-table">
+        <tr><th>Contenido</th><th>Fecha</th></tr>
+        <tbody>
+          <ng-container *ngFor="let n of notas">
             <tr>
-              <th>Nombre</th>
-              <th>Dosis</th>
-              <th>Frecuencia</th>
-              <th>Inicio</th>
-              <th>Fin</th>
-              <th>Notas</th>
-              <th style="width: 90px;">Acciones</th>
+              <td>{{ n.contenido }}</td>
+              <td>{{ n.fecha | date:'dd/MM/yyyy' }}</td>
             </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-row>
+          </ng-container>
+          <ng-container *ngIf="!notas || notas.length === 0">
             <tr>
-              <td>{{ row.nombre }}</td>
-              <td>{{ row.dosis }}</td>
-              <td>{{ row.frecuencia }}</td>
-              <td>{{ row.fecha_inicio | date:'dd/MM/yyyy' }}</td>
-              <td>{{ row.fecha_fin | date:'dd/MM/yyyy' }}</td>
-              <td>{{ row.notas }}</td>
-              <td>
-                <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info" (click)="openEditDialog('medicaciones', row)"></button>
-                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="deleteRegistro('medicaciones', row)"></button>
-              </td>
+              <td colspan="2" style="text-align:center; color:#888;">Sin notas registradas.</td>
             </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel header="Historial veterinario">
-      <div [@tabFade] *ngIf="activeTabIndex === 3">
-        <div class="section-header">
-          <button pButton type="button" icon="pi pi-plus" label="Añadir visita" class="p-button-success" (click)="openAddDialog('historial')"></button>
-        </div>
-        <p-table [value]="historial" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Fecha</th>
-              <th>Motivo</th>
-              <th>Diagnóstico</th>
-              <th>Tratamiento</th>
-              <th>Próxima visita</th>
-              <th style="width: 90px;">Acciones</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-row>
-            <tr>
-              <td>{{ row.fecha | date:'dd/MM/yyyy' }}</td>
-              <td>{{ row.motivo }}</td>
-              <td>{{ row.diagnostico }}</td>
-              <td>{{ row.tratamiento }}</td>
-              <td>{{ row.proxima_visita | date:'dd/MM/yyyy' }}</td>
-              <td>
-                <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info" (click)="openEditDialog('historial', row)"></button>
-                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="deleteRegistro('historial', row)"></button>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel header="Notas o comentarios">
-      <div [@tabFade] *ngIf="activeTabIndex === 4">
-        <div class="section-header">
-          <button pButton type="button" icon="pi pi-plus" label="Añadir nota" class="p-button-success" (click)="openAddDialog('notas')"></button>
-        </div>
-        <p-table [value]="notas" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Contenido</th>
-              <th>Fecha</th>
-              <th style="width: 90px;">Acciones</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-row>
-            <tr>
-              <td>{{ row.contenido }}</td>
-              <td>{{ row.fecha | date:'dd/MM/yyyy' }}</td>
-              <td>
-                <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-info" (click)="openEditDialog('notas', row)"></button>
-                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="deleteRegistro('notas', row)"></button>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </p-tabPanel>
-  </p-tabView>
-
-  <p-dialog header="{{editMode ? 'Editar' : 'Añadir'}}" [(visible)]="addDialogVisible" [modal]="true" [closable]="true" [dismissableMask]="true" [style]="{width: '400px'}" (onHide)="closeAddDialog()">
-    <form [formGroup]="addForm" (ngSubmit)="editMode ? updateRegistro() : addRegistro()">
-      <div *ngIf="addType === 'vacunas'">
-        <div class="p-field">
-          <label>Nombre</label>
-          <input pInputText formControlName="nombre" />
-        </div>
-        <div class="p-field">
-          <label>Fecha</label>
-          <input pInputText type="date" formControlName="fecha" />
-        </div>
-        <div class="p-field">
-          <label>Próxima fecha</label>
-          <input pInputText type="date" formControlName="proxima_fecha" />
-        </div>
-        <div class="p-field">
-          <label>Notas</label>
-          <textarea pInputTextarea formControlName="notas"></textarea>
-        </div>
-      </div>
-      <div *ngIf="addType === 'desparasitaciones'">
-        <div class="p-field">
-          <label>Nombre</label>
-          <input pInputText formControlName="nombre" />
-        </div>
-        <div class="p-field">
-          <label>Fecha</label>
-          <input pInputText type="date" formControlName="fecha" />
-        </div>
-        <div class="p-field">
-          <label>Próxima fecha</label>
-          <input pInputText type="date" formControlName="proxima_fecha" />
-        </div>
-        <div class="p-field">
-          <label>Notas</label>
-          <textarea pInputTextarea formControlName="notas"></textarea>
-        </div>
-      </div>
-      <div *ngIf="addType === 'medicaciones'">
-        <div class="p-field">
-          <label>Nombre</label>
-          <input pInputText formControlName="nombre" />
-        </div>
-        <div class="p-field">
-          <label>Dosis</label>
-          <input pInputText formControlName="dosis" />
-        </div>
-        <div class="p-field">
-          <label>Frecuencia</label>
-          <input pInputText formControlName="frecuencia" />
-        </div>
-        <div class="p-field">
-          <label>Fecha inicio</label>
-          <input pInputText type="date" formControlName="fecha_inicio" />
-        </div>
-        <div class="p-field">
-          <label>Fecha fin</label>
-          <input pInputText type="date" formControlName="fecha_fin" />
-        </div>
-        <div class="p-field">
-          <label>Notas</label>
-          <textarea pInputTextarea formControlName="notas"></textarea>
-        </div>
-      </div>
-      <div *ngIf="addType === 'historial'">
-        <div class="p-field">
-          <label>Fecha</label>
-          <input pInputText type="date" formControlName="fecha" />
-        </div>
-        <div class="p-field">
-          <label>Motivo</label>
-          <input pInputText formControlName="motivo" />
-        </div>
-        <div class="p-field">
-          <label>Diagnóstico</label>
-          <input pInputText formControlName="diagnostico" />
-        </div>
-        <div class="p-field">
-          <label>Tratamiento</label>
-          <input pInputText formControlName="tratamiento" />
-        </div>
-        <div class="p-field">
-          <label>Próxima visita</label>
-          <input pInputText type="date" formControlName="proxima_visita" />
-        </div>
-      </div>
-      <div *ngIf="addType === 'notas'">
-        <div class="p-field">
-          <label>Contenido</label>
-          <textarea pInputTextarea formControlName="contenido"></textarea>
-        </div>
-        <div class="p-field">
-          <label>Fecha</label>
-          <input pInputText type="date" formControlName="fecha" />
-        </div>
-      </div>
-      <div class="p-d-flex p-jc-end p-mt-3">
-        <button pButton type="button" label="Cancelar" class="p-button-text p-mr-2" (click)="closeAddDialog()"></button>
-        <button pButton type="submit" [label]="editMode ? 'Guardar cambios' : 'Guardar'" class="p-button-success" [disabled]="!addForm.valid"></button>
-      </div>
-    </form>
-  </p-dialog>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="pet-detail-profile">
+    <img [src]="pet?.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" class="pet-profile-img" />
+    <div class="pet-profile-name">{{ pet?.nombre }}</div>
+    <div class="pet-profile-breed">{{ pet?.raza }}, {{ calcularEdad(pet?.fecha_nacimiento) }}</div>
+    <button class="pet-profile-btn" (click)="editPet()">Editar Info</button>
+    <button class="pet-profile-btn primary" (click)="openAddDialog('historial')">Agregar Visita Vet</button>
+    <button class="pet-profile-btn" (click)="openAddDialog('vacunas')">Agregar Vacuna</button>
+  </div>
 </div>

@@ -12,6 +12,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { Router } from '@angular/router';
+import { PetDetailComponent } from '../../../pets/components/pet-detail.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,18 +28,21 @@ import { Router } from '@angular/router';
     ButtonModule,
     InputTextModule,
     ToastModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    PetDetailComponent
   ],
   providers: [ConfirmationService, MessageService]
 })
 export class DashboardComponent {
   currentView: string = 'welcome';
   pets: any[] = [];
+  citas: any[] = [];
 
   constructor(private http: HttpClient, private confirmationService: ConfirmationService, private messageService: MessageService, private router: Router) {}
 
   ngOnInit() {
     this.loadPets();
+    this.loadCitas();
   }
 
   navigateTo(view: string) {
@@ -72,10 +76,10 @@ export class DashboardComponent {
   ];
 
   onTipoChange() {
-    if (this.newPet.tipo === 'perro') {
+    if (this.newPet.tipo === 'Perro') {
       this.razasDisponibles = this.razasPerro;
       this.newPet.raza = '';
-    } else if (this.newPet.tipo === 'gato') {
+    } else if (this.newPet.tipo === 'Gato') {
       this.razasDisponibles = this.razasGato;
       this.newPet.raza = '';
     } else {
@@ -99,10 +103,30 @@ export class DashboardComponent {
 
   loadPets() {
     const user = this.getUserFromStorage();
-    if (!user.id) return;
+    if (!user.id) {
+      console.warn('No user ID found in localStorage:', user);
+      this.pets = [];
+      return;
+    }
     this.http.get<any[]>(`/api/pets/${user.id}`).subscribe({
-      next: (pets) => this.pets = pets,
-      error: () => this.pets = []
+      next: (pets) => {
+        this.pets = pets;
+        console.log('Loaded pets for user', user.id, pets);
+      },
+      error: (err) => {
+        this.pets = [];
+        console.error('Error loading pets for user', user.id, err);
+      }
+    });
+  }
+
+  // Cargar citas del usuario desde la API
+  loadCitas() {
+    const user = this.getUserFromStorage();
+    if (!user.id) return;
+    this.http.get<any[]>(`/api/citas/${user.id}`).subscribe({
+      next: (citas) => this.citas = citas,
+      error: () => this.citas = []
     });
   }
 
@@ -222,7 +246,8 @@ export class DashboardComponent {
     return edad === 1 ? '1 año' : `${edad} años`;
   }
 
-  selectedPetId: string | null = null;
+  selectedPetId: string = '';
+  showPetDetailModal: boolean = false;
   showAddRecordDialog = false;
   activeTab: string = 'vacunas';
 
@@ -276,7 +301,7 @@ export class DashboardComponent {
 
   // Al hacer clic en la card de mascota
   togglePetHistory(petId: string) {
-    this.selectedPetId = this.selectedPetId === petId ? null : petId;
+    this.selectedPetId = this.selectedPetId === petId ? '' : petId;
     this.activeTab = 'vacunas';
     if (this.selectedPetId) {
       this.loadPetHealth(this.selectedPetId);
@@ -392,5 +417,34 @@ export class DashboardComponent {
   cancelLogout() {
     this.showLogoutDialog = false;
     this.messageService.add({ severity: 'info', summary: 'Cancelado', detail: 'Cierre de sesión cancelado', life: 3000 });
+  }
+
+  // Accesos rápidos
+  abrirNuevaCita() {
+    // Aquí puedes navegar o abrir modal para nueva cita
+    this.navigateTo('events');
+  }
+  abrirRegistrarVacuna() {
+    // Aquí puedes navegar o abrir modal para registrar vacuna
+    this.navigateTo('health');
+  }
+  abrirRegistrarMascota() {
+    // Aquí puedes navegar o abrir modal para registrar mascota
+    this.navigateTo('pets');
+  }
+
+  verDetalleMascota(pet: any) {
+    // Navega a la ruta de detalle de la mascota
+    this.router.navigate(['/pets', pet.id]);
+  }
+
+  openPetDetailModal(petId: string) {
+    this.selectedPetId = petId || '';
+    this.showPetDetailModal = true;
+  }
+
+  closePetDetailModal() {
+    this.showPetDetailModal = false;
+    this.selectedPetId = '';
   }
 }
