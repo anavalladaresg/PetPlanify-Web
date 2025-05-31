@@ -239,18 +239,26 @@ export class DashboardComponent {
   loadEvents() {
     this.http.get<any[]>('/api/eventos').subscribe({
       next: (data) => {
-        this.events = data.map(ev => ({
+        // Filtrar solo eventos futuros (fecha >= hoy)
+        const today = new Date();
+        this.events = (data || []).filter(ev => {
+          const fechaStr = ev.fecha || ev.date;
+          if (!fechaStr) return false;
+          const fechaEvento = new Date(fechaStr.slice(0, 10));
+          return fechaEvento >= new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        }).map(ev => ({
           ...ev,
           title: ev.titulo || ev.title,
           description: ev.descripcion || ev.description,
           date: ev.fecha || ev.date,
           location: ev.ubicacion || ev.location,
-          type: ev.tipo || ev.type,
-          image: ev.imagen || ev.image,
-          host: ev.organizador || ev.host,
+          type: ev.tipo_mascotas || ev.tipo || ev.type,
+          image: ev.imagen || ev.image || 'assets/eventos.png',
+          host: ev.creador_id || ev.organizador || ev.host || 'Desconocido',
           attendees: ev.asistentes || ev.attendees || 0,
           status: ev.estado || ev.status || 'Próximo',
         }));
+        console.log('Eventos cargados:', this.events); // <-- DEBUG
       },
       error: (err) => {
         this.events = [];
