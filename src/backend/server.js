@@ -301,6 +301,16 @@ app.get('/api/citas/:userId', (req, res) => {
   res.json([]); // Devuelve un array vacío por ahora
 });
 
+// Obtener todos los eventos
+app.get('/api/eventos', (req, res) => {
+  db.all('SELECT * FROM eventos ORDER BY fecha ASC', (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener los eventos.' });
+    }
+    res.json(rows);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

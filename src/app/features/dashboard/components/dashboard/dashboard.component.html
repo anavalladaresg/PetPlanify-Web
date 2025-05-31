@@ -281,11 +281,158 @@
       </div>
     </div>
 
+    <div *ngIf="currentView === 'events' || currentView === 'events-general'" class="content events-content events-fade-slide">
+      <div class="events-tabs-row">
+        <button class="events-tab-btn" [class.active]="currentView === 'events-general'" (click)="navigateTo('events-general')">
+          Próximos Eventos
+        </button>
+        <button class="events-tab-btn" [class.active]="currentView === 'events'" (click)="navigateTo('events')">
+          Mis Eventos
+        </button>
+      </div>
+      <ng-container *ngIf="currentView === 'events-general'">
+        <h2 class="events-title">Próximos Eventos</h2>
+        <div class="events-list" *ngIf="events.length > 0; else noEvents">
+          <div *ngFor="let event of events" class="event-card">
+            <img class="event-card-img" [src]="event.image" [alt]="event.title" />
+            <div class="event-card-info">
+              <div class="event-card-type">{{ event.type }}</div>
+              <div class="event-card-title">{{ event.title }}</div>
+              <div class="event-card-desc">{{ event.description }}</div>
+              <div class="event-card-meta">Organizado por {{ event.host }}</div>
+              <div class="event-card-actions">
+                <button class="attend-btn" (click)="attendEvent(event)">¡Asistiré!</button>
+                <button class="view-event-btn" (click)="viewEvent(event)">
+                  <i class="pi pi-eye"></i> Ver información
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noEvents>
+          <div class="no-events-illustration">
+            <img src="assets/index_cat.png" alt="Sin eventos" class="no-events-img" />
+            <div class="no-events-title">Aún no hay eventos en tu zona.</div>
+            <div class="no-events-desc">¿Quieres crear uno?</div>
+            <button class="no-events-btn" (click)="showEventDialog = true">+ Crear evento</button>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="currentView === 'events'">
+        <div class="events-header">
+          <h2>Mis Eventos</h2>
+          <button class="add-event-btn" (click)="showEventDialog = true">
+            <i class="pi pi-plus"></i> Crear evento
+          </button>
+        </div>
+        <table class="events-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Estado</th>
+              <th>Asistentes</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let event of events">
+              <td>{{ event.title }}</td>
+              <td>
+                <span class="status" [ngClass]="{
+                  'upcoming': event.status === 'Próximo',
+                  'completed': event.status === 'Completado'
+                }">{{ event.status }}</span>
+              </td>
+              <td>{{ event.attendees }}</td>
+              <td><button class="view-btn" (click)="viewEvent(event)">Ver</button></td>
+            </tr>
+            <tr *ngIf="events.length === 0">
+              <td colspan="4" style="text-align:center; color:#888;">Aún no tienes eventos.</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- Modal para crear evento -->
+        <p-dialog header="Crear evento" [(visible)]="showEventDialog" [modal]="true" [style]="{width: '400px'}">
+          <form (ngSubmit)="createEvent()" #eventForm="ngForm">
+            <div class="p-field">
+              <label for="title">Título</label>
+              <input id="title" name="title" [(ngModel)]="newEvent.title" required pInputText />
+            </div>
+            <div class="p-field">
+              <label for="description">Descripción</label>
+              <textarea id="description" name="description" [(ngModel)]="newEvent.description" required pInputTextarea></textarea>
+            </div>
+            <div class="p-field">
+              <label for="date">Fecha</label>
+              <input id="date" name="date" type="date" [(ngModel)]="newEvent.date" required pInputText />
+            </div>
+            <div class="p-field">
+              <label for="location">Ubicación</label>
+              <input id="location" name="location" [(ngModel)]="newEvent.location" required pInputText />
+            </div>
+            <div class="dialog-actions">
+              <button pButton type="submit" label="Guardar" [disabled]="!eventForm.form.valid" class="p-button-success"></button>
+              <button pButton type="button" label="Cancelar" (click)="showEventDialog = false" class="p-button-secondary"></button>
+            </div>
+          </form>
+        </p-dialog>
+      </ng-container>
+    </div>
+
     <!-- Pet Detail Modal Overlay -->
     <div *ngIf="showPetDetailModal" class="pet-modal-overlay">
       <div class="pet-modal-content">
         <button class="pet-modal-close-btn" (click)="closePetDetailModal()" aria-label="Cerrar ventana">×</button>
         <app-pet-detail [selectedPetId]="selectedPetId" (close)="closePetDetailModal()"></app-pet-detail>
+      </div>
+    </div>
+
+    <!-- Event Detail Modal Overlay -->
+    <div *ngIf="showEventDetailModal" class="event-detail-modal-overlay">
+      <div class="event-detail-modal-content">
+        <button class="event-detail-modal-close-btn" (click)="closeEventDetailModal()" aria-label="Cerrar ventana">×</button>
+        <div class="event-detail-modal-scroll">
+          <div class="event-detail-breadcrumbs">Events / {{ selectedEvent?.title }}</div>
+          <div class="event-detail-title">{{ selectedEvent?.title }}</div>
+          <div class="event-detail-subtitle">{{ selectedEvent?.description }}</div>
+          <img *ngIf="selectedEvent?.image" [src]="selectedEvent.image" [alt]="selectedEvent.title" class="event-detail-img" />
+          <div class="event-detail-section">
+            <h3>About</h3>
+            <div class="event-detail-section-content">{{ selectedEvent?.about || selectedEvent?.description }}</div>
+          </div>
+          <div class="event-detail-section">
+            <h3>Host</h3>
+            <div class="event-detail-host-row">
+              <img *ngIf="selectedEvent?.hostAvatar" [src]="selectedEvent.hostAvatar" alt="Host" class="event-detail-host-avatar" />
+              <span class="event-detail-host-name">{{ selectedEvent?.host }}</span>
+              <span class="event-detail-host-role">Organizer</span>
+            </div>
+          </div>
+          <div class="event-detail-section">
+            <h3>Details</h3>
+            <table class="event-detail-table">
+              <tr><td>Pet Type</td><td><b>{{ selectedEvent?.type }}</b></td></tr>
+              <tr><td>Date & Time</td><td><b>{{ selectedEvent?.date || 'Por definir' }}</b></td></tr>
+              <tr><td>Location</td><td><b>{{ selectedEvent?.location || 'Por definir' }}</b></td></tr>
+            </table>
+          </div>
+          <div class="event-detail-section" *ngIf="selectedEvent?.mapImage">
+            <img [src]="selectedEvent.mapImage" alt="Mapa" class="event-detail-map-img" />
+          </div>
+          <div class="event-detail-section">
+            <h3>Attendees ({{ selectedEvent?.attendeesList?.length || 0 }})</h3>
+            <div class="event-detail-attendees-row">
+              <div class="event-detail-attendee-avatar-container" *ngFor="let attendee of selectedEvent?.attendeesList">
+                <img [src]="attendee.avatar" [alt]="attendee.name" class="event-detail-attendee-avatar" />
+              </div>
+            </div>
+          </div>
+          <div class="event-detail-actions">
+            <button class="attend-btn" (click)="attendEvent(selectedEvent)">I'll Attend</button>
+            <button class="share-btn"><i class="pi pi-share-alt"></i> Share</button>
+            <button class="report-btn"><i class="pi pi-flag"></i> Report</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
