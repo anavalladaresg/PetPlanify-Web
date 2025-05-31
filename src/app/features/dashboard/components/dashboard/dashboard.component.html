@@ -392,35 +392,35 @@
       <div class="event-detail-modal-content">
         <button class="event-detail-modal-close-btn" (click)="closeEventDetailModal()" aria-label="Cerrar ventana">×</button>
         <div class="event-detail-modal-scroll">
-          <div class="event-detail-breadcrumbs">Events / {{ selectedEvent?.title }}</div>
+          <div class="event-detail-breadcrumbs">Eventos / {{ selectedEvent?.title }}</div>
           <div class="event-detail-title">{{ selectedEvent?.title }}</div>
           <div class="event-detail-subtitle">{{ selectedEvent?.description }}</div>
           <img *ngIf="selectedEvent?.image" [src]="selectedEvent.image" [alt]="selectedEvent.title" class="event-detail-img" />
           <div class="event-detail-section">
-            <h3>About</h3>
+            <h3>Acerca del evento</h3>
             <div class="event-detail-section-content">{{ selectedEvent?.about || selectedEvent?.description }}</div>
           </div>
           <div class="event-detail-section">
-            <h3>Host</h3>
+            <h3>Organizador</h3>
             <div class="event-detail-host-row">
-              <img *ngIf="selectedEvent?.hostAvatar" [src]="selectedEvent.hostAvatar" alt="Host" class="event-detail-host-avatar" />
+              <img *ngIf="selectedEvent?.hostAvatar" [src]="selectedEvent.hostAvatar" alt="Organizador" class="event-detail-host-avatar" />
               <span class="event-detail-host-name">{{ selectedEvent?.host }}</span>
-              <span class="event-detail-host-role">Organizer</span>
+              <span class="event-detail-host-role">Organizador</span>
             </div>
           </div>
           <div class="event-detail-section">
-            <h3>Details</h3>
+            <h3>Detalles</h3>
             <table class="event-detail-table">
-              <tr><td>Pet Type</td><td><b>{{ selectedEvent?.type }}</b></td></tr>
-              <tr><td>Date & Time</td><td><b>{{ selectedEvent?.date || 'Por definir' }}</b></td></tr>
-              <tr><td>Location</td><td><b>{{ selectedEvent?.location || 'Por definir' }}</b></td></tr>
+              <tr><td>Tipo de mascota</td><td><b>{{ selectedEvent?.type }}</b></td></tr>
+              <tr><td>Fecha y hora</td><td><b>{{ selectedEvent?.date | date:'dd-MM-yyyy - HH:mm' : undefined : 'es' }}</b></td></tr>
+              <tr><td>Ubicación</td><td><b>{{ selectedEvent?.location || 'Por definir' }}</b></td></tr>
             </table>
           </div>
           <div class="event-detail-section" *ngIf="selectedEvent?.mapImage">
             <img [src]="selectedEvent.mapImage" alt="Mapa" class="event-detail-map-img" />
           </div>
           <div class="event-detail-section">
-            <h3>Attendees ({{ selectedEvent?.attendeesList?.length || 0 }})</h3>
+            <h3>Asistentes ({{ selectedEvent?.attendeesList?.length || 0 }})</h3>
             <div class="event-detail-attendees-row">
               <div class="event-detail-attendee-avatar-container" *ngFor="let attendee of selectedEvent?.attendeesList">
                 <img [src]="attendee.avatar" [alt]="attendee.name" class="event-detail-attendee-avatar" />
@@ -428,9 +428,9 @@
             </div>
           </div>
           <div class="event-detail-actions">
-            <button class="attend-btn" (click)="attendEvent(selectedEvent)">I'll Attend</button>
-            <button class="share-btn"><i class="pi pi-share-alt"></i> Share</button>
-            <button class="report-btn"><i class="pi pi-flag"></i> Report</button>
+            <button class="attend-btn" (click)="attendEvent(selectedEvent)">¡Asistiré!</button>
+            <button class="share-btn"><i class="pi pi-share-alt"></i> Compartir</button>
+            <button class="report-btn"><i class="pi pi-flag"></i> Reportar</button>
           </div>
         </div>
       </div>

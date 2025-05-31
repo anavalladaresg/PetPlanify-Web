@@ -254,7 +254,7 @@ export class DashboardComponent {
           location: ev.ubicacion || ev.location,
           type: ev.tipo_mascotas || ev.tipo || ev.type,
           image: ev.imagen || ev.image || 'assets/eventos.png',
-          host: ev.creador_id || ev.organizador || ev.host || 'Desconocido',
+          host: ev.organizador_nombre || ev.host || 'Desconocido',
           attendees: ev.asistentes || ev.attendees || 0,
           status: ev.estado || ev.status || 'Próximo',
         }));

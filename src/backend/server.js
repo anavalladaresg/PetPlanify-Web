@@ -303,7 +303,13 @@ app.get('/api/citas/:userId', (req, res) => {
 
 // Obtener todos los eventos
 app.get('/api/eventos', (req, res) => {
-  db.all('SELECT * FROM eventos ORDER BY fecha ASC', (err, rows) => {
+  const sql = `
+    SELECT eventos.*, usuarios.nombre AS organizador_nombre
+    FROM eventos
+    LEFT JOIN usuarios ON eventos.creador_id = usuarios.id
+    ORDER BY eventos.fecha ASC
+  `;
+  db.all(sql, (err, rows) => {
     if (err) {
       return res.status(500).json({ error: 'Error al obtener los eventos.' });
     }
