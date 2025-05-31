@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -33,12 +33,23 @@ import { CalendarModule } from 'primeng/calendar';
     PetDetailComponent,
     CalendarModule
   ],
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService, MessageService],
+  encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent {
   currentView: string = 'welcome';
   pets: any[] = [];
   citas: any[] = [];
+  events: any[] = [];
+  showEventDialog: boolean = false;
+  newEvent: any = {
+    title: '',
+    description: '',
+    date: '',
+    location: '',
+    status: 'Próximo',
+    attendees: 0
+  };
 
   constructor(private http: HttpClient, private confirmationService: ConfirmationService, private messageService: MessageService, private router: Router) { }
 
@@ -59,11 +70,11 @@ export class DashboardComponent {
   ngOnInit() {
     this.loadPets();
     this.loadCitas();
-    // Inicializar calendario custom
     const d = this.selectedHealthDate || new Date();
     this.calendarMonth = d.getMonth();
     this.calendarYear = d.getFullYear();
     this.updateCalendars();
+    this.loadEvents();
   }
 
   updateCalendars() {
@@ -225,6 +236,29 @@ export class DashboardComponent {
     });
   }
 
+  loadEvents() {
+    this.http.get<any[]>('/api/eventos').subscribe({
+      next: (data) => {
+        this.events = data.map(ev => ({
+          ...ev,
+          title: ev.titulo || ev.title,
+          description: ev.descripcion || ev.description,
+          date: ev.fecha || ev.date,
+          location: ev.ubicacion || ev.location,
+          type: ev.tipo || ev.type,
+          image: ev.imagen || ev.image,
+          host: ev.organizador || ev.host,
+          attendees: ev.asistentes || ev.attendees || 0,
+          status: ev.estado || ev.status || 'Próximo',
+        }));
+      },
+      error: (err) => {
+        this.events = [];
+        console.error('Error loading events', err);
+      }
+    });
+  }
+
   addPet() {
     const user = this.getUserFromStorage();
     if (!user.id) {
@@ -345,6 +379,10 @@ export class DashboardComponent {
   showPetDetailModal: boolean = false;
   showAddRecordDialog = false;
   activeTab: string = 'vacunas';
+
+  // --- FIX: Event detail modal state and selected event ---
+  showEventDetailModal: boolean = false;
+  selectedEvent: any = null;
 
   // Datos de ejemplo para las tablas (en la práctica, se cargarán desde la API)
   vacunas: any[] = [];
@@ -626,5 +664,27 @@ export class DashboardComponent {
   }
   onAppNotificationsChange() {
     // Aquí puedes guardar la preferencia en localStorage o llamar a la API
+  }
+
+  createEvent() {
+    if (!this.newEvent.title || !this.newEvent.date || !this.newEvent.location) return;
+    // Optionally, POST to backend here
+    this.events.push({ ...this.newEvent });
+    this.showEventDialog = false;
+    this.newEvent = { title: '', description: '', date: '', location: '', status: 'Próximo', attendees: 0 };
+  }
+
+  viewEvent(event: any) {
+    this.selectedEvent = event;
+    this.showEventDetailModal = true;
+  }
+
+  closeEventDetailModal() {
+    this.showEventDetailModal = false;
+    this.selectedEvent = null;
+  }
+
+  attendEvent(event: any) {
+    alert('¡Te has registrado para asistir a: ' + event.title + '!');
   }
 }
