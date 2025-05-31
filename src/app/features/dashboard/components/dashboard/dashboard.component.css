@@ -1266,7 +1266,7 @@ p {
   border-radius: 22px;
   box-shadow: 0 8px 48px rgba(37, 99, 235, 0.13), 0 2px 8px rgba(71, 130, 75, 0.10);
   padding: 0;
-  max-width: 1050px;
+  max-width: 1550px;
   width: 98vw;
   min-width: 420px;
   min-height: 780px;
@@ -1907,4 +1907,11 @@ p {
 /* Ajuste para alinear el checkbox con el texto */
 .settings-list li span+input[type="checkbox"] {
   margin-left: auto;
+}
+
+/* Centrar la ventana flotante (modal) al medio de la pantalla */
+.pet-modal-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

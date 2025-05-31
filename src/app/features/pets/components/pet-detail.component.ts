@@ -40,9 +40,24 @@ export class PetDetailComponent implements OnChanges {
   activeTabIndex: number = 0;
   tabAnimationClass: string = '';
   private lastTabIndex: number = 0;
-  tabOrder: string[] = ['overview', 'vet', 'vacunas', 'notas'];
+  tabOrder: string[] = ['overview', 'vet', 'vacunas', 'desparasitaciones', 'medicaciones', 'notas'];
 
   @Output() close = new EventEmitter<void>();
+
+  showAddRow = {
+    desparasitaciones: false,
+    medicaciones: false,
+    vacunas: false,
+    vet: false,
+    notas: false
+  };
+  newRow = {
+    desparasitaciones: { nombre: '', fecha: '', proxima_fecha: '', notas: '' },
+    medicaciones: { nombre: '', dosis: '', frecuencia: '', fecha_inicio: '', fecha_fin: '', notas: '' },
+    vacunas: { nombre: '', fecha: '', proxima_fecha: '', notas: '' },
+    vet: { fecha: '', motivo: '', diagnostico: '', tratamiento: '', proxima_visita: '' },
+    notas: { contenido: '', fecha: '' }
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -261,6 +276,67 @@ export class PetDetailComponent implements OnChanges {
       this.addDialogVisible = false;
       this.loadAllData();
     });
+  }
+
+  addRegistroDirect(tab: 'desparasitaciones' | 'medicaciones' | 'vacunas' | 'vet' | 'notas') {
+    if (tab === 'desparasitaciones') {
+      const data = { ...this.newRow.desparasitaciones, mascota_id: this.selectedPetId };
+      if (!data.nombre || !data.fecha || !data.proxima_fecha) return;
+      this.http.post('/api/desparasitaciones', data).subscribe(() => {
+        this.showAddRow.desparasitaciones = false;
+        this.newRow.desparasitaciones = { nombre: '', fecha: '', proxima_fecha: '', notas: '' };
+        this.loadAllData();
+      });
+    } else if (tab === 'medicaciones') {
+      const data = { ...this.newRow.medicaciones, mascota_id: this.selectedPetId };
+      if (!data.nombre || !data.dosis || !data.frecuencia || !data.fecha_inicio) return;
+      this.http.post('/api/medicaciones', data).subscribe(() => {
+        this.showAddRow.medicaciones = false;
+        this.newRow.medicaciones = { nombre: '', dosis: '', frecuencia: '', fecha_inicio: '', fecha_fin: '', notas: '' };
+        this.loadAllData();
+      });
+    } else if (tab === 'vacunas') {
+      const data = { ...this.newRow.vacunas, mascota_id: this.selectedPetId };
+      if (!data.nombre || !data.fecha || !data.proxima_fecha) return;
+      this.http.post('/api/vacunas', data).subscribe(() => {
+        this.showAddRow.vacunas = false;
+        this.newRow.vacunas = { nombre: '', fecha: '', proxima_fecha: '', notas: '' };
+        this.loadAllData();
+      });
+    } else if (tab === 'vet') {
+      const data = { ...this.newRow.vet, mascota_id: this.selectedPetId };
+      if (!data.fecha || !data.motivo || !data.diagnostico) return;
+      this.http.post('/api/historial', data).subscribe(() => {
+        this.showAddRow.vet = false;
+        this.newRow.vet = { fecha: '', motivo: '', diagnostico: '', tratamiento: '', proxima_visita: '' };
+        this.loadAllData();
+      });
+    } else if (tab === 'notas') {
+      const data = { ...this.newRow.notas, mascota_id: this.selectedPetId };
+      if (!data.contenido || !data.fecha) return;
+      this.http.post('/api/notas', data).subscribe(() => {
+        this.showAddRow.notas = false;
+        this.newRow.notas = { contenido: '', fecha: '' };
+        this.loadAllData();
+      });
+    }
+  }
+
+  toggleAddRow(tab: 'desparasitaciones' | 'medicaciones' | 'vacunas' | 'vet' | 'notas') {
+    this.showAddRow[tab] = !this.showAddRow[tab];
+    if (!this.showAddRow[tab]) {
+      if (tab === 'desparasitaciones') {
+        this.newRow.desparasitaciones = { nombre: '', fecha: '', proxima_fecha: '', notas: '' };
+      } else if (tab === 'medicaciones') {
+        this.newRow.medicaciones = { nombre: '', dosis: '', frecuencia: '', fecha_inicio: '', fecha_fin: '', notas: '' };
+      } else if (tab === 'vacunas') {
+        this.newRow.vacunas = { nombre: '', fecha: '', proxima_fecha: '', notas: '' };
+      } else if (tab === 'vet') {
+        this.newRow.vet = { fecha: '', motivo: '', diagnostico: '', tratamiento: '', proxima_visita: '' };
+      } else if (tab === 'notas') {
+        this.newRow.notas = { contenido: '', fecha: '' };
+      }
+    }
   }
 
   goBack() {
