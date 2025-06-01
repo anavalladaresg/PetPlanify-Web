@@ -16,4 +16,12 @@ export class HomeMenuComponent {
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
+
+  navigateToBreeds() {
+    this.router.navigate(['/breeds']);
+  }
+
+  navigateToGuides() {
+    this.router.navigate(['/guides']);
+  }
 }

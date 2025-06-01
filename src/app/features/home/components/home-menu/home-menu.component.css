@@ -39,3 +39,30 @@
 :host ::ng-deep .menu-container .p-megamenu-end {
   border-radius: 0 8px 8px 0;
 }
+
+/* Estilo para los nuevos botones secundarios del menú */
+:host ::ng-deep .menu-container .p-button.menu-link-btn {
+  width: 8.2rem;
+  height: 2.7rem;
+  font-size: 1.08rem;
+  font-weight: 500;
+  background: #f3f6fa;
+  color: var(--blue-700);
+  border: 1.5px solid var(--blue-200);
+  margin-right: 10px;
+  border-radius: 7px;
+  box-shadow: none;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+}
+:host ::ng-deep .menu-container .p-button.menu-link-btn:hover {
+  background: #eaf1fa;
+  color: var(--blue-900);
+  border-color: var(--blue-300);
+}
+
+:host ::ng-deep .menu-container .p-button.menu-link-btn .pi {
+  font-size: 1.1rem;
+  padding-right: 5px;
+}
+
+/* El botón principal de entrar sigue destacando */

@@ -1,0 +1,84 @@
+<div class="guides-page guides-bg">
+  <h1 class="guides-main-title">Guías de Cuidado de Mascotas</h1>
+  <p class="guides-main-desc">Encuentra artículos y consejos para el bienestar de tu mascota.</p>
+
+  <div class="guides-search-bar">
+    <input type="text" placeholder="🔍 Buscar artículos, tips y guías..." [(ngModel)]="searchText" />
+  </div>
+
+  <!-- Artículos Destacados -->
+  <section class="guides-section" *ngIf="filteredFeaturedArticles.length > 0">
+    <h2 class="guides-section-title guides-featured-title">
+      <span>Artículos Destacados:</span>
+    </h2>
+    <div class="carousel-container">
+      <button class="carousel-arrow left" (click)="prevFeatured()" [disabled]="featuredStart === 0">&#8592;</button>
+      <div class="carousel-slide">
+        <div class="guide-featured-card" *ngFor="let item of filteredFeaturedArticles | slice:featuredStart:featuredEnd" (click)="openModal(item)">
+          <img [src]="item.img" [alt]="item.alt" />
+          <div class="guide-featured-info">
+            <h3>{{item.title}}</h3>
+            <p>{{item.desc}}</p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-arrow right" (click)="nextFeatured()" [disabled]="featuredEnd >= filteredFeaturedArticles.length">&#8594;</button>
+    </div>
+  </section>
+
+  <!-- Tips de Cuidado -->
+  <section class="guides-section" *ngIf="filteredTips.length > 0">
+    <h2 class="guides-section-title guides-tips-title">
+      <span>Tips de Cuidado:</span>
+    </h2>
+    <div class="carousel-container">
+      <button class="carousel-arrow left" (click)="prevTips()" [disabled]="tipsStart === 0">&#8592;</button>
+      <div class="carousel-slide">
+        <div class="guide-tip-card" *ngFor="let item of filteredTips | slice:tipsStart:tipsEnd" (click)="openModal(item)">
+          <img [src]="item.img" [alt]="item.alt" />
+          <h4>{{item.title}}</h4>
+          <p>{{item.desc}}</p>
+        </div>
+      </div>
+      <button class="carousel-arrow right" (click)="nextTips()" [disabled]="tipsEnd >= filteredTips.length">&#8594;</button>
+    </div>
+  </section>
+
+  <!-- Guías -->
+  <section class="guides-section" *ngIf="filteredGuides.length > 0">
+    <h2 class="guides-section-title guides-guides-title">
+      <span>Guías:</span>
+    </h2>
+    <div class="carousel-container">
+      <button class="carousel-arrow left" (click)="prevGuides()" [disabled]="guidesStart === 0">&#8592;</button>
+      <div class="carousel-slide">
+        <div class="guide-card" *ngFor="let item of filteredGuides | slice:guidesStart:guidesEnd" (click)="openModal(item)">
+          <img [src]="item.img" [alt]="item.alt" />
+          <h5>{{item.title}}</h5>
+          <p>{{item.desc}}</p>
+        </div>
+      </div>
+      <button class="carousel-arrow right" (click)="nextGuides()" [disabled]="guidesEnd >= filteredGuides.length">&#8594;</button>
+    </div>
+  </section>
+
+  <!-- Mensaje si no hay resultados -->
+  <div class="guides-no-results" *ngIf="filteredFeaturedArticles.length === 0 && filteredTips.length === 0 && filteredGuides.length === 0">
+    <img src="assets/puppy2.png" alt="Sin resultados" style="width:90px; margin-bottom: 1rem;" />
+    <h3>¡Ups! No encontramos resultados para tu búsqueda.</h3>
+    <p>Prueba con otras palabras clave o revisa la ortografía.</p>
+  </div>
+
+  <!-- Modal flotante -->
+  <div class="guide-modal-backdrop" *ngIf="modalOpen" (click)="closeModal()">
+    <div class="guide-modal" (click)="$event.stopPropagation()">
+      <button class="guide-modal-close" (click)="closeModal()">&times;</button>
+      <img *ngIf="selectedEntry" [src]="selectedEntry.img" [alt]="selectedEntry.alt" />
+      <h3 *ngIf="selectedEntry">{{selectedEntry.title}}</h3>
+      <p *ngIf="selectedEntry">{{selectedEntry.desc}}</p>
+      <div class="guide-modal-longdesc" *ngIf="selectedEntry && selectedEntry.longDesc">
+        <p style="white-space: pre-line;">{{selectedEntry.longDesc}}</p>
+      </div>
+    </div>
+  </div>
+</div>

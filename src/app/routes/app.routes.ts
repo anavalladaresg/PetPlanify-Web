@@ -6,6 +6,8 @@ import { DashboardComponent } from '../features/dashboard/components/dashboard/d
 import { AuthGuard } from '../features/auth/services/auth.guard';
 import { PetFriendlyMapComponent } from '../features/pet-friendly/pet-friendly-map.component';
 import { PetDetailComponent } from '../features/pets/components/pet-detail.component';
+import { BreedsComponent } from '../features/breeds/breeds.component';
+import { GuidesComponent } from '../features/guides/guides.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -14,5 +16,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'pet-friendly', component: PetFriendlyMapComponent },
   { path: 'pets/:id', component: PetDetailComponent },
+  { path: 'breeds', component: BreedsComponent },
+  { path: 'guides', component: GuidesComponent },
   // Puedes agregar más rutas aquí
 ];

@@ -4,7 +4,11 @@
             <img src="assets/logo.png" alt="Logo de PetPlanify" width="140">
         </ng-template>
         <ng-template #end>
-            <p-button label="Entrar" (onClick)="navigateToLogin()"></p-button>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <p-button label="Explorar Razas" styleClass="menu-link-btn" (onClick)="navigateToBreeds()"></p-button>
+                <p-button label="Guías de Cuidado" styleClass="menu-link-btn" (onClick)="navigateToGuides()"></p-button>
+                <p-button label="Entrar" (onClick)="navigateToLogin()"></p-button>
+            </div>
         </ng-template>
     </p-megamenu>
 </div>

@@ -2,12 +2,12 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { PetFriendlyMapComponent } from '../../../pet-friendly/pet-friendly-map.component';
 import { TabsModule } from 'primeng/tabs';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputTextarea } from 'primeng/inputtextarea';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
@@ -18,16 +18,15 @@ import { CalendarModule } from 'primeng/calendar';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
-  imports: [
+  styleUrls: ['./dashboard.component.css'],  imports: [
     CommonModule,
     FormsModule,
-    PetFriendlyMapComponent,
     TabsModule,
     TableModule,
     DialogModule,
     ButtonModule,
     InputTextModule,
+    InputTextarea,
     ToastModule,
     ConfirmPopupModule,
     PetDetailComponent,
@@ -42,11 +41,13 @@ export class DashboardComponent {
   citas: any[] = [];
   events: any[] = [];
   showEventDialog: boolean = false;
+  showCreateEventModal: boolean = false;
   newEvent: any = {
     title: '',
     description: '',
     date: '',
     location: '',
+    type: '',
     status: 'Próximo',
     attendees: 0
   };
@@ -673,13 +674,32 @@ export class DashboardComponent {
   onAppNotificationsChange() {
     // Aquí puedes guardar la preferencia en localStorage o llamar a la API
   }
-
   createEvent() {
     if (!this.newEvent.title || !this.newEvent.date || !this.newEvent.location) return;
     // Optionally, POST to backend here
     this.events.push({ ...this.newEvent });
     this.showEventDialog = false;
-    this.newEvent = { title: '', description: '', date: '', location: '', status: 'Próximo', attendees: 0 };
+    this.newEvent = { title: '', description: '', date: '', location: '', type: '', status: 'Próximo', attendees: 0 };
+  }
+
+  createEventFromModal() {
+    // Aquí puedes agregar la lógica para guardar el evento (API o local)
+    this.events.push({ ...this.newEvent });
+    this.closeCreateEventModal();
+    this.messageService.add({ severity: 'success', summary: 'Evento creado', detail: 'El evento se ha creado correctamente', life: 3000 });
+  }
+
+  closeCreateEventModal() {
+    this.showCreateEventModal = false;
+    this.newEvent = {
+      title: '',
+      description: '',
+      date: '',
+      location: '',
+      type: '',
+      status: 'Próximo',
+      attendees: 0
+    };
   }
 
   viewEvent(event: any) {

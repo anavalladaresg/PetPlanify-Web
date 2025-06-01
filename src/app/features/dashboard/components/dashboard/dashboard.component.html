@@ -291,6 +291,11 @@
         </button>
       </div>
       <ng-container *ngIf="currentView === 'events-general'">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 1.5rem;">
+          <button class="add-event-btn" (click)="showEventDialog = true">
+            <i class="pi pi-plus"></i> Crear evento
+          </button>
+        </div>
         <h2 class="events-title">Próximos Eventos</h2>
         <div class="events-list" *ngIf="events.length > 0; else noEvents">
           <div *ngFor="let event of events" class="event-card">
