@@ -15,9 +15,6 @@
   justify-content: center;
   align-items: flex-start;
   gap: 3.5rem;
-  background: none;
-  border: none;
-  box-shadow: none;
   padding: 3.5rem 3rem;
   margin: 2rem auto;
   max-width: 1600px;
@@ -364,6 +361,46 @@
   color: #23401d;
 }
 
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid #b7d8b7;
+  border-top: 2.5px solid #497a4a;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 2px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.table-error-msg {
+  color: #d32f2f;
+  background: #fff0f0;
+  font-size: 0.98em;
+  font-weight: 500;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  text-align: left;
+}
+
+.table-save-btn[disabled] {
+  background: #e0eae0 !important;
+  color: #b0b6c3 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+
+.table-save-btn .spinner {
+  margin: 0 auto;
+}
+
+.table-save-btn {
+  position: relative;
+}
+
 @media (max-width: 700px) {
   .pet-info-table input[type="text"],
   .pet-info-table input[type="date"] {
@@ -379,10 +416,47 @@
   }
 }
 
+/* Align the Acciones column header and all cells in that column to the right */
+.pet-info-table th.actions-header,
+.pet-info-table td.actions-cell {
+  text-align: right !important;
+  vertical-align: middle;
+}
+
+/* Optionally, ensure all action buttons are right-aligned in their cell */
+.pet-info-table td.actions-cell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5em;
+  background: transparent;
+}
+
 .pet-info-table input[type="date"]::-webkit-input-placeholder { color: #b0b6c3; }
 .pet-info-table input[type="date"]::-moz-placeholder { color: #b0b6c3; }
 .pet-info-table input[type="date"]:-ms-input-placeholder { color: #b0b6c3; }
 .pet-info-table input[type="date"]::placeholder { color: #b0b6c3; }
+
+/* Make the calendar icon in date inputs visible and styled */
+.pet-info-table input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(36%) sepia(16%) saturate(1042%) hue-rotate(66deg) brightness(90%) contrast(90%);
+  /* This will tint the icon to a greenish color matching the theme */
+  cursor: pointer;
+}
+
+.pet-info-table input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(24%) sepia(60%) saturate(800%) hue-rotate(66deg) brightness(80%) contrast(120%);
+}
+
+/* For Firefox */
+.pet-info-table input[type="date"]::-moz-calendar-picker-indicator {
+  filter: invert(36%) sepia(16%) saturate(1042%) hue-rotate(66deg) brightness(90%) contrast(90%);
+}
+
+/* For Edge/IE (not widely supported, but for completeness) */
+.pet-info-table input[type="date"]::-ms-input-placeholder {
+  color: #497a4a;
+}
 
 .pet-info-table td {
   vertical-align: middle;
@@ -398,4 +472,30 @@
   .pet-detail-modern-container {
     padding: 2rem 0.5rem;
   }
+}
+
+.pet-detail-close-btn {
+  position: absolute;
+  top: 22px;
+  right: 28px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 2.1rem;
+  color: var(--green-700, #15803d);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(71, 130, 75, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  z-index: 2200;
+}
+
+.pet-detail-close-btn:hover {
+  background: #ffeaea;
+  color: #d32f2f;
+  box-shadow: 0 4px 16px rgba(231, 115, 115, 0.13);
 }

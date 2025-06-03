@@ -52,6 +52,9 @@ export class DashboardComponent {
     attendees: 0
   };
 
+  // --- NUEVO: Próximas visitas veterinarias pendientes ---
+  upcomingVetVisits: any[] = [];
+
   constructor(private http: HttpClient, private confirmationService: ConfirmationService, private messageService: MessageService, private router: Router) { }
 
   // --- CALENDARIO CUSTOM ---
@@ -76,6 +79,7 @@ export class DashboardComponent {
     this.calendarYear = d.getFullYear();
     this.updateCalendars();
     this.loadEvents();
+    // this.loadUpcomingVetVisits(); // ELIMINADO: Solo se llama tras cargar mascotas
   }
 
   updateCalendars() {
@@ -218,6 +222,7 @@ export class DashboardComponent {
     this.http.get<any[]>(`/api/pets/${user.id}`).subscribe({
       next: (pets) => {
         this.pets = pets;
+        this.loadUpcomingVetVisits(); // <-- Aquí
         console.log('Loaded pets for user', user.id, pets);
       },
       error: (err) => {
@@ -410,6 +415,7 @@ export class DashboardComponent {
   desparasitacionesPorMascota: { [petId: string]: any[] } = {};
   medicacionesPorMascota: { [petId: string]: any[] } = {};
   observacionesPorMascota: { [petId: string]: any[] } = {};
+  historialPorMascota: { [petId: string]: any[] } = {}; // <-- Nuevo: Historial completo por mascota
 
   // Devuelve el array de registros para la mascota seleccionada y el tab activo
   get currentRecords() {
@@ -714,5 +720,50 @@ export class DashboardComponent {
 
   attendEvent(event: any) {
     alert('¡Te has registrado para asistir a: ' + event.title + '!');
+  }
+
+  // Cargar próximas visitas veterinarias pendientes
+  loadUpcomingVetVisits() {
+    console.log('DEBUG: Entrando en loadUpcomingVetVisits');
+    this.upcomingVetVisits = [];
+    const today = new Date();
+    for (const pet of this.pets) {
+      console.log('DEBUG: Consultando visitas para mascota', pet.id, pet.nombre);
+      this.http.get<any[]>(`/api/pets/${pet.id}/visitas_veterinario`).subscribe({
+        next: (visitas) => {
+          console.log('DEBUG: Respuesta visitas', pet.id, visitas);
+          (visitas || []).forEach(v => {
+            console.log('DEBUG visita:', v);
+            if (v.proxima_visita) {
+              let fechaStr = v.proxima_visita;
+              let fechaObj: Date | null = null;
+              if (/^\d{4}-\d{2}-\d{2}/.test(fechaStr)) {
+                fechaObj = new Date(fechaStr);
+              } else if (/^\d{2}-\d{2}-\d{4}/.test(fechaStr)) {
+                const [d, m, y] = fechaStr.split('-');
+                fechaObj = new Date(`${y}-${m}-${d}`);
+              } else {
+                fechaObj = new Date(fechaStr);
+              }
+              if (fechaObj && !isNaN(fechaObj.getTime())) {
+                const fechaSinHora = new Date(fechaObj.getFullYear(), fechaObj.getMonth(), fechaObj.getDate());
+                const hoySinHora = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                if (fechaSinHora >= hoySinHora) {
+                  this.upcomingVetVisits.push({
+                    fecha: fechaObj.toISOString().slice(0, 10),
+                    mascota: pet.nombre,
+                    veterinario: v.veterinario || 'No asignado'
+                  });
+                }
+              }
+            }
+          });
+          this.upcomingVetVisits.sort((a, b) => a.fecha.localeCompare(b.fecha));
+        },
+        error: (err) => {
+          console.error('ERROR visitas veterinario', pet.id, err);
+        }
+      });
+    }
   }
 }

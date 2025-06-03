@@ -1,10 +1,11 @@
-import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges, HostListener } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../shared/toast.service';
 
 @Component({
   selector: 'app-pet-detail',
@@ -59,11 +60,38 @@ export class PetDetailComponent implements OnChanges {
     notas: { contenido: '', fecha: '' }
   };
 
+  // --- NUEVO: Estados para feedback visual y errores ---
+  loadingRow: { [key: string]: boolean } = {};
+  rowError: { [key: string]: string } = {};
+  rowSuccess: { [key: string]: boolean } = {};
+
+  // --- Agregar propiedades y métodos para edición en línea ---
+  editRow: any = {};
+
+  // --- MODAL NUEVA MASCOTA ---
+  showAddPetModal = false;
+  newPet: any = {
+    nombre: '',
+    tipo: '',
+    raza: '',
+    edad: '',
+    foto: null,
+    notas: ''
+  };
+  razasDisponibles: string[] = [];
+  private razasPerro: string[] = [
+    'Labrador Retriever', 'Bulldog', 'Poodle', 'Chihuahua', 'Pastor Alemán', 'Golden Retriever', 'Beagle', 'Boxer', 'Dachshund', 'Rottweiler'
+  ];
+  private razasGato: string[] = [
+    'Persa', 'Siamés', 'Maine Coon', 'Bengala', 'Azul Ruso', 'Sphynx', 'British Shorthair', 'Ragdoll', 'Abisinio', 'Scottish Fold'
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toast: ToastService // <-- INJECT TOAST SERVICE
   ) {
     this.addForm = this.fb.group({}); // Ensure addForm is always a valid FormGroup
     this.route.params.subscribe(params => {
@@ -79,6 +107,7 @@ export class PetDetailComponent implements OnChanges {
   }
 
   loadAllData() {
+    if (!this.selectedPetId) return; // Protege contra llamadas con undefined
     // Fetch pet data from the new endpoint
     this.http.get(`/api/pets/detalle/${this.selectedPetId}`).subscribe({
       next: (data: any) => {
@@ -88,6 +117,9 @@ export class PetDetailComponent implements OnChanges {
       error: (err) => {
         this.pet = null;
         console.error('Error loading pet detail', err);
+        if (this.toast && this.toast.showError) {
+          this.toast.showError('No se pudo cargar el detalle de la mascota.');
+        }
       }
     });
     this.http.get(`/api/pets/${this.selectedPetId}/vacunas`).subscribe((data: any) => this.vacunas = data);
@@ -120,45 +152,55 @@ export class PetDetailComponent implements OnChanges {
     this.addType = tipo;
     this.editMode = true;
     this.editingId = row.id;
-    // Pre-fill form with row data
-    if (tipo === 'vacunas') {
-      this.addForm = this.fb.group({
-        nombre: [row.nombre, Validators.required],
-        fecha: [row.fecha ? row.fecha.substring(0, 10) : '', Validators.required],
-        proxima_fecha: [row.proxima_fecha ? row.proxima_fecha.substring(0, 10) : '', Validators.required],
-        notas: [row.notas || '']
-      });
-    } else if (tipo === 'desparasitaciones') {
-      this.addForm = this.fb.group({
-        nombre: [row.nombre, Validators.required],
-        fecha: [row.fecha ? row.fecha.substring(0, 10) : '', Validators.required],
-        proxima_fecha: [row.proxima_fecha ? row.proxima_fecha.substring(0, 10) : '', Validators.required],
-        notas: [row.notas || '']
-      });
-    } else if (tipo === 'medicaciones') {
-      this.addForm = this.fb.group({
-        nombre: [row.nombre, Validators.required],
-        dosis: [row.dosis, Validators.required],
-        frecuencia: [row.frecuencia, Validators.required],
-        fecha_inicio: [row.fecha_inicio ? row.fecha_inicio.substring(0, 10) : '', Validators.required],
-        fecha_fin: [row.fecha_fin ? row.fecha_fin.substring(0, 10) : ''],
-        notas: [row.notas || '']
-      });
-    } else if (tipo === 'historial') {
-      this.addForm = this.fb.group({
-        fecha: [row.fecha ? row.fecha.substring(0, 10) : '', Validators.required],
-        motivo: [row.motivo, Validators.required],
-        diagnostico: [row.diagnostico, Validators.required],
-        tratamiento: [row.tratamiento || ''],
-        proxima_visita: [row.proxima_visita ? row.proxima_visita.substring(0, 10) : '']
-      });
-    } else if (tipo === 'notas') {
-      this.addForm = this.fb.group({
-        contenido: [row.contenido, Validators.required],
-        fecha: [row.fecha ? row.fecha.substring(0, 10) : '', Validators.required]
-      });
+    // Copia los datos de la fila a editar
+    this.editRow = { ...row };
+  }
+
+  saveEditRow(tipo: string, row: any) {
+    if (!this.editingId) return;
+    let url = '';
+    if (tipo === 'vacunas') url = `/api/vacunas/${this.editingId}`;
+    if (tipo === 'desparasitaciones') url = `/api/desparasitaciones/${this.editingId}`;
+    if (tipo === 'medicaciones') url = `/api/medicaciones/${this.editingId}`;
+    if (tipo === 'historial') url = `/api/historial/${this.editingId}`;
+    if (tipo === 'notas') url = `/api/notas/${this.editingId}`;
+    const data = { ...this.editRow, mascota_id: this.selectedPetId };
+    this.http.put(url, data).subscribe({
+      next: () => {
+        this.editingId = null;
+        this.editMode = false;
+        this.editRow = {};
+        this.reloadList(tipo === 'historial' ? 'vet' : tipo);
+        if (this.toast && this.toast.showSuccess) {
+          this.toast.showSuccess('Registro actualizado correctamente');
+        }
+      },
+      error: () => {
+        if (this.toast && this.toast.showError) {
+          this.toast.showError('Error al actualizar el registro');
+        }
+      }
+    });
+  }
+
+  cancelEditRow() {
+    this.editingId = null;
+    this.editMode = false;
+    this.editRow = {};
+  }
+
+  private reloadList(tab: string) {
+    if (tab === 'vacunas') {
+      this.http.get(`/api/pets/${this.selectedPetId}/vacunas`).subscribe((data: any) => this.vacunas = data);
+    } else if (tab === 'desparasitaciones') {
+      this.http.get(`/api/pets/${this.selectedPetId}/desparasitaciones`).subscribe((data: any) => this.desparasitaciones = data);
+    } else if (tab === 'medicaciones') {
+      this.http.get(`/api/pets/${this.selectedPetId}/medicaciones`).subscribe((data: any) => this.medicaciones = data);
+    } else if (tab === 'vet' || tab === 'historial') {
+      this.http.get(`/api/pets/${this.selectedPetId}/visitas_veterinario`).subscribe((data: any) => this.historial = data);
+    } else if (tab === 'notas') {
+      this.http.get(`/api/pets/${this.selectedPetId}/observaciones`).subscribe((data: any) => this.notas = data);
     }
-    this.addDialogVisible = true;
   }
 
   updateRegistro() {
@@ -170,24 +212,52 @@ export class PetDetailComponent implements OnChanges {
     if (this.addType === 'medicaciones') url = `/api/medicaciones/${this.editingId}`;
     if (this.addType === 'historial') url = `/api/historial/${this.editingId}`;
     if (this.addType === 'notas') url = `/api/notas/${this.editingId}`;
-    this.http.put(url, data).subscribe(() => {
-      this.addDialogVisible = false;
-      this.editMode = false;
-      this.editingId = null;
-      this.loadAllData();
+    this.http.put(url, data).subscribe({
+      next: () => {
+        this.addDialogVisible = false;
+        this.editMode = false;
+        this.editingId = null;
+        this.reloadList(this.addType === 'historial' ? 'vet' : this.addType);
+        this.toast.showSuccess('Registro actualizado correctamente');
+      },
+      error: () => {
+        this.toast.showError('Error al actualizar el registro');
+      }
     });
   }
 
+  confirmDeleteRegistro(tipo: string, row: any) {
+    if (!window.confirm('¿Seguro que quieres eliminar este registro?')) return;
+    this.deleteRegistro(tipo, row);
+  }
+
   deleteRegistro(tipo: string, row: any) {
-    if (!confirm('¿Seguro que quieres eliminar este registro?')) return;
+    this.rowError[tipo] = '';
+    this.rowSuccess[tipo] = false;
     let url = '';
     if (tipo === 'vacunas') url = `/api/vacunas/${row.id}`;
     if (tipo === 'desparasitaciones') url = `/api/desparasitaciones/${row.id}`;
     if (tipo === 'medicaciones') url = `/api/medicaciones/${row.id}`;
     if (tipo === 'historial') url = `/api/historial/${row.id}`;
     if (tipo === 'notas') url = `/api/notas/${row.id}`;
-    this.http.delete(url).subscribe(() => {
-      this.loadAllData();
+    this.loadingRow[tipo] = true;
+    this.http.delete(url).subscribe({
+      next: () => {
+        this.rowSuccess[tipo] = true;
+        setTimeout(() => this.rowSuccess[tipo] = false, 1800);
+        this.loadingRow[tipo] = false;
+        this.reloadList(tipo === 'historial' ? 'vet' : tipo);
+        if (this.toast && this.toast.showSuccess) {
+          this.toast.showSuccess('Registro eliminado correctamente');
+        }
+      },
+      error: () => {
+        this.rowError[tipo] = 'Error al eliminar. Intenta de nuevo.';
+        this.loadingRow[tipo] = false;
+        if (this.toast && this.toast.showError) {
+          this.toast.showError('Error al eliminar el registro');
+        }
+      }
     });
   }
 
@@ -264,7 +334,7 @@ export class PetDetailComponent implements OnChanges {
   }
 
   addRegistro() {
-    if (!this.addForm.valid) return;
+    if (!this.addForm.valid || !this.selectedPetId) return;
     const data = { ...this.addForm.value, mascota_id: this.selectedPetId };
     let url = '';
     if (this.addType === 'vacunas') url = '/api/vacunas';
@@ -272,54 +342,99 @@ export class PetDetailComponent implements OnChanges {
     if (this.addType === 'medicaciones') url = '/api/medicaciones';
     if (this.addType === 'historial') url = '/api/historial';
     if (this.addType === 'notas') url = '/api/notas';
-    this.http.post(url, data).subscribe(() => {
-      this.addDialogVisible = false;
-      this.loadAllData();
+    this.http.post(url, data).subscribe({
+      next: () => {
+        this.addDialogVisible = false;
+        this.loadAllData();
+        this.toast.showSuccess('Registro guardado correctamente');
+      },
+      error: () => {
+        if (this.toast && this.toast.showError) {
+          this.toast.showError('Error al guardar el registro');
+        }
+      }
     });
   }
 
   addRegistroDirect(tab: 'desparasitaciones' | 'medicaciones' | 'vacunas' | 'vet' | 'notas') {
-    if (tab === 'desparasitaciones') {
-      const data = { ...this.newRow.desparasitaciones, mascota_id: this.selectedPetId };
-      if (!data.nombre || !data.fecha || !data.proxima_fecha) return;
-      this.http.post('/api/desparasitaciones', data).subscribe(() => {
-        this.showAddRow.desparasitaciones = false;
-        this.newRow.desparasitaciones = { nombre: '', fecha: '', proxima_fecha: '', notas: '' };
-        this.loadAllData();
-      });
-    } else if (tab === 'medicaciones') {
-      const data = { ...this.newRow.medicaciones, mascota_id: this.selectedPetId };
-      if (!data.nombre || !data.dosis || !data.frecuencia || !data.fecha_inicio) return;
-      this.http.post('/api/medicaciones', data).subscribe(() => {
-        this.showAddRow.medicaciones = false;
-        this.newRow.medicaciones = { nombre: '', dosis: '', frecuencia: '', fecha_inicio: '', fecha_fin: '', notas: '' };
-        this.loadAllData();
-      });
-    } else if (tab === 'vacunas') {
-      const data = { ...this.newRow.vacunas, mascota_id: this.selectedPetId };
-      if (!data.nombre || !data.fecha || !data.proxima_fecha) return;
-      this.http.post('/api/vacunas', data).subscribe(() => {
-        this.showAddRow.vacunas = false;
-        this.newRow.vacunas = { nombre: '', fecha: '', proxima_fecha: '', notas: '' };
-        this.loadAllData();
-      });
-    } else if (tab === 'vet') {
-      const data = { ...this.newRow.vet, mascota_id: this.selectedPetId };
-      if (!data.fecha || !data.motivo || !data.diagnostico) return;
-      this.http.post('/api/historial', data).subscribe(() => {
-        this.showAddRow.vet = false;
-        this.newRow.vet = { fecha: '', motivo: '', diagnostico: '', tratamiento: '', proxima_visita: '' };
-        this.loadAllData();
-      });
-    } else if (tab === 'notas') {
-      const data = { ...this.newRow.notas, mascota_id: this.selectedPetId };
-      if (!data.contenido || !data.fecha) return;
-      this.http.post('/api/notas', data).subscribe(() => {
-        this.showAddRow.notas = false;
-        this.newRow.notas = { contenido: '', fecha: '' };
-        this.loadAllData();
-      });
+    this.rowError[tab] = '';
+    this.rowSuccess[tab] = false;
+    this.loadingRow[tab] = true;
+    let data: any;
+    if (!this.selectedPetId) {
+      this.rowError[tab] = 'No hay mascota seleccionada.';
+      this.loadingRow[tab] = false;
+      return;
     }
+    // Validación manual de campos requeridos
+    if (tab === 'desparasitaciones') {
+      data = { ...this.newRow.desparasitaciones, mascota_id: this.selectedPetId };
+      if (!data.nombre || !data.fecha || !data.proxima_fecha) {
+        this.rowError[tab] = 'Completa todos los campos obligatorios.';
+        this.loadingRow[tab] = false;
+        return;
+      }
+    } else if (tab === 'medicaciones') {
+      data = { ...this.newRow.medicaciones, mascota_id: this.selectedPetId };
+      if (!data.nombre || !data.dosis || !data.frecuencia || !data.fecha_inicio) {
+        this.rowError[tab] = 'Completa todos los campos obligatorios.';
+        this.loadingRow[tab] = false;
+        return;
+      }
+    } else if (tab === 'vacunas') {
+      data = { ...this.newRow.vacunas, mascota_id: this.selectedPetId };
+      if (!data.nombre || !data.fecha || !data.proxima_fecha) {
+        this.rowError[tab] = 'Completa todos los campos obligatorios.';
+        this.loadingRow[tab] = false;
+        return;
+      }
+    } else if (tab === 'vet') {
+      data = { ...this.newRow.vet, mascota_id: this.selectedPetId };
+      if (!data.fecha || !data.motivo || !data.diagnostico) {
+        this.rowError[tab] = 'Completa todos los campos obligatorios.';
+        this.loadingRow[tab] = false;
+        return;
+      }
+    } else if (tab === 'notas') {
+      data = { ...this.newRow.notas, mascota_id: this.selectedPetId };
+      if (!data.contenido || !data.fecha) {
+        this.rowError[tab] = 'Completa todos los campos obligatorios.';
+        this.loadingRow[tab] = false;
+        return;
+      }
+    }
+    // --- Llamada API ---
+    let url = '';
+    if (tab === 'desparasitaciones') url = '/api/desparasitaciones';
+    if (tab === 'medicaciones') url = '/api/medicaciones';
+    if (tab === 'vacunas') url = '/api/vacunas';
+    if (tab === 'vet') url = '/api/historial';
+    if (tab === 'notas') url = '/api/notas';
+    this.http.post(url, data).subscribe({
+      next: () => {
+        this.showAddRow[tab] = false;
+        // Limpiar campos
+        if (tab === 'desparasitaciones') this.newRow.desparasitaciones = { nombre: '', fecha: '', proxima_fecha: '', notas: '' };
+        if (tab === 'medicaciones') this.newRow.medicaciones = { nombre: '', dosis: '', frecuencia: '', fecha_inicio: '', fecha_fin: '', notas: '' };
+        if (tab === 'vacunas') this.newRow.vacunas = { nombre: '', fecha: '', proxima_fecha: '', notas: '' };
+        if (tab === 'vet') this.newRow.vet = { fecha: '', motivo: '', diagnostico: '', tratamiento: '', proxima_visita: '' };
+        if (tab === 'notas') this.newRow.notas = { contenido: '', fecha: '' };
+        this.rowSuccess[tab] = true;
+        setTimeout(() => this.rowSuccess[tab] = false, 1800);
+        this.loadingRow[tab] = false;
+        this.reloadList(tab);
+        if (this.toast && this.toast.showSuccess) {
+          this.toast.showSuccess('Registro guardado correctamente');
+        }
+      },
+      error: (err) => {
+        this.rowError[tab] = 'Error al guardar. Intenta de nuevo.';
+        this.loadingRow[tab] = false;
+        if (this.toast && this.toast.showError) {
+          this.toast.showError('Error al guardar el registro');
+        }
+      }
+    });
   }
 
   toggleAddRow(tab: 'desparasitaciones' | 'medicaciones' | 'vacunas' | 'vet' | 'notas') {
@@ -341,5 +456,59 @@ export class PetDetailComponent implements OnChanges {
 
   goBack() {
     this.close.emit();
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscKey(event: KeyboardEvent) {
+    this.goBack();
+  }
+
+  onTipoChange() {
+    if (this.newPet.tipo === 'Perro') {
+      this.razasDisponibles = this.razasPerro;
+      this.newPet.raza = '';
+    } else if (this.newPet.tipo === 'Gato') {
+      this.razasDisponibles = this.razasGato;
+      this.newPet.raza = '';
+    } else {
+      this.razasDisponibles = [];
+      this.newPet.raza = '';
+    }
+  }
+
+  onFotoChange(event: any) {
+    const file = event.target.files[0];
+    this.newPet.foto = file;
+  }
+
+  addPet() {
+    // Lógica real para guardar la mascota
+    const formData = new FormData();
+    formData.append('nombre', this.newPet.nombre);
+    formData.append('tipo', this.newPet.tipo);
+    formData.append('raza', this.newPet.raza);
+    formData.append('edad', this.newPet.edad);
+    formData.append('notas', this.newPet.notas);
+    if (this.newPet.foto) {
+      formData.append('foto', this.newPet.foto);
+    }
+    // Llamada a la API (ajusta la URL según tu backend)
+    this.http.post('/api/pets', formData).subscribe({
+      next: (res) => {
+        this.showAddPetModal = false;
+        this.newPet = { nombre: '', tipo: '', raza: '', edad: '', foto: null, notas: '' };
+        this.razasDisponibles = [];
+        if (this.toast && this.toast.showSuccess) {
+          this.toast.showSuccess('Mascota añadida correctamente');
+        }
+        // Opcional: recargar datos de mascotas si tienes un método
+        // this.loadAllData();
+      },
+      error: (err) => {
+        if (this.toast && this.toast.showError) {
+          this.toast.showError('Error al añadir la mascota');
+        }
+      }
+    });
   }
 }

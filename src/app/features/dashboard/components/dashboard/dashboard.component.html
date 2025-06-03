@@ -121,6 +121,26 @@
           </tbody>
         </table>
       </div>
+      <div class="dashboard-section vet-appointments-section">
+        <h2>Próximas visitas veterinarias</h2>
+        <table class="appointments-table" *ngIf="upcomingVetVisits.length > 0">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Mascota</th>
+              <th>Veterinario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let v of upcomingVetVisits">
+              <td>{{ v.fecha | date:'dd/MM/yyyy' }}</td>
+              <td>{{ v.mascota }}</td>
+              <td>{{ v.veterinario }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="upcomingVetVisits.length === 0" style="color:#888; text-align:center;">No hay próximas visitas veterinarias pendientes.</div>
+      </div>
     </div>
     <div *ngIf="currentView === 'pets'" class="content pets-content">
       <div class="pets-header-row">

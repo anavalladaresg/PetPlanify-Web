@@ -1,46 +1,82 @@
-<div class="pet-detail-modern-container">
+<div class="pet-detail-modern-container" style="position:relative;" role="dialog" aria-modal="true"
+  aria-label="Detalle de mascota">
+  <button class="pet-detail-close-btn" (click)="goBack()" aria-label="Cerrar ventana" tabindex="0">×</button>
   <div class="pet-detail-main">
-    <h1 class="pet-title">Perfil de {{ pet?.nombre }}</h1>
-    <div class="pet-subtitle">{{ pet?.raza }}, {{ calcularEdad(pet?.fecha_nacimiento) }}</div>
-    <div class="pet-tabs">
-      <button [class.active]="activeTab === 'overview'" (click)="setTab('overview')">General</button>
-      <button [class.active]="activeTab === 'vet'" (click)="setTab('vet')">Visitas Vet</button>
-      <button [class.active]="activeTab === 'vacunas'" (click)="setTab('vacunas')">Vacunas</button>
-      <button [class.active]="activeTab === 'desparasitaciones'" (click)="setTab('desparasitaciones')">Desparasitaciones</button>
-      <button [class.active]="activeTab === 'medicaciones'" (click)="setTab('medicaciones')">Medicaciones</button>
-      <button [class.active]="activeTab === 'notas'" (click)="setTab('notas')">Notas</button>
+    <h1 class="pet-title" tabindex="0">Perfil de {{ pet?.nombre }}</h1>
+    <div class="pet-subtitle" tabindex="0">{{ pet?.raza }}, {{ calcularEdad(pet?.fecha_nacimiento) }}</div>
+    <div class="pet-tabs" role="tablist">
+      <button [class.active]="activeTab === 'overview'" (click)="setTab('overview')" role="tab"
+        [attr.aria-selected]="activeTab === 'overview'" tabindex="0">General</button>
+      <button [class.active]="activeTab === 'vet'" (click)="setTab('vet')" role="tab"
+        [attr.aria-selected]="activeTab === 'vet'" tabindex="0">Visitas Vet</button>
+      <button [class.active]="activeTab === 'vacunas'" (click)="setTab('vacunas')" role="tab"
+        [attr.aria-selected]="activeTab === 'vacunas'" tabindex="0">Vacunas</button>
+      <button [class.active]="activeTab === 'desparasitaciones'" (click)="setTab('desparasitaciones')" role="tab"
+        [attr.aria-selected]="activeTab === 'desparasitaciones'" tabindex="0">Desparasitaciones</button>
+      <button [class.active]="activeTab === 'medicaciones'" (click)="setTab('medicaciones')" role="tab"
+        [attr.aria-selected]="activeTab === 'medicaciones'" tabindex="0">Medicaciones</button>
+      <button [class.active]="activeTab === 'notas'" (click)="setTab('notas')" role="tab"
+        [attr.aria-selected]="activeTab === 'notas'" tabindex="0">Notas</button>
     </div>
     <div class="pet-tab-content" *ngIf="activeTab === 'overview'" [ngClass]="tabAnimationClass" data-scroll="false">
       <h2>Información General</h2>
       <table class="pet-info-table">
         <tbody>
-          <tr><td>Raza</td><td>{{ pet?.raza }}</td></tr>
-          <tr><td>Edad</td><td>{{ calcularEdad(pet?.fecha_nacimiento) }}</td></tr>
-          <tr><td>Género</td><td>{{ pet?.genero || '-' }}</td></tr>
-          <tr><td>Peso</td><td>{{ pet?.peso ? pet.peso + ' kg' : '-' }}</td></tr>
+          <tr>
+            <td>Raza</td>
+            <td>{{ pet?.raza }}</td>
+          </tr>
+          <tr>
+            <td>Edad</td>
+            <td>{{ calcularEdad(pet?.fecha_nacimiento) }}</td>
+          </tr>
+          <tr>
+            <td>Género</td>
+            <td>{{ pet?.genero || '-' }}</td>
+          </tr>
+          <tr>
+            <td>Peso</td>
+            <td>{{ pet?.peso ? pet.peso + ' kg' : '-' }}</td>
+          </tr>
         </tbody>
       </table>
       <h2>Historial Médico</h2>
       <table class="pet-info-table">
         <tbody>
-          <tr><td>Última visita vet</td><td>{{ historial[0]?.fecha ? (historial[0]?.fecha | date:'d MMMM, yyyy') : '-' }}</td></tr>
-          <tr><td>Próxima revisión</td><td>{{ historial[0]?.proxima_visita ? (historial[0]?.proxima_visita | date:'d MMMM, yyyy') : '-' }}</td></tr>
-          <tr><td>Alergias</td><td>{{ pet?.alergias || 'Ninguna' }}</td></tr>
+          <tr>
+            <td>Última visita vet</td>
+            <td>{{ historial[0]?.fecha ? (historial[0]?.fecha | date:'d MMMM, yyyy') : '-' }}</td>
+          </tr>
+          <tr>
+            <td>Próxima revisión</td>
+            <td>{{ historial[0]?.proxima_visita ? (historial[0]?.proxima_visita | date:'d MMMM, yyyy') : '-' }}</td>
+          </tr>
+          <tr>
+            <td>Alergias</td>
+            <td>{{ pet?.alergias || 'Ninguna' }}</td>
+          </tr>
         </tbody>
       </table>
       <h2>Notas adicionales</h2>
       <div class="pet-notes">{{ pet?.notas || 'Sin notas adicionales.' }}</div>
     </div>
+    <!-- Cambios para edición en línea de filas -->
     <div class="pet-tab-content" *ngIf="activeTab === 'vet'" [ngClass]="tabAnimationClass" data-scroll="true">
-      <h2 style="display: flex; justify-content: space-between; align-items: center;">
-        Visitas Veterinario
-        <button class="table-edit-btn" (click)="toggleAddRow('vet')">
+      <h2 style="display: flex; justify-content: space-between; align-items: center;">Visitas Veterinario
+        <button class="table-edit-btn" (click)="toggleAddRow('vet')" aria-label="Agregar visita vet" tabindex="0">
           <span *ngIf="!showAddRow.vet">➕</span>
           <span *ngIf="showAddRow.vet">✖</span>
         </button>
       </h2>
-      <table class="pet-info-table">
-        <tr><th>Fecha</th><th>Motivo</th><th>Diagnóstico</th><th>Tratamiento</th><th>Próxima visita</th></tr>
+      <table class="pet-info-table" role="table" aria-label="Tabla de visitas veterinario">
+        <tr>
+          <th>Fecha</th>
+          <th>Motivo</th>
+          <th>Diagnóstico</th>
+          <th>Tratamiento</th>
+          <th>Próxima visita</th>
+          <th *ngIf="(historial && historial.length > 0) || showAddRow.vet" class="actions-header">Acciones</th>
+        </tr>
         <tbody>
           <tr *ngIf="showAddRow.vet">
             <td><input type="date" [(ngModel)]="newRow.vet.fecha" /></td>
@@ -49,21 +85,52 @@
             <td><input type="text" [(ngModel)]="newRow.vet.tratamiento" placeholder="Tratamiento" /></td>
             <td style="display:flex; gap:4px; align-items:center;">
               <input type="date" [(ngModel)]="newRow.vet.proxima_visita" style="flex:1;" />
-              <button class="table-save-btn" (click)="addRegistroDirect('vet')" title="Guardar">💾</button>
+              <button class="table-save-btn" (click)="addRegistroDirect('vet')"
+                [disabled]="loadingRow['vet'] || !newRow.vet.fecha || !newRow.vet.motivo || !newRow.vet.diagnostico"
+                title="Guardar">
+                <span *ngIf="!loadingRow['vet'] && !rowSuccess['vet']">💾</span>
+                <span *ngIf="loadingRow['vet']" class="spinner"></span>
+                <span *ngIf="rowSuccess['vet']">✔️</span>
+              </button>
             </td>
           </tr>
+          <tr *ngIf="rowError['vet'] && showAddRow.vet">
+            <td colspan="6" class="table-error-msg">{{ rowError['vet'] }}</td>
+          </tr>
           <ng-container *ngFor="let v of historial">
-            <tr>
+            <tr *ngIf="editingId !== v.id">
               <td>{{ v.fecha | date:'dd/MM/yyyy' }}</td>
               <td>{{ v.motivo }}</td>
               <td>{{ v.diagnostico }}</td>
               <td>{{ v.tratamiento }}</td>
               <td>{{ v.proxima_visita | date:'dd/MM/yyyy' }}</td>
+              <td class="actions-cell" style="min-width:70px; text-align:right;">
+                <button class="table-edit-btn" (click)="openEditDialog('historial', v)" title="Editar registro"
+                  aria-label="Editar"><span aria-hidden="true">✏️</span></button>
+                <button class="table-edit-btn" (click)="confirmDeleteRegistro('historial', v)" title="Eliminar registro"
+                  aria-label="Eliminar" [disabled]="loadingRow['historial']">
+                  <span *ngIf="!loadingRow['historial'] && !rowSuccess['historial']">🗑️</span>
+                  <span *ngIf="loadingRow['historial']" class="spinner"></span>
+                  <span *ngIf="rowSuccess['historial']">✔️</span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="editingId === v.id">
+              <td><input type="date" [(ngModel)]="editRow.fecha" /></td>
+              <td><input type="text" [(ngModel)]="editRow.motivo" /></td>
+              <td><input type="text" [(ngModel)]="editRow.diagnostico" /></td>
+              <td><input type="text" [(ngModel)]="editRow.tratamiento" /></td>
+              <td><input type="date" [(ngModel)]="editRow.proxima_visita" /></td>
+              <td class="actions-cell"
+                style="min-width:70px; text-align:right; display:flex; gap:4px; align-items:center;">
+                <button class="table-save-btn" (click)="saveEditRow('historial', v)">💾</button>
+                <button class="table-edit-btn" (click)="cancelEditRow()">✖</button>
+              </td>
             </tr>
           </ng-container>
           <ng-container *ngIf="!historial || historial.length === 0">
             <tr>
-              <td colspan="5" style="text-align:center; color:#888;">Sin visitas registradas.</td>
+              <td colspan="6" style="text-align:center; color:#888;">Sin visitas registradas.</td>
             </tr>
           </ng-container>
         </tbody>
@@ -77,8 +144,14 @@
           <span *ngIf="showAddRow.vacunas">✖</span>
         </button>
       </h2>
-      <table class="pet-info-table">
-        <tr><th>Nombre</th><th>Fecha</th><th>Próxima</th><th>Notas</th></tr>
+      <table class="pet-info-table" role="table" aria-label="Tabla de vacunas">
+        <tr>
+          <th>Nombre</th>
+          <th>Fecha</th>
+          <th>Próxima</th>
+          <th>Notas</th>
+          <th *ngIf="(vacunas && vacunas.length > 0) || showAddRow.vacunas" class="actions-header">Acciones</th>
+        </tr>
         <tbody>
           <tr *ngIf="showAddRow.vacunas">
             <td><input type="text" [(ngModel)]="newRow.vacunas.nombre" placeholder="Nombre" /></td>
@@ -86,26 +159,57 @@
             <td><input type="date" [(ngModel)]="newRow.vacunas.proxima_fecha" /></td>
             <td style="display:flex; gap:4px; align-items:center;">
               <input type="text" [(ngModel)]="newRow.vacunas.notas" placeholder="Notas" style="flex:1;" />
-              <button class="table-save-btn" (click)="addRegistroDirect('vacunas')" title="Guardar">💾</button>
+              <button class="table-save-btn" (click)="addRegistroDirect('vacunas')"
+                [disabled]="loadingRow['vacunas'] || !newRow.vacunas.nombre || !newRow.vacunas.fecha || !newRow.vacunas.proxima_fecha"
+                title="Guardar">
+                <span *ngIf="!loadingRow['vacunas'] && !rowSuccess['vacunas']">💾</span>
+                <span *ngIf="loadingRow['vacunas']" class="spinner"></span>
+                <span *ngIf="rowSuccess['vacunas']">✔️</span>
+              </button>
             </td>
           </tr>
+          <tr *ngIf="rowError['vacunas'] && showAddRow.vacunas">
+            <td colspan="5" class="table-error-msg">{{ rowError['vacunas'] }}</td>
+          </tr>
           <ng-container *ngFor="let v of vacunas">
-            <tr>
+            <tr *ngIf="editingId !== v.id">
               <td>{{ v.nombre }}</td>
               <td>{{ v.fecha | date:'dd/MM/yyyy' }}</td>
               <td>{{ v.proxima_fecha | date:'dd/MM/yyyy' }}</td>
               <td>{{ v.notas }}</td>
+              <td class="actions-cell" style="min-width:70px; text-align:right;">
+                <button class="table-edit-btn" (click)="openEditDialog('vacunas', v)" title="Editar vacuna"
+                  aria-label="Editar"><span aria-hidden="true">✏️</span></button>
+                <button class="table-edit-btn" (click)="confirmDeleteRegistro('vacunas', v)" title="Eliminar vacuna"
+                  aria-label="Eliminar" [disabled]="loadingRow['vacunas']">
+                  <span *ngIf="!loadingRow['vacunas'] && !rowSuccess['vacunas']">🗑️</span>
+                  <span *ngIf="loadingRow['vacunas']" class="spinner"></span>
+                  <span *ngIf="rowSuccess['vacunas']">✔️</span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="editingId === v.id">
+              <td><input type="text" [(ngModel)]="editRow.nombre" /></td>
+              <td><input type="date" [(ngModel)]="editRow.fecha" /></td>
+              <td><input type="date" [(ngModel)]="editRow.proxima_fecha" /></td>
+              <td><input type="text" [(ngModel)]="editRow.notas" /></td>
+              <td class="actions-cell"
+                style="min-width:70px; text-align:right; display:flex; gap:4px; align-items:center;">
+                <button class="table-save-btn" (click)="saveEditRow('vacunas', v)">💾</button>
+                <button class="table-edit-btn" (click)="cancelEditRow()">✖</button>
+              </td>
             </tr>
           </ng-container>
           <ng-container *ngIf="!vacunas || vacunas.length === 0">
             <tr>
-              <td colspan="4" style="text-align:center; color:#888;">Sin vacunas registradas.</td>
+              <td colspan="5" style="text-align:center; color:#888;">Sin vacunas registradas.</td>
             </tr>
           </ng-container>
         </tbody>
       </table>
     </div>
-    <div class="pet-tab-content" *ngIf="activeTab === 'desparasitaciones'" [ngClass]="tabAnimationClass" data-scroll="true">
+    <div class="pet-tab-content" *ngIf="activeTab === 'desparasitaciones'" [ngClass]="tabAnimationClass"
+      data-scroll="true">
       <h2 style="display: flex; justify-content: space-between; align-items: center;">
         Desparasitaciones
         <button class="table-edit-btn" (click)="toggleAddRow('desparasitaciones')">
@@ -113,8 +217,15 @@
           <span *ngIf="showAddRow.desparasitaciones">✖</span>
         </button>
       </h2>
-      <table class="pet-info-table">
-        <tr><th>Nombre</th><th>Fecha</th><th>Próxima</th><th>Notas</th></tr>
+      <table class="pet-info-table" role="table" aria-label="Tabla de desparasitaciones">
+        <tr>
+          <th>Nombre</th>
+          <th>Fecha</th>
+          <th>Próxima</th>
+          <th>Notas</th>
+          <th *ngIf="(desparasitaciones && desparasitaciones.length > 0) || showAddRow.desparasitaciones"
+            class="actions-header">Acciones</th>
+        </tr>
         <tbody>
           <tr *ngIf="showAddRow.desparasitaciones">
             <td><input type="text" [(ngModel)]="newRow.desparasitaciones.nombre" placeholder="Nombre" /></td>
@@ -122,20 +233,50 @@
             <td><input type="date" [(ngModel)]="newRow.desparasitaciones.proxima_fecha" /></td>
             <td style="display:flex; gap:4px; align-items:center;">
               <input type="text" [(ngModel)]="newRow.desparasitaciones.notas" placeholder="Notas" style="flex:1;" />
-              <button class="table-save-btn" (click)="addRegistroDirect('desparasitaciones')" title="Guardar">💾</button>
+              <button class="table-save-btn" (click)="addRegistroDirect('desparasitaciones')"
+                [disabled]="loadingRow['desparasitaciones'] || !newRow.desparasitaciones.nombre || !newRow.desparasitaciones.fecha || !newRow.desparasitaciones.proxima_fecha"
+                title="Guardar">
+                <span *ngIf="!loadingRow['desparasitaciones'] && !rowSuccess['desparasitaciones']">💾</span>
+                <span *ngIf="loadingRow['desparasitaciones']" class="spinner"></span>
+                <span *ngIf="rowSuccess['desparasitaciones']">✔️</span>
+              </button>
             </td>
           </tr>
+          <tr *ngIf="rowError['desparasitaciones'] && showAddRow.desparasitaciones">
+            <td colspan="5" class="table-error-msg">{{ rowError['desparasitaciones'] }}</td>
+          </tr>
           <ng-container *ngFor="let d of desparasitaciones">
-            <tr>
+            <tr *ngIf="editingId !== d.id">
               <td>{{ d.nombre }}</td>
               <td>{{ d.fecha | date:'dd/MM/yyyy' }}</td>
               <td>{{ d.proxima_fecha | date:'dd/MM/yyyy' }}</td>
               <td>{{ d.notas }}</td>
+              <td class="actions-cell" style="min-width:70px; text-align:right;">
+                <button class="table-edit-btn" (click)="openEditDialog('desparasitaciones', d)"
+                  title="Editar desparasitación" aria-label="Editar"><span aria-hidden="true">✏️</span></button>
+                <button class="table-edit-btn" (click)="confirmDeleteRegistro('desparasitaciones', d)"
+                  title="Eliminar desparasitación" aria-label="Eliminar" [disabled]="loadingRow['desparasitaciones']">
+                  <span *ngIf="!loadingRow['desparasitaciones'] && !rowSuccess['desparasitaciones']">🗑️</span>
+                  <span *ngIf="loadingRow['desparasitaciones']" class="spinner"></span>
+                  <span *ngIf="rowSuccess['desparasitaciones']">✔️</span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="editingId === d.id">
+              <td><input type="text" [(ngModel)]="editRow.nombre" /></td>
+              <td><input type="date" [(ngModel)]="editRow.fecha" /></td>
+              <td><input type="date" [(ngModel)]="editRow.proxima_fecha" /></td>
+              <td><input type="text" [(ngModel)]="editRow.notas" /></td>
+              <td class="actions-cell"
+                style="min-width:70px; text-align:right; display:flex; gap:4px; align-items:center;">
+                <button class="table-save-btn" (click)="saveEditRow('desparasitaciones', d)">💾</button>
+                <button class="table-edit-btn" (click)="cancelEditRow()">✖</button>
+              </td>
             </tr>
           </ng-container>
           <ng-container *ngIf="!desparasitaciones || desparasitaciones.length === 0">
             <tr>
-              <td colspan="4" style="text-align:center; color:#888;">Sin desparasitaciones registradas.</td>
+              <td colspan="5" style="text-align:center; color:#888;">Sin desparasitaciones registradas.</td>
             </tr>
           </ng-container>
         </tbody>
@@ -149,8 +290,17 @@
           <span *ngIf="showAddRow.medicaciones">✖</span>
         </button>
       </h2>
-      <table class="pet-info-table">
-        <tr><th>Nombre</th><th>Dosis</th><th>Frecuencia</th><th>Inicio</th><th>Fin</th><th>Notas</th></tr>
+      <table class="pet-info-table" role="table" aria-label="Tabla de medicaciones">
+        <tr>
+          <th>Nombre</th>
+          <th>Dosis</th>
+          <th>Frecuencia</th>
+          <th>Inicio</th>
+          <th>Fin</th>
+          <th>Notas</th>
+          <th *ngIf="(medicaciones && medicaciones.length > 0) || showAddRow.medicaciones" class="actions-header">
+            Acciones</th>
+        </tr>
         <tbody>
           <tr *ngIf="showAddRow.medicaciones">
             <td><input type="text" [(ngModel)]="newRow.medicaciones.nombre" placeholder="Nombre" /></td>
@@ -160,22 +310,54 @@
             <td><input type="date" [(ngModel)]="newRow.medicaciones.fecha_fin" /></td>
             <td style="display:flex; gap:4px; align-items:center;">
               <input type="text" [(ngModel)]="newRow.medicaciones.notas" placeholder="Notas" style="flex:1;" />
-              <button class="table-save-btn" (click)="addRegistroDirect('medicaciones')" title="Guardar">💾</button>
+              <button class="table-save-btn" (click)="addRegistroDirect('medicaciones')"
+                [disabled]="loadingRow['medicaciones'] || !newRow.medicaciones.nombre || !newRow.medicaciones.dosis || !newRow.medicaciones.frecuencia || !newRow.medicaciones.fecha_inicio"
+                title="Guardar">
+                <span *ngIf="!loadingRow['medicaciones'] && !rowSuccess['medicaciones']">💾</span>
+                <span *ngIf="loadingRow['medicaciones']" class="spinner"></span>
+                <span *ngIf="rowSuccess['medicaciones']">✔️</span>
+              </button>
             </td>
           </tr>
+          <tr *ngIf="rowError['medicaciones'] && showAddRow.medicaciones">
+            <td colspan="7" class="table-error-msg">{{ rowError['medicaciones'] }}</td>
+          </tr>
           <ng-container *ngFor="let m of medicaciones">
-            <tr>
+            <tr *ngIf="editingId !== m.id">
               <td>{{ m.nombre }}</td>
               <td>{{ m.dosis }}</td>
               <td>{{ m.frecuencia }}</td>
               <td>{{ m.fecha_inicio | date:'dd/MM/yyyy' }}</td>
               <td>{{ m.fecha_fin | date:'dd/MM/yyyy' }}</td>
               <td>{{ m.notas }}</td>
+              <td class="actions-cell" style="min-width:70px; text-align:right;">
+                <button class="table-edit-btn" (click)="openEditDialog('medicaciones', m)" title="Editar medicación"
+                  aria-label="Editar"><span aria-hidden="true">✏️</span></button>
+                <button class="table-edit-btn" (click)="confirmDeleteRegistro('medicaciones', m)"
+                  title="Eliminar medicación" aria-label="Eliminar" [disabled]="loadingRow['medicaciones']">
+                  <span *ngIf="!loadingRow['medicaciones'] && !rowSuccess['medicaciones']">🗑️</span>
+                  <span *ngIf="loadingRow['medicaciones']" class="spinner"></span>
+                  <span *ngIf="rowSuccess['medicaciones']">✔️</span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="editingId === m.id">
+              <td><input type="text" [(ngModel)]="editRow.nombre" /></td>
+              <td><input type="text" [(ngModel)]="editRow.dosis" /></td>
+              <td><input type="text" [(ngModel)]="editRow.frecuencia" /></td>
+              <td><input type="date" [(ngModel)]="editRow.fecha_inicio" /></td>
+              <td><input type="date" [(ngModel)]="editRow.fecha_fin" /></td>
+              <td><input type="text" [(ngModel)]="editRow.notas" /></td>
+              <td class="actions-cell"
+                style="min-width:70px; text-align:right; display:flex; gap:4px; align-items:center;">
+                <button class="table-save-btn" (click)="saveEditRow('medicaciones', m)">💾</button>
+                <button class="table-edit-btn" (click)="cancelEditRow()">✖</button>
+              </td>
             </tr>
           </ng-container>
           <ng-container *ngIf="!medicaciones || medicaciones.length === 0">
             <tr>
-              <td colspan="6" style="text-align:center; color:#888;">Sin medicaciones registradas.</td>
+              <td colspan="7" style="text-align:center; color:#888;">Sin medicaciones registradas.</td>
             </tr>
           </ng-container>
         </tbody>
@@ -189,37 +371,163 @@
           <span *ngIf="showAddRow.notas">✖</span>
         </button>
       </h2>
-      <table class="pet-info-table">
-        <tr><th>Contenido</th><th>Fecha</th></tr>
+      <table class="pet-info-table" role="table" aria-label="Tabla de notas">
+        <tr>
+          <th>Contenido</th>
+          <th>Fecha</th>
+          <th *ngIf="(notas && notas.length > 0) || showAddRow.notas" class="actions-header">Acciones</th>
+        </tr>
         <tbody>
           <tr *ngIf="showAddRow.notas">
             <td><input type="text" [(ngModel)]="newRow.notas.contenido" placeholder="Contenido" /></td>
             <td style="display:flex; gap:4px; align-items:center;">
               <input type="date" [(ngModel)]="newRow.notas.fecha" style="flex:1;" />
-              <button class="table-save-btn" (click)="addRegistroDirect('notas')" title="Guardar">💾</button>
+              <button class="table-save-btn" (click)="addRegistroDirect('notas')"
+                [disabled]="loadingRow['notas'] || !newRow.notas.contenido || !newRow.notas.fecha" title="Guardar">
+                <span *ngIf="!loadingRow['notas'] && !rowSuccess['notas']">💾</span>
+                <span *ngIf="loadingRow['notas']" class="spinner"></span>
+                <span *ngIf="rowSuccess['notas']">✔️</span>
+              </button>
             </td>
           </tr>
+          <tr *ngIf="rowError['notas'] && showAddRow.notas">
+            <td colspan="3" class="table-error-msg">{{ rowError['notas'] }}</td>
+          </tr>
           <ng-container *ngFor="let n of notas">
-            <tr>
+            <tr *ngIf="editingId !== n.id">
               <td>{{ n.contenido }}</td>
               <td>{{ n.fecha | date:'dd/MM/yyyy' }}</td>
+              <td class="actions-cell" style="min-width:70px; text-align:right;">
+                <button class="table-edit-btn" (click)="openEditDialog('notas', n)" title="Editar nota"
+                  aria-label="Editar"><span aria-hidden="true">✏️</span></button>
+                <button class="table-edit-btn" (click)="confirmDeleteRegistro('notas', n)" title="Eliminar nota"
+                  aria-label="Eliminar" [disabled]="loadingRow['notas']">
+                  <span *ngIf="!loadingRow['notas'] && !rowSuccess['notas']">🗑️</span>
+                  <span *ngIf="loadingRow['notas']" class="spinner"></span>
+                  <span *ngIf="rowSuccess['notas']">✔️</span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="editingId === n.id">
+              <td><input type="text" [(ngModel)]="editRow.contenido" /></td>
+              <td><input type="date" [(ngModel)]="editRow.fecha" /></td>
+              <td class="actions-cell"
+                style="min-width:70px; text-align:right; display:flex; gap:4px; align-items:center;">
+                <button class="table-save-btn" (click)="saveEditRow('notas', n)">💾</button>
+                <button class="table-edit-btn" (click)="cancelEditRow()">✖</button>
+              </td>
             </tr>
           </ng-container>
           <ng-container *ngIf="!notas || notas.length === 0">
             <tr>
-              <td colspan="2" style="text-align:center; color:#888;">Sin notas registradas.</td>
+              <td colspan="3" style="text-align:center; color:#888;">Sin notas registradas.</td>
             </tr>
           </ng-container>
         </tbody>
       </table>
     </div>
   </div>
+  <!-- Añadir Mascota button (visible, prominent) -->
+  <button class="pet-profile-btn add-pet-btn" (click)="showAddPetModal = true"
+    style="margin-bottom: 1.5rem; width: 100%; font-size: 1.1rem; font-weight: 600; background: #4caf50; color: white; border-radius: 8px; padding: 0.75em 0; border: none; box-shadow: 0 2px 8px rgba(76,175,80,0.08);"
+    aria-label="Añadir Mascota">
+    ➕ Añadir Mascota
+  </button>
   <div class="pet-detail-profile">
-    <img [src]="pet?.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" class="pet-profile-img" />
-    <div class="pet-profile-name">{{ pet?.nombre }}</div>
-    <div class="pet-profile-breed">{{ pet?.raza }}, {{ calcularEdad(pet?.fecha_nacimiento) }}</div>
-    <button class="pet-profile-btn" (click)="editPet()">Editar Info</button>
-    <button class="pet-profile-btn primary" (click)="openAddDialog('historial')">Agregar Visita Vet</button>
-    <button class="pet-profile-btn" (click)="openAddDialog('vacunas')">Agregar Vacuna</button>
+    <img [src]="pet?.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" class="pet-profile-img"
+      alt="Foto de {{ pet?.nombre }}" />
+    <div class="pet-profile-name" tabindex="0">{{ pet?.nombre }}</div>
+    <div class="pet-profile-breed" tabindex="0">{{ pet?.raza }}, {{ calcularEdad(pet?.fecha_nacimiento) }}</div>
+    <button class="pet-profile-btn" (click)="editPet()" aria-label="Editar información de la mascota"
+      tabindex="0">Editar Info</button>
+    <button class="pet-profile-btn primary" (click)="openAddDialog('historial')" aria-label="Agregar visita veterinario"
+      tabindex="0">Agregar Visita Vet</button>
+    <button class="pet-profile-btn" (click)="openAddDialog('vacunas')" aria-label="Agregar vacuna" tabindex="0">Agregar
+      Vacuna</button>
+  </div>
+</div>
+
+<!-- Modal de edición/agregado de registro -->
+<div class="pet-edit-modal-overlay" *ngIf="addDialogVisible">
+  <div class="pet-edit-modal">
+    <h2 style="margin-bottom:1em;">{{ editMode ? 'Editar' : 'Agregar' }} {{ addType | titlecase }}</h2>
+    <form [formGroup]="addForm" (ngSubmit)="editMode ? updateRegistro() : addRegistro()">
+      <ng-container [ngSwitch]="addType">
+        <ng-container *ngSwitchCase="'vacunas'">
+          <label>Nombre:<input type="text" formControlName="nombre"></label>
+          <label>Fecha:<input type="date" formControlName="fecha"></label>
+          <label>Próxima:<input type="date" formControlName="proxima_fecha"></label>
+          <label>Notas:<input type="text" formControlName="notas"></label>
+        </ng-container>
+        <ng-container *ngSwitchCase="'desparasitaciones'">
+          <label>Nombre:<input type="text" formControlName="nombre"></label>
+          <label>Fecha:<input type="date" formControlName="fecha"></label>
+          <label>Próxima:<input type="date" formControlName="proxima_fecha"></label>
+          <label>Notas:<input type="text" formControlName="notas"></label>
+        </ng-container>
+        <ng-container *ngSwitchCase="'medicaciones'">
+          <label>Nombre:<input type="text" formControlName="nombre"></label>
+          <label>Dosis:<input type="text" formControlName="dosis"></label>
+          <label>Frecuencia:<input type="text" formControlName="frecuencia"></label>
+          <label>Inicio:<input type="date" formControlName="fecha_inicio"></label>
+          <label>Fin:<input type="date" formControlName="fecha_fin"></label>
+          <label>Notas:<input type="text" formControlName="notas"></label>
+        </ng-container>
+        <ng-container *ngSwitchCase="'historial'">
+          <label>Fecha:<input type="date" formControlName="fecha"></label>
+          <label>Motivo:<input type="text" formControlName="motivo"></label>
+          <label>Diagnóstico:<input type="text" formControlName="diagnostico"></label>
+          <label>Tratamiento:<input type="text" formControlName="tratamiento"></label>
+          <label>Próxima visita:<input type="date" formControlName="proxima_visita"></label>
+        </ng-container>
+        <ng-container *ngSwitchCase="'notas'">
+          <label>Contenido:<input type="text" formControlName="contenido"></label>
+          <label>Fecha:<input type="date" formControlName="fecha"></label>
+        </ng-container>
+      </ng-container>
+      <div class="pet-edit-modal-actions">
+        <button type="submit" [disabled]="!addForm.valid">Guardar</button>
+        <button type="button" (click)="closeAddDialog()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para añadir nueva mascota -->
+<div class="pet-add-modal-overlay" *ngIf="showAddPetModal">
+  <div class="pet-add-modal">
+    <h2>Add a New Pet</h2>
+    <form (ngSubmit)="addPet()" #addPetForm="ngForm">
+      <label>Pet Name
+        <input type="text" [(ngModel)]="newPet.nombre" name="nombre" required placeholder="Enter pet's name" />
+      </label>
+      <label>Species
+        <select [(ngModel)]="newPet.tipo" name="tipo" required (change)="onTipoChange()">
+          <option value="" disabled selected>Select species</option>
+          <option value="Perro">Dog</option>
+          <option value="Gato">Cat</option>
+        </select>
+      </label>
+      <label>Breed
+        <select [(ngModel)]="newPet.raza" name="raza" required [disabled]="!newPet.tipo">
+          <option value="" disabled selected>Select breed</option>
+          <option *ngFor="let r of razasDisponibles" [value]="r">{{ r }}</option>
+        </select>
+      </label>
+      <label>Age
+        <input type="number" [(ngModel)]="newPet.edad" name="edad" min="0" placeholder="Enter pet's age" />
+      </label>
+      <div class="pet-photo-upload">
+        <label>Upload Pet Photo</label>
+        <input type="file" (change)="onFotoChange($event)" accept="image/*" />
+      </div>
+      <label>Initial Health Notes
+        <textarea [(ngModel)]="newPet.notas" name="notas" placeholder="Enter any initial health notes"></textarea>
+      </label>
+      <div class="pet-add-modal-actions">
+        <button type="submit" [disabled]="!addPetForm.form.valid">Add Pet</button>
+        <button type="button" (click)="showAddPetModal = false">Cancel</button>
+      </div>
+    </form>
   </div>
 </div>

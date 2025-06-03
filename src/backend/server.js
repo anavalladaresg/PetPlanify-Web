@@ -285,14 +285,263 @@ app.delete('/api/pets/:petId', (req, res) => {
   });
 });
 
-// Obtener visitas veterinario de una mascota
-app.get('/api/pets/:petId/visitas_veterinario', (req, res) => {
-  const { petId } = req.params;
-  db.all('SELECT * FROM visitas_veterinario WHERE mascota_id = ?', [petId], (err, rows) => {
-    if (err) {
-      return res.status(500).json({ error: 'Error al obtener las visitas veterinario.' });
+// Crear visita veterinaria (historial)
+app.post('/api/historial', (req, res) => {
+  const { mascota_id, fecha, motivo, diagnostico, tratamiento, proxima_visita } = req.body;
+  if (!mascota_id || !fecha || !motivo || !diagnostico) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    `INSERT INTO visitas_veterinario (id, mascota_id, fecha, motivo, diagnostico, tratamiento, proxima_visita) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [id, mascota_id, fecha, motivo, diagnostico, tratamiento || null, proxima_visita || null],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la visita veterinaria.' });
+      }
+      res.status(201).json({ id, mascota_id, fecha, motivo, diagnostico, tratamiento, proxima_visita });
     }
-    res.json(rows);
+  );
+});
+
+// Editar visita veterinaria (historial)
+app.put('/api/historial/:id', (req, res) => {
+  const { id } = req.params;
+  const { mascota_id, fecha, motivo, diagnostico, tratamiento, proxima_visita } = req.body;
+  if (!mascota_id || !fecha || !motivo || !diagnostico) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  db.run(
+    `UPDATE visitas_veterinario SET mascota_id = ?, fecha = ?, motivo = ?, diagnostico = ?, tratamiento = ?, proxima_visita = ? WHERE id = ?`,
+    [mascota_id, fecha, motivo, diagnostico, tratamiento || null, proxima_visita || null, id],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al actualizar la visita veterinaria.' });
+      }
+      res.json({ id, mascota_id, fecha, motivo, diagnostico, tratamiento, proxima_visita });
+    }
+  );
+});
+
+// Eliminar visita veterinaria (historial)
+app.delete('/api/historial/:id', (req, res) => {
+  const { id } = req.params;
+  db.run('DELETE FROM visitas_veterinario WHERE id = ?', [id], function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Error al eliminar la visita veterinaria.' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Visita veterinaria no encontrada.' });
+    }
+    res.json({ success: true });
+  });
+});
+
+// Crear vacuna
+app.post('/api/vacunas', (req, res) => {
+  const { mascota_id, nombre, fecha, proxima_fecha, notas } = req.body;
+  if (!mascota_id || !nombre || !fecha || !proxima_fecha) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    `INSERT INTO vacunas (id, mascota_id, nombre, fecha, proxima_fecha, notas) VALUES (?, ?, ?, ?, ?, ?)`,
+    [id, mascota_id, nombre, fecha, proxima_fecha, notas || null],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la vacuna.' });
+      }
+      res.status(201).json({ id, mascota_id, nombre, fecha, proxima_fecha, notas });
+    }
+  );
+});
+
+// Editar vacuna
+app.put('/api/vacunas/:id', (req, res) => {
+  const { id } = req.params;
+  const { mascota_id, nombre, fecha, proxima_fecha, notas } = req.body;
+  if (!mascota_id || !nombre || !fecha || !proxima_fecha) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  db.run(
+    `UPDATE vacunas SET mascota_id = ?, nombre = ?, fecha = ?, proxima_fecha = ?, notas = ? WHERE id = ?`,
+    [mascota_id, nombre, fecha, proxima_fecha, notas || null, id],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al actualizar la vacuna.' });
+      }
+      res.json({ id, mascota_id, nombre, fecha, proxima_fecha, notas });
+    }
+  );
+});
+
+// Eliminar vacuna
+app.delete('/api/vacunas/:id', (req, res) => {
+  const { id } = req.params;
+  db.run('DELETE FROM vacunas WHERE id = ?', [id], function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Error al eliminar la vacuna.' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Vacuna no encontrada.' });
+    }
+    res.json({ success: true });
+  });
+});
+
+// Crear desparasitación
+app.post('/api/desparasitaciones', (req, res) => {
+  const { mascota_id, nombre, fecha, proxima_fecha, notas } = req.body;
+  if (!mascota_id || !nombre || !fecha || !proxima_fecha) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    `INSERT INTO desparasitaciones (id, mascota_id, nombre, fecha, proxima_fecha, notas) VALUES (?, ?, ?, ?, ?, ?)`,
+    [id, mascota_id, nombre, fecha, proxima_fecha, notas || null],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la desparasitación.' });
+      }
+      res.status(201).json({ id, mascota_id, nombre, fecha, proxima_fecha, notas });
+    }
+  );
+});
+
+// Editar desparasitación
+app.put('/api/desparasitaciones/:id', (req, res) => {
+  const { id } = req.params;
+  const { mascota_id, nombre, fecha, proxima_fecha, notas } = req.body;
+  if (!mascota_id || !nombre || !fecha || !proxima_fecha) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  db.run(
+    `UPDATE desparasitaciones SET mascota_id = ?, nombre = ?, fecha = ?, proxima_fecha = ?, notas = ? WHERE id = ?`,
+    [mascota_id, nombre, fecha, proxima_fecha, notas || null, id],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al actualizar la desparasitación.' });
+      }
+      res.json({ id, mascota_id, nombre, fecha, proxima_fecha, notas });
+    }
+  );
+});
+
+// Eliminar desparasitación
+app.delete('/api/desparasitaciones/:id', (req, res) => {
+  const { id } = req.params;
+  db.run('DELETE FROM desparasitaciones WHERE id = ?', [id], function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Error al eliminar la desparasitación.' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Desparasitación no encontrada.' });
+    }
+    res.json({ success: true });
+  });
+});
+
+// Crear medicación
+app.post('/api/medicaciones', (req, res) => {
+  const { mascota_id, nombre, dosis, frecuencia, fecha_inicio, fecha_fin, notas } = req.body;
+  if (!mascota_id || !nombre || !dosis || !frecuencia || !fecha_inicio) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    `INSERT INTO medicaciones (id, mascota_id, nombre, dosis, frecuencia, fecha_inicio, fecha_fin, notas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [id, mascota_id, nombre, dosis, frecuencia, fecha_inicio, fecha_fin || null, notas || null],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la medicación.' });
+      }
+      res.status(201).json({ id, mascota_id, nombre, dosis, frecuencia, fecha_inicio, fecha_fin, notas });
+    }
+  );
+});
+
+// Editar medicación
+app.put('/api/medicaciones/:id', (req, res) => {
+  const { id } = req.params;
+  const { mascota_id, nombre, dosis, frecuencia, fecha_inicio, fecha_fin, notas } = req.body;
+  if (!mascota_id || !nombre || !dosis || !frecuencia || !fecha_inicio) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  db.run(
+    `UPDATE medicaciones SET mascota_id = ?, nombre = ?, dosis = ?, frecuencia = ?, fecha_inicio = ?, fecha_fin = ?, notas = ? WHERE id = ?`,
+    [mascota_id, nombre, dosis, frecuencia, fecha_inicio, fecha_fin || null, notas || null, id],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al actualizar la medicación.' });
+      }
+      res.json({ id, mascota_id, nombre, dosis, frecuencia, fecha_inicio, fecha_fin, notas });
+    }
+  );
+});
+
+// Eliminar medicación
+app.delete('/api/medicaciones/:id', (req, res) => {
+  const { id } = req.params;
+  db.run('DELETE FROM medicaciones WHERE id = ?', [id], function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Error al eliminar la medicación.' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Medicación no encontrada.' });
+    }
+    res.json({ success: true });
+  });
+});
+
+// Crear nota
+app.post('/api/notas', (req, res) => {
+  const { mascota_id, contenido, fecha } = req.body;
+  if (!mascota_id || !contenido || !fecha) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const id = uuidv4();
+  db.run(
+    `INSERT INTO observaciones (id, mascota_id, contenido, fecha) VALUES (?, ?, ?, ?)` ,
+    [id, mascota_id, contenido, fecha],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al guardar la nota.' });
+      }
+      res.status(201).json({ id, mascota_id, contenido, fecha });
+    }
+  );
+});
+
+// Editar nota
+app.put('/api/notas/:id', (req, res) => {
+  const { id } = req.params;
+  const { mascota_id, contenido, fecha } = req.body;
+  if (!mascota_id || !contenido || !fecha) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  db.run(
+    `UPDATE observaciones SET mascota_id = ?, contenido = ?, fecha = ? WHERE id = ?`,
+    [mascota_id, contenido, fecha, id],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Error al actualizar la nota.' });
+      }
+      res.json({ id, mascota_id, contenido, fecha });
+    }
+  );
+});
+
+// Eliminar nota
+app.delete('/api/notas/:id', (req, res) => {
+  const { id } = req.params;
+  db.run('DELETE FROM observaciones WHERE id = ?', [id], function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Error al eliminar la nota.' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Nota no encontrada.' });
+    }
+    res.json({ success: true });
   });
 });
 
@@ -312,6 +561,17 @@ app.get('/api/eventos', (req, res) => {
   db.all(sql, (err, rows) => {
     if (err) {
       return res.status(500).json({ error: 'Error al obtener los eventos.' });
+    }
+    res.json(rows);
+  });
+});
+
+// Obtener visitas veterinario de una mascota
+app.get('/api/pets/:petId/visitas_veterinario', (req, res) => {
+  const { petId } = req.params;
+  db.all('SELECT * FROM visitas_veterinario WHERE mascota_id = ?', [petId], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener las visitas veterinario.' });
     }
     res.json(rows);
   });
