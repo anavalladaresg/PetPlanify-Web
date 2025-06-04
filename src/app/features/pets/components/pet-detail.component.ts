@@ -138,7 +138,15 @@ export class PetDetailComponent implements OnChanges {
     if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
       edad--;
     }
-    if (edad <= 0) return 'Menos de 1 año';
+    // Si la edad es menor a 1 año, mostrar en meses
+    if (edad < 1) {
+      let meses = (hoy.getFullYear() - nacimiento.getFullYear()) * 12 + (hoy.getMonth() - nacimiento.getMonth());
+      if (hoy.getDate() < nacimiento.getDate()) {
+        meses--;
+      }
+      if (meses <= 0) return 'Menos de 1 mes';
+      return meses === 1 ? '1 mes' : `${meses} meses`;
+    }
     return edad === 1 ? '1 año' : `${edad} años`;
   }
 
