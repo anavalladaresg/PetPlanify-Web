@@ -162,6 +162,45 @@
         </li>
       </ul>
       <div *ngIf="pets.length === 0" class="no-pets-msg">No tienes mascotas registradas aún.</div>
+
+      <!-- Modal flotante para añadir mascota -->
+      <div *ngIf="showAddPetForm" class="add-pet-modal-overlay custom-float-modal">
+        <div class="add-pet-modal custom-float-modal-content">
+          <button class="add-pet-modal-close-btn" (click)="showAddPetForm = false" aria-label="Cerrar ventana">×</button>
+          <h2>Añadir Mascota</h2>
+          <form (ngSubmit)="addPet()" #addPetForm="ngForm">
+            <label>Nombre
+              <input type="text" [(ngModel)]="newPet.nombre" name="nombre" required placeholder="Nombre de la mascota" />
+            </label>
+            <label>Tipo
+              <select [(ngModel)]="newPet.tipo" name="tipo" required (change)="onTipoChange()">
+                <option value="" disabled selected>Selecciona especie</option>
+                <option value="Perro">Perro</option>
+                <option value="Gato">Gato</option>
+              </select>
+            </label>
+            <label>Raza
+              <select [(ngModel)]="newPet.raza" name="raza" required [disabled]="!newPet.tipo">
+                <option value="" disabled selected>Selecciona raza</option>
+                <option *ngFor="let r of razasDisponibles" [value]="r">{{ r }}</option>
+              </select>
+            </label>
+            <label>Fecha de nacimiento
+              <input type="date" [(ngModel)]="newPet.fechaNacimiento" name="fechaNacimiento" required />
+            </label>
+            <label>Peso (kg)
+              <input type="number" [(ngModel)]="newPet.peso" name="peso" min="0" step="0.1" required placeholder="Peso" />
+            </label>
+            <label>Foto
+              <input type="file" (change)="onFotoChange($event)" accept="image/*" />
+            </label>
+            <div class="add-pet-modal-actions">
+              <button type="submit" [disabled]="!addPetForm.form.valid">Guardar</button>
+              <button type="button" (click)="showAddPetForm = false">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
     <div *ngIf="currentView === 'health'" class="content health-content">
       <div class="dashboard-header">
@@ -460,7 +499,7 @@
         </div>
       </div>
     </div>
-  </div>
-  <p-toast></p-toast>
-  <p-confirmpopup></p-confirmpopup>
+
+    <p-toast></p-toast>
+    <p-confirmpopup></p-confirmpopup>
 </div>

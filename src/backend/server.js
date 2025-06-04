@@ -15,6 +15,9 @@ initDB();
 app.use(cors());
 app.use(express.json());
 
+// Servir archivos estáticos de la carpeta assets
+app.use('/assets', express.static(path.join(__dirname, '../assets')));
+
 // Configuración de almacenamiento para fotos de mascotas
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

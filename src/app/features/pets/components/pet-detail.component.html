@@ -427,12 +427,6 @@
       </table>
     </div>
   </div>
-  <!-- Añadir Mascota button (visible, prominent) -->
-  <button class="pet-profile-btn add-pet-btn" (click)="showAddPetModal = true"
-    style="margin-bottom: 1.5rem; width: 100%; font-size: 1.1rem; font-weight: 600; background: #4caf50; color: white; border-radius: 8px; padding: 0.75em 0; border: none; box-shadow: 0 2px 8px rgba(76,175,80,0.08);"
-    aria-label="Añadir Mascota">
-    ➕ Añadir Mascota
-  </button>
   <div class="pet-detail-profile">
     <img [src]="pet?.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" class="pet-profile-img"
       alt="Foto de {{ pet?.nombre }}" />
@@ -488,45 +482,6 @@
       <div class="pet-edit-modal-actions">
         <button type="submit" [disabled]="!addForm.valid">Guardar</button>
         <button type="button" (click)="closeAddDialog()">Cancelar</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- Modal para añadir nueva mascota -->
-<div class="pet-add-modal-overlay" *ngIf="showAddPetModal">
-  <div class="pet-add-modal">
-    <h2>Add a New Pet</h2>
-    <form (ngSubmit)="addPet()" #addPetForm="ngForm">
-      <label>Pet Name
-        <input type="text" [(ngModel)]="newPet.nombre" name="nombre" required placeholder="Enter pet's name" />
-      </label>
-      <label>Species
-        <select [(ngModel)]="newPet.tipo" name="tipo" required (change)="onTipoChange()">
-          <option value="" disabled selected>Select species</option>
-          <option value="Perro">Dog</option>
-          <option value="Gato">Cat</option>
-        </select>
-      </label>
-      <label>Breed
-        <select [(ngModel)]="newPet.raza" name="raza" required [disabled]="!newPet.tipo">
-          <option value="" disabled selected>Select breed</option>
-          <option *ngFor="let r of razasDisponibles" [value]="r">{{ r }}</option>
-        </select>
-      </label>
-      <label>Age
-        <input type="number" [(ngModel)]="newPet.edad" name="edad" min="0" placeholder="Enter pet's age" />
-      </label>
-      <div class="pet-photo-upload">
-        <label>Upload Pet Photo</label>
-        <input type="file" (change)="onFotoChange($event)" accept="image/*" />
-      </div>
-      <label>Initial Health Notes
-        <textarea [(ngModel)]="newPet.notas" name="notas" placeholder="Enter any initial health notes"></textarea>
-      </label>
-      <div class="pet-add-modal-actions">
-        <button type="submit" [disabled]="!addPetForm.form.valid">Add Pet</button>
-        <button type="button" (click)="showAddPetModal = false">Cancel</button>
       </div>
     </form>
   </div>
