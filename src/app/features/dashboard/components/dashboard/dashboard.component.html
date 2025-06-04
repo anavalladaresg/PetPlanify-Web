@@ -81,65 +81,15 @@
       <div class="dashboard-section pets-section">
         <h2>Mis Mascotas</h2>
         <div class="pets-cards-row">
-          <div *ngFor="let pet of pets" class="pet-card-landing pet-card-xlarge" (click)="openPetDetailModal(pet.id)">
+          <div *ngFor="let pet of pets" class="pet-card-landing pet-card-small" (click)="openPetDetailModal(pet.id)">
             <img [src]="pet.foto ? '/uploads/' + pet.foto : 'assets/puppy.png'" [alt]="pet.nombre"
-              class="pet-img pet-img-xlarge" />
+              class="pet-img pet-img-small" />
             <div class="pet-card-info">
               <div class="pet-card-name">{{ pet.nombre }}</div>
               <div class="pet-card-breed">{{ pet.raza }}</div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="dashboard-section appointments-section">
-        <h2>Próximas Citas</h2>
-        <table class="appointments-table">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Hora</th>
-              <th>Mascota</th>
-              <th>Servicio</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let cita of citas">
-              <td>{{ cita.fecha | date:'dd/MM/yyyy' }}</td>
-              <td>{{ cita.hora }}</td>
-              <td>{{ cita.mascota }}</td>
-              <td>{{ cita.servicio }}</td>
-              <td><span class="status" [ngClass]="{
-                                'scheduled': cita.estado === 'Programada',
-                                'confirmed': cita.estado === 'Confirmada',
-                                'completed': cita.estado === 'Completada'
-                            }">{{ cita.estado }}</span></td>
-            </tr>
-            <tr *ngIf="!citas || citas.length === 0">
-              <td colspan="5" style="text-align:center; color:#888;">No tienes próximas citas.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="dashboard-section vet-appointments-section">
-        <h2>Próximas visitas veterinarias</h2>
-        <table class="appointments-table" *ngIf="upcomingVetVisits.length > 0">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Mascota</th>
-              <th>Veterinario</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let v of upcomingVetVisits">
-              <td>{{ v.fecha | date:'dd/MM/yyyy' }}</td>
-              <td>{{ v.mascota }}</td>
-              <td>{{ v.veterinario }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div *ngIf="upcomingVetVisits.length === 0" style="color:#888; text-align:center;">No hay próximas visitas veterinarias pendientes.</div>
       </div>
     </div>
     <div *ngIf="currentView === 'pets'" class="content pets-content">
@@ -166,11 +116,13 @@
       <!-- Modal flotante para añadir mascota -->
       <div *ngIf="showAddPetForm" class="add-pet-modal-overlay custom-float-modal">
         <div class="add-pet-modal custom-float-modal-content">
-          <button class="add-pet-modal-close-btn" (click)="showAddPetForm = false" aria-label="Cerrar ventana">×</button>
+          <button class="add-pet-modal-close-btn" (click)="showAddPetForm = false"
+            aria-label="Cerrar ventana">×</button>
           <h2>Añadir Mascota</h2>
           <form (ngSubmit)="addPet()" #addPetForm="ngForm">
             <label>Nombre
-              <input type="text" [(ngModel)]="newPet.nombre" name="nombre" required placeholder="Nombre de la mascota" />
+              <input type="text" [(ngModel)]="newPet.nombre" name="nombre" required
+                placeholder="Nombre de la mascota" />
             </label>
             <label>Tipo
               <select [(ngModel)]="newPet.tipo" name="tipo" required (change)="onTipoChange()">
@@ -189,7 +141,8 @@
               <input type="date" [(ngModel)]="newPet.fechaNacimiento" name="fechaNacimiento" required />
             </label>
             <label>Peso (kg)
-              <input type="number" [(ngModel)]="newPet.peso" name="peso" min="0" step="0.1" required placeholder="Peso" />
+              <input type="number" [(ngModel)]="newPet.peso" name="peso" min="0" step="0.1" required
+                placeholder="Peso" />
             </label>
             <label>Foto
               <input type="file" (change)="onFotoChange($event)" accept="image/*" />
@@ -340,9 +293,11 @@
       </div>
     </div>
 
-    <div *ngIf="currentView === 'events' || currentView === 'events-general'" class="content events-content events-fade-slide">
+    <div *ngIf="currentView === 'events' || currentView === 'events-general'"
+      class="content events-content events-fade-slide">
       <div class="events-tabs-row">
-        <button class="events-tab-btn" [class.active]="currentView === 'events-general'" (click)="navigateTo('events-general')">
+        <button class="events-tab-btn" [class.active]="currentView === 'events-general'"
+          (click)="navigateTo('events-general')">
           Próximos Eventos
         </button>
         <button class="events-tab-btn" [class.active]="currentView === 'events'" (click)="navigateTo('events')">
@@ -424,7 +379,8 @@
             </div>
             <div class="p-field">
               <label for="description">Descripción</label>
-              <textarea id="description" name="description" [(ngModel)]="newEvent.description" required pInputTextarea></textarea>
+              <textarea id="description" name="description" [(ngModel)]="newEvent.description" required
+                pInputTextarea></textarea>
             </div>
             <div class="p-field">
               <label for="date">Fecha</label>
@@ -435,8 +391,10 @@
               <input id="location" name="location" [(ngModel)]="newEvent.location" required pInputText />
             </div>
             <div class="dialog-actions">
-              <button pButton type="submit" label="Guardar" [disabled]="!eventForm.form.valid" class="p-button-success"></button>
-              <button pButton type="button" label="Cancelar" (click)="showEventDialog = false" class="p-button-secondary"></button>
+              <button pButton type="submit" label="Guardar" [disabled]="!eventForm.form.valid"
+                class="p-button-success"></button>
+              <button pButton type="button" label="Cancelar" (click)="showEventDialog = false"
+                class="p-button-secondary"></button>
             </div>
           </form>
         </p-dialog>
@@ -454,12 +412,14 @@
     <!-- Event Detail Modal Overlay -->
     <div *ngIf="showEventDetailModal" class="event-detail-modal-overlay">
       <div class="event-detail-modal-content">
-        <button class="event-detail-modal-close-btn" (click)="closeEventDetailModal()" aria-label="Cerrar ventana">×</button>
+        <button class="event-detail-modal-close-btn" (click)="closeEventDetailModal()"
+          aria-label="Cerrar ventana">×</button>
         <div class="event-detail-modal-scroll">
           <div class="event-detail-breadcrumbs">Eventos / {{ selectedEvent?.title }}</div>
           <div class="event-detail-title">{{ selectedEvent?.title }}</div>
           <div class="event-detail-subtitle">{{ selectedEvent?.description }}</div>
-          <img *ngIf="selectedEvent?.image" [src]="selectedEvent.image" [alt]="selectedEvent.title" class="event-detail-img" />
+          <img *ngIf="selectedEvent?.image" [src]="selectedEvent.image" [alt]="selectedEvent.title"
+            class="event-detail-img" />
           <div class="event-detail-section">
             <h3>Acerca del evento</h3>
             <div class="event-detail-section-content">{{ selectedEvent?.about || selectedEvent?.description }}</div>
@@ -467,7 +427,8 @@
           <div class="event-detail-section">
             <h3>Organizador</h3>
             <div class="event-detail-host-row">
-              <img *ngIf="selectedEvent?.hostAvatar" [src]="selectedEvent.hostAvatar" alt="Organizador" class="event-detail-host-avatar" />
+              <img *ngIf="selectedEvent?.hostAvatar" [src]="selectedEvent.hostAvatar" alt="Organizador"
+                class="event-detail-host-avatar" />
               <span class="event-detail-host-name">{{ selectedEvent?.host }}</span>
               <span class="event-detail-host-role">Organizador</span>
             </div>
@@ -475,9 +436,18 @@
           <div class="event-detail-section">
             <h3>Detalles</h3>
             <table class="event-detail-table">
-              <tr><td>Tipo de mascota</td><td><b>{{ selectedEvent?.type }}</b></td></tr>
-              <tr><td>Fecha y hora</td><td><b>{{ selectedEvent?.date | date:'dd-MM-yyyy - HH:mm' : undefined : 'es' }}</b></td></tr>
-              <tr><td>Ubicación</td><td><b>{{ selectedEvent?.location || 'Por definir' }}</b></td></tr>
+              <tr>
+                <td>Tipo de mascota</td>
+                <td><b>{{ selectedEvent?.type }}</b></td>
+              </tr>
+              <tr>
+                <td>Fecha y hora</td>
+                <td><b>{{ selectedEvent?.date | date:'dd-MM-yyyy - HH:mm' : undefined : 'es' }}</b></td>
+              </tr>
+              <tr>
+                <td>Ubicación</td>
+                <td><b>{{ selectedEvent?.location || 'Por definir' }}</b></td>
+              </tr>
             </table>
           </div>
           <div class="event-detail-section" *ngIf="selectedEvent?.mapImage">
@@ -502,4 +472,4 @@
 
     <p-toast></p-toast>
     <p-confirmpopup></p-confirmpopup>
-</div>
+  </div>

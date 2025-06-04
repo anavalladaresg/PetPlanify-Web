@@ -7,6 +7,10 @@ p {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  min-height: 100vh;
+  min-width: 100vw;
+  height: 100dvh;
+  width: 100dvw;
 }
 
 /* Dashboard lateral */
@@ -104,17 +108,21 @@ p {
   flex: 1;
   position: relative;
   overflow-y: auto;
+  min-height: 100vh;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 .background {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  height: 100%;
-  width: 100%;
-  background-color: var(--surface-card, var(--blue-50));
-  background-image: linear-gradient(to right, var(--divider-light, #f0f0f0) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--divider-light, #f0f0f0) 1px, transparent 1px);
-  background-size: 6rem 4rem;
+  height: 100vh;
+  width: 100vw;
+  min-width: 100vw;
+  min-height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
   z-index: -10;
 }
 
