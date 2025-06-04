@@ -82,7 +82,7 @@
         <h2>Mis Mascotas</h2>
         <div class="pets-cards-row">
           <div *ngFor="let pet of pets" class="pet-card-landing pet-card-xlarge" (click)="openPetDetailModal(pet.id)">
-            <img [src]="pet.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" [alt]="pet.nombre"
+            <img [src]="pet.foto ? '/uploads/' + pet.foto : 'assets/puppy.png'" [alt]="pet.nombre"
               class="pet-img pet-img-xlarge" />
             <div class="pet-card-info">
               <div class="pet-card-name">{{ pet.nombre }}</div>
@@ -152,7 +152,7 @@
       <ul class="pets-list-simple">
         <li *ngFor="let pet of pets" class="pet-list-item clickable" (click)="openPetDetailModal(pet.id)">
           <div class="pet-list-photo">
-            <img [src]="pet.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" [alt]="pet.nombre" />
+            <img [src]="pet.foto ? '/uploads/' + pet.foto : 'assets/puppy.png'" [alt]="pet.nombre" />
           </div>
           <div class="pet-list-info">
             <div class="pet-list-name">{{ pet.nombre }}</div>

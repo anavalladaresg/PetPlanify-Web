@@ -428,7 +428,7 @@
     </div>
   </div>
   <div class="pet-detail-profile">
-    <img [src]="pet?.foto ? 'assets/' + pet.foto : 'assets/puppy.png'" class="pet-profile-img"
+    <img [src]="pet?.foto ? '/uploads/' + pet.foto : 'assets/puppy.png'" class="pet-profile-img"
       alt="Foto de {{ pet?.nombre }}" />
     <div class="pet-profile-name" tabindex="0">{{ pet?.nombre }}</div>
     <div class="pet-profile-breed" tabindex="0">{{ pet?.raza }}, {{ calcularEdad(pet?.fecha_nacimiento) }}</div>

@@ -15,14 +15,14 @@ initDB();
 app.use(cors());
 app.use(express.json());
 
-// Servir archivos estáticos de la carpeta assets
-app.use('/assets', express.static(path.join(__dirname, '../assets')));
+// Servir archivos estáticos de la carpeta uploads
+app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
 // Configuración de almacenamiento para fotos de mascotas
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // Guardar en src/assets para que Angular pueda servir las imágenes
-    cb(null, path.join(__dirname, '../assets'));
+    // Guardar en uploads fuera de src para evitar problemas con Angular
+    cb(null, path.join(__dirname, '../../uploads'));
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
